@@ -1,0 +1,33 @@
+html,
+body,
+#root,
+.app,
+.content {
+	height: 100%;
+	width: 100%;
+	font-family: "JetBrains Mono", monospace;
+}
+
+.app {
+	display: flex;
+	position: relative;
+}
+
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+/* TRACK */
+::-webkit-scrollbar-track {
+	background: #e0e0e0;
+}
+
+/* HANDLE */
+::-webkit-scrollbar-thumb {
+	background: #888;
+}
+
+/* HANDLE ON HOVER */
+::-webkit-scrollbar-track:hover {
+	background: #555;
+}
