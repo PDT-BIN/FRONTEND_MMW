@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
+import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
-import react from "../../assets/react.svg";
-import { tokens } from "../../theme";
+import { Box, Typography, useTheme } from "@mui/material";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
+import { tokens } from "../../theme";
+import react from "../../assets/react.svg";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
 	const theme = useTheme();
@@ -56,30 +56,16 @@ const Sidebar = () => {
 					{/* MENU ICON */}
 					<MenuItem
 						onClick={() => setIsCollapsed(!isCollapsed)}
-						icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
+						icon={<MenuOutlinedIcon />}
 						style={{
 							marginTop: "10px",
 							color: colors.grey[100],
+							display: "flex",
+							flexDirection: `${
+								isCollapsed ? "row" : "row-reverse"
+							}`,
 						}}
-					>
-						{!isCollapsed && (
-							<Box
-								display="flex"
-								justifyContent="space-between"
-								alignItems="center"
-							>
-								<Typography
-									variant="h4"
-									color={colors.grey[100]}
-								>
-									ADMINISTRATOR
-								</Typography>
-								<IconButton>
-									<MenuOutlinedIcon />
-								</IconButton>
-							</Box>
-						)}
-					</MenuItem>
+					/>
 					{/* USER PROFILE */}
 					{!isCollapsed && (
 						<Box my="20px">
@@ -124,11 +110,7 @@ const Sidebar = () => {
 						<Item
 							title="Dashboard"
 							to="/"
-							icon={
-								<GridViewOutlinedIcon
-									sx={{ width: "24px", height: "24px" }}
-								/>
-							}
+							icon={<GridViewOutlinedIcon />}
 							selected={selected}
 							setSelected={setSelected}
 						/>
