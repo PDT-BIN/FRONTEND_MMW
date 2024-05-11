@@ -5,6 +5,13 @@ import "react-pro-sidebar/dist/css/styles.css";
 import { Box, Typography, useTheme } from "@mui/material";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
+import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
+import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
+import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import ImportExportOutlinedIcon from "@mui/icons-material/ImportExportOutlined";
+import QueryStatsIcon from "@mui/icons-material/QueryStats";
+import Divider from "@mui/material/Divider";
 import { tokens } from "../../theme";
 import react from "../../assets/react.svg";
 
@@ -13,15 +20,46 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 	const colors = tokens(theme.palette.mode);
 
 	return (
-		<MenuItem
-			active={selected === title}
-			style={{ color: colors.grey[100] }}
-			onClick={() => setSelected(title)}
-			icon={icon}
+		<Box>
+			<MenuItem
+				active={selected === title}
+				style={{ color: colors.grey[100] }}
+				onClick={() => setSelected(title)}
+				icon={icon}
+			>
+				<Typography variant="h5" pl="10px">
+					{title.toUpperCase()}
+				</Typography>
+				<Link to={to} />
+			</MenuItem>
+		</Box>
+	);
+};
+
+const GroupDivider = ({ isCollapsed, title }) => {
+	const theme = useTheme();
+	const colors = tokens(theme.palette.mode);
+
+	return !isCollapsed ? (
+		<Typography
+			variant="h6"
+			color={colors.grey[300]}
+			fontStyle="italic"
+			sx={{ m: "10px 0 5px 20px" }}
 		>
-			<Typography variant="h5">{title.toUpperCase()}</Typography>
-			<Link to={to} />
-		</MenuItem>
+			{title}
+		</Typography>
+	) : (
+		<Divider style={{ margin: "5px 0 0 0" }} />
+	);
+};
+
+const GroupItem = ({ isCollapsed, title, children }) => {
+	return (
+		<Box>
+			<GroupDivider isCollapsed={isCollapsed} title={title} />
+			{children}
+		</Box>
 	);
 };
 
@@ -41,13 +79,16 @@ const Sidebar = () => {
 					backgroundColor: "transparent !important",
 				},
 				"& .pro-inner-item": {
-					padding: `0 20px !important`,
+					padding: `5px 20px !important`,
 				},
 				"& .pro-inner-item:hover": {
 					color: "#868dfb !important",
 				},
 				"& .pro-menu-item.active": {
 					color: "#6870fa !important",
+				},
+				"& ::-webkit-scrollbar": {
+					display: "none !important",
 				},
 			}}
 		>
@@ -56,9 +97,8 @@ const Sidebar = () => {
 					{/* MENU ICON */}
 					<MenuItem
 						onClick={() => setIsCollapsed(!isCollapsed)}
-						icon={<MenuOutlinedIcon />}
+						icon={<MenuOutlinedIcon fontSize="large" />}
 						style={{
-							marginTop: "10px",
 							color: colors.grey[100],
 							display: "flex",
 							flexDirection: `${
@@ -106,15 +146,61 @@ const Sidebar = () => {
 						</Box>
 					)}
 					{/* MENU ITEMS */}
-					<Box>
+					<Item
+						title="Dashboard"
+						to="/"
+						icon={<GridViewOutlinedIcon fontSize="large" />}
+						selected={selected}
+						setSelected={setSelected}
+					/>
+					<GroupItem isCollapsed={isCollapsed} title="Information">
 						<Item
-							title="Dashboard"
-							to="/"
-							icon={<GridViewOutlinedIcon />}
+							title="Employee"
+							to="/employee"
+							icon={<GroupOutlinedIcon fontSize="large" />}
 							selected={selected}
 							setSelected={setSelected}
 						/>
-					</Box>
+						<Item
+							title="Product"
+							to="/product"
+							icon={<CategoryOutlinedIcon fontSize="large" />}
+							selected={selected}
+							setSelected={setSelected}
+						/>
+					</GroupItem>
+					<GroupItem isCollapsed={isCollapsed} title="Receipt">
+						<Item
+							title="Order"
+							to="/order"
+							icon={<ShoppingCartOutlinedIcon fontSize="large" />}
+							selected={selected}
+							setSelected={setSelected}
+						/>
+						<Item
+							title="Import"
+							to="/import"
+							icon={<InboxOutlinedIcon fontSize="large" />}
+							selected={selected}
+							setSelected={setSelected}
+						/>
+						<Item
+							title="Export"
+							to="/export"
+							icon={<ImportExportOutlinedIcon fontSize="large" />}
+							selected={selected}
+							setSelected={setSelected}
+						/>
+					</GroupItem>
+					<GroupItem isCollapsed={isCollapsed} title="Statistic">
+						<Item
+							title="Charts"
+							to="/charts"
+							icon={<QueryStatsIcon fontSize="large" />}
+							selected={selected}
+							setSelected={setSelected}
+						/>
+					</GroupItem>
 				</Menu>
 			</ProSidebar>
 		</Box>
