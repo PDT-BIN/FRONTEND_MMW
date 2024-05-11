@@ -2,16 +2,15 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useTheme, Divider } from "@mui/material";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
-import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
-import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
+import Diversity2OutlinedIcon from "@mui/icons-material/Diversity2Outlined";
+import HandshakeOutlinedIcon from "@mui/icons-material/HandshakeOutlined";
 import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import ImportExportOutlinedIcon from "@mui/icons-material/ImportExportOutlined";
-import QueryStatsIcon from "@mui/icons-material/QueryStats";
-import Divider from "@mui/material/Divider";
+import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
+import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
+import BookmarkRemoveOutlinedIcon from "@mui/icons-material/BookmarkRemoveOutlined";
 import { tokens } from "../../theme";
 import react from "../../assets/react.svg";
 
@@ -20,19 +19,17 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 	const colors = tokens(theme.palette.mode);
 
 	return (
-		<Box>
-			<MenuItem
-				active={selected === title}
-				style={{ color: colors.grey[100] }}
-				onClick={() => setSelected(title)}
-				icon={icon}
-			>
-				<Typography variant="h5" pl="10px">
-					{title.toUpperCase()}
-				</Typography>
-				<Link to={to} />
-			</MenuItem>
-		</Box>
+		<MenuItem
+			active={selected === title}
+			style={{ color: colors.grey[100] }}
+			onClick={() => setSelected(title)}
+			icon={icon}
+		>
+			<Typography variant="h5" fontStyle="italic">
+				{title}
+			</Typography>
+			<Link to={to} />
+		</MenuItem>
 	);
 };
 
@@ -157,7 +154,14 @@ const Sidebar = () => {
 						<Item
 							title="Employee"
 							to="/employee"
-							icon={<GroupOutlinedIcon fontSize="large" />}
+							icon={<Diversity2OutlinedIcon fontSize="large" />}
+							selected={selected}
+							setSelected={setSelected}
+						/>
+						<Item
+							title="Business Partner"
+							to="/partner"
+							icon={<HandshakeOutlinedIcon fontSize="large" />}
 							selected={selected}
 							setSelected={setSelected}
 						/>
@@ -173,30 +177,25 @@ const Sidebar = () => {
 						<Item
 							title="Order"
 							to="/order"
-							icon={<ShoppingCartOutlinedIcon fontSize="large" />}
+							icon={
+								<BookmarkBorderOutlinedIcon fontSize="large" />
+							}
 							selected={selected}
 							setSelected={setSelected}
 						/>
 						<Item
 							title="Import"
 							to="/import"
-							icon={<InboxOutlinedIcon fontSize="large" />}
+							icon={<BookmarkAddOutlinedIcon fontSize="large" />}
 							selected={selected}
 							setSelected={setSelected}
 						/>
 						<Item
 							title="Export"
 							to="/export"
-							icon={<ImportExportOutlinedIcon fontSize="large" />}
-							selected={selected}
-							setSelected={setSelected}
-						/>
-					</GroupItem>
-					<GroupItem isCollapsed={isCollapsed} title="Statistic">
-						<Item
-							title="Charts"
-							to="/charts"
-							icon={<QueryStatsIcon fontSize="large" />}
+							icon={
+								<BookmarkRemoveOutlinedIcon fontSize="large" />
+							}
 							selected={selected}
 							setSelected={setSelected}
 						/>
