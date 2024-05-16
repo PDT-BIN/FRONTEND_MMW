@@ -13,6 +13,11 @@ body,
 	position: relative;
 }
 
+.content {
+	min-width: 80%;
+	flex: 1;
+}
+
 ::-webkit-scrollbar {
 	width: 10px;
 }
