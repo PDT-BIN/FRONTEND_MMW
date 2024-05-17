@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { MenuItem } from "@mui/material";
-import TextField from "./customs/TextField";
-import { AddressUtil } from "../utils";
+import TextField from "./TextField";
+import { AddressUtil } from "../../utils";
 
 const URL_PROVINCE = "https://vapi.vnappmob.com/api/province/";
 const URL_DISTRICT = "https://vapi.vnappmob.com/api/province/district/";

@@ -3,6 +3,7 @@ import { Formik } from "formik";
 import { Box, Typography } from "@mui/material";
 import TextField from "../../components/customs/TextField";
 import Button from "../../components/customs/Button";
+import PasswordField from "../../components/customs/PasswordField";
 
 const validationSchema = yup.object({
 	username: yup.string().required("Username is required!"),
@@ -83,15 +84,14 @@ const Login = () => {
 								error={!!touched.username && !!errors.username}
 								helperText={touched.username && errors.username}
 							/>
-							<TextField
+							<PasswordField
 								name="password"
 								label="PASSWORD"
 								color="secondary"
 								style={{ width: "80%" }}
-								type="password"
 								value={values.password}
-								onBlur={handleBlur}
-								onChange={handleChange}
+								handleBlur={handleBlur}
+								handleChange={handleChange}
 								error={!!touched.password && !!errors.password}
 								helperText={touched.password && errors.password}
 							/>

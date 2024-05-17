@@ -19,7 +19,7 @@ import {
 	ProvinceField,
 	DistrictField,
 	WardField,
-} from "../../components/AddressField";
+} from "../../components/customs/AddressField";
 import Dialog from "../../components/customs/Dialog";
 import { AddressUtil } from "../../utils";
 import { PHONE_REGEX, GENDERS, ROLES } from "./constants";
