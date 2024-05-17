@@ -1,18 +1,10 @@
-import moment from "moment";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useEffect, useRef } from "react";
-import {
-	Box,
-	Checkbox,
-	Divider,
-	FormControlLabel,
-	MenuItem,
-} from "@mui/material";
+import { Box, MenuItem } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Button from "../../components/customs/Button";
 import TextField from "../../components/customs/TextField";
 import {
@@ -22,38 +14,33 @@ import {
 } from "../../components/customs/AddressField";
 import Dialog from "../../components/customs/Dialog";
 import { AddressUtil } from "../../utils";
-import { PHONE_REGEX, GENDERS, ROLES } from "../constants";
+import { GENDERS } from "../constants";
 
 const initialValues = {
-	first_name: "",
-	last_name: "",
+	name: "",
 	gender: "",
-	birthdate: null,
 	ward: "",
 	district: "",
 	province: "",
 	email: "",
-	phone: "",
-	is_superuser: false,
-	is_active: false,
+	company: "",
+	taxcode: "",
 };
 
 const validationSchema = yup.object({
-	last_name: yup.string().trim().required("Field is required!"),
-	first_name: yup.string().trim().required("Field is required!"),
+	name: yup.string().trim().required("Field is required!"),
 	email: yup
 		.string()
 		.trim("Field expects an email address!")
 		.email("Field is not valid!")
 		.required("Field is required!")
 		.strict(true),
-	phone: yup
-		.string()
-		.trim("Field expects a phone number!")
-		.matches(PHONE_REGEX, "Field is not valid!")
-		.required("Field is required!")
-		.strict(true),
 	province: yup.string().required("Field is required!"),
+	taxcode: yup
+		.string()
+		.trim("Field expects a taxcode!")
+		.matches(/^\d{10}$/, "Taxcode must have the lenght of 10!")
+		.strict(true),
 });
 
 function DataDialog({
@@ -73,7 +60,6 @@ function DataDialog({
 			...convertedValues,
 			...data,
 			...AddressUtil.analyze(address),
-			birthdate: moment(birthdate, "DD/MM/YYYY"),
 		};
 	}
 	// CONTROL REF VALUES.
@@ -110,38 +96,15 @@ function DataDialog({
 									},
 								}}
 							>
-								{/* PERSONAL INFORMATION */}
 								<TextField
-									name="last_name"
-									label="LAST NAME"
+									name="name"
+									label="FULL NAME"
 									type="text"
-									value={values.last_name}
+									value={values.name}
 									onBlur={handleBlur}
 									onChange={handleChange}
-									error={
-										!!touched.last_name &&
-										!!errors.last_name
-									}
-									helperText={
-										touched.last_name && errors.last_name
-									}
-									sx={{ gridColumn: "span 2" }}
-									fullWidth
-								/>
-								<TextField
-									name="first_name"
-									label="FIRST NAME"
-									type="text"
-									value={values.first_name}
-									onBlur={handleBlur}
-									onChange={handleChange}
-									error={
-										!!touched.first_name &&
-										!!errors.first_name
-									}
-									helperText={
-										touched.first_name && errors.first_name
-									}
+									error={!!touched.name && !!errors.name}
+									helperText={touched.name && errors.name}
 									sx={{ gridColumn: "span 2" }}
 									fullWidth
 								/>
@@ -171,16 +134,6 @@ function DataDialog({
 										</MenuItem>
 									))}
 								</TextField>
-								<DatePicker
-									name="birthdate"
-									label="BIRTHDATE"
-									format="DD/MM/YYYY"
-									value={values.birthdate}
-									onChange={(value) =>
-										(values.birthdate = value)
-									}
-									sx={{ gridColumn: "span 2" }}
-								/>
 								<TextField
 									name="email"
 									label="EMAIL"
@@ -194,14 +147,18 @@ function DataDialog({
 									fullWidth
 								/>
 								<TextField
-									name="phone"
-									label="PHONE NUMBER"
+									name="taxcode"
+									label="TAXCODE"
 									type="text"
-									value={values.phone}
+									value={values.taxcode}
 									onBlur={handleBlur}
 									onChange={handleChange}
-									error={!!touched.phone && !!errors.phone}
-									helperText={touched.phone && errors.phone}
+									error={
+										!!touched.taxcode && !!errors.taxcode
+									}
+									helperText={
+										touched.taxcode && errors.taxcode
+									}
 									sx={{ gridColumn: "span 2" }}
 									fullWidth
 								/>
@@ -279,51 +236,21 @@ function DataDialog({
 										select
 									/>
 								</Box>
-								{/* ACCOUNT INFORMATION */}
-								<Divider sx={{ gridColumn: "span 4" }} />
 								<TextField
-									name="is_superuser"
-									label="ROLE"
+									name="company"
+									label="COMPANY"
 									type="text"
-									value={values.is_superuser}
+									value={values.company}
 									onBlur={handleBlur}
 									onChange={handleChange}
 									error={
-										!!touched.is_superuser &&
-										!!errors.is_superuser
+										!!touched.company && !!errors.company
 									}
 									helperText={
-										touched.is_superuser &&
-										errors.is_superuser
+										touched.company && errors.company
 									}
 									sx={{ gridColumn: "span 2" }}
 									fullWidth
-									select
-								>
-									{ROLES.map((option) => (
-										<MenuItem
-											key={option.value}
-											value={option.value}
-											sx={{
-												padding: "10px",
-												fontStyle: "italic",
-											}}
-										>
-											{option.label}
-										</MenuItem>
-									))}
-								</TextField>
-								<FormControlLabel
-									label="ACTIVE"
-									control={
-										<Checkbox
-											name="is_active"
-											checked={values.is_active}
-											onBlur={handleBlur}
-											onChange={handleChange}
-											color="success"
-										/>
-									}
 								/>
 							</Box>
 
