@@ -24,7 +24,7 @@ const Login = () => {
 			justifyContent="center"
 			alignItems="center"
 			sx={{
-				backgroundImage: "url(src/assets/bg_login.png)",
+				backgroundImage: "url(src/assets/bg_login.jpg)",
 				backgroundSize: "cover",
 				backgroundPosition: "center",
 			}}
@@ -40,12 +40,7 @@ const Login = () => {
 				borderRadius="10px"
 				sx={{ backdropFilter: "blur(20px)" }}
 			>
-				<Typography
-					variant="h2"
-					fontWeight="bold"
-					color="secondary"
-					letterSpacing={3}
-				>
+				<Typography variant="h2" fontWeight="bold" letterSpacing={3}>
 					ADMINISTRATOR
 				</Typography>
 				<Formik

@@ -27,13 +27,13 @@ function App() {
 						<main className="content">
 							<Topbar />
 							<Routes>
-								<Route path="/" element={<ProtectedRoute />}>
-									<Route path="/" element={<Dashboard />} />
-									<Route
-										path="/employee"
-										element={<Employee />}
-									/>
-								</Route>
+								{/* <Route path="/" element={<ProtectedRoute />}> */}
+								<Route path="/" element={<Dashboard />} />
+								<Route
+									path="/employee"
+									element={<Employee />}
+								/>
+								{/* </Route> */}
 							</Routes>
 						</main>
 					</div>
