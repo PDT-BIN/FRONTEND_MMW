@@ -33,3 +33,11 @@ export class AddressUtil {
 		return { province, district, ward };
 	}
 }
+
+export class FilterUtil {
+	static distinct(array) {
+		return Array.from(new Set(array.map((e) => JSON.stringify(e)))).map(
+			(e) => JSON.parse(e)
+		);
+	}
+}

@@ -1,18 +1,17 @@
 import { useRef, useState } from "react";
 import { useTheme } from "@emotion/react";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import MaleIcon from "@mui/icons-material/Male";
-import FemaleIcon from "@mui/icons-material/Female";
 import { DataGrid, GridToolbarContainer } from "@mui/x-data-grid";
+import DataDialog from "./DataDialog";
 import Header from "../../components/Header";
-import { tokens } from "../../theme";
-import { mockDataPartner } from "../../data/mockData";
 import Button from "../../components/customs/Button";
 import ConfirmDialog from "../../components/ConfirmDialog";
-import DataDialog from "./DataDialog";
+import { tokens } from "../../theme";
+import { FilterUtil } from "../../utils";
+import { mockDataProduct } from "../../data/mockData";
 
 const Toolbar = (props) => {
 	const theme = useTheme();
@@ -44,51 +43,48 @@ const Toolbar = (props) => {
 	);
 };
 
-const Partner = () => {
+const Product = () => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	// DATAGRID SECTION.
 	const selectedRow = useRef({});
-	const [rows, setRows] = useState(mockDataPartner);
+	const [rows, setRows] = useState(mockDataProduct);
 	const columns = [
-		{ field: "id", headerName: "ID", flex: 0.5, hideable: false },
+		{ field: "id", headerName: "ID", flex: 1, hideable: false },
 		{
 			field: "name",
-			headerName: "FULL NAME",
+			headerName: "NAME",
 			flex: 1,
 			hideable: false,
 		},
 		{
-			field: "gender",
-			headerName: "GENDER",
-			flex: 0.5,
+			field: "category",
+			headerName: "CATEGORY",
+			flex: 1,
+			valueGetter: (value) => value?.name || "",
+		},
+		{
+			field: "inventory",
+			headerName: "INVENTORY",
+			type: "number",
+			flex: 1,
 			display: "flex",
-			renderCell: ({ value }) =>
-				value ? (
-					<MaleIcon fontSize="large" />
-				) : (
-					<FemaleIcon fontSize="large" />
-				),
-		},
-		{ field: "email", headerName: "EMAIL", flex: 1, sortable: false },
-		{
-			field: "address",
-			headerName: "ADDRESS",
-			flex: 1.25,
-			sortable: false,
-			valueGetter: (value) => value.replace(/(\d+~)/g, ""),
+			renderCell: ({ row: { inventory, unit } }) => {
+				return (
+					<Box display="flex" gap="5px">
+						<Typography>{inventory}</Typography>
+						<Typography fontStyle="italic">
+							({unit.toUpperCase()})
+						</Typography>
+					</Box>
+				);
+			},
 		},
 		{
-			field: "company",
-			headerName: "COMPANY",
-			flex: 0.75,
-			valueGetter: (value) => (Boolean(value) ? value : "Khách hàng"),
-		},
-		{
-			field: "taxcode",
-			headerName: "TAXCODE",
-			type: "boolean",
-			flex: 0.75,
+			field: "price",
+			headerName: "PRICE (VNĐ)",
+			type: "number",
+			flex: 1,
 		},
 	];
 	// DIALOG SECTION.
@@ -125,33 +121,25 @@ const Partner = () => {
 		setOpenDelete(false);
 	};
 
-	const handleModifySubmit = (
-		{ ward, district, province, ...contentValues },
-		{ setSubmitting }
-	) => {
-		contentValues["address"] = AddressUtil.combine(
-			ward,
-			district,
-			province
-		);
+	const handleModifySubmit = (contentValues, { setSubmitting }) => {
 		console.log(contentValues);
 		if (!Boolean(contentValues.id)) {
-			// CALL API CREATE BUSINESS PARTNER.
+			// CALL API CREATE PRODUCT.
 		} else {
-			// CALL API UPDATE BUSINESS PARTNER.
+			// CALL API UPDATE PRODUCT.
 		}
 		setSubmitting(false);
 		closeModifyDialog();
 	};
 
 	const handleDeleteSubmit = () => {
-		// CALL API DELETE BUSINESS PARTNER.
+		// CALL API DELETE PRODUCT.
 		closeDeleteDialog();
 	};
 
 	return (
 		<Box m="0 20px">
-			<Header title="BUSINESS PARTNER" subtitle="Manage partners" />
+			<Header title="PRODUCT" subtitle="Manage products" />
 			<Box
 				mt="25px"
 				width="100%"
@@ -231,20 +219,29 @@ const Partner = () => {
 				handleFormSubmit={handleModifySubmit}
 				title={
 					!Boolean(selectedRow.current.id)
-						? "ADD NEW BUSINESS PARTNER"
-						: `EDIT BUSINESS PARTNER #${selectedRow.current.id}`
+						? "ADD NEW PRODUCT"
+						: `EDIT PRODUCT #${selectedRow.current.id}`
 				}
-				data={selectedRow.current}
+				data={{
+					categories: FilterUtil.distinct(
+						rows
+							.map((e) => e.category)
+							.filter((e) => e !== null)
+							.sort((a, b) => a.name.localeCompare(b.name))
+					),
+					units: FilterUtil.distinct(rows.map((e) => e.unit).sort()),
+					selectedRow: selectedRow.current,
+				}}
 			/>
 			<ConfirmDialog
 				isOpened={openDelete}
 				handleClose={closeDeleteDialog}
 				handleFormSubmit={handleDeleteSubmit}
 				title="DELETE A RECORD"
-				content={`ARE YOU SURE TO DELETE THE BUSINESS PARTER WITH ID #${selectedRow.current.id} ?`}
+				content={`ARE YOU SURE TO DELETE THE PRODUCT WITH ID #${selectedRow.current.id} ?`}
 			/>
 		</Box>
 	);
 };
 
-export default Partner;
+export default Product;

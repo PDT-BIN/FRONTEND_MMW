@@ -8,6 +8,7 @@ import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
 import Employee from "./scenes/employee/index";
 import Partner from "./scenes/partner";
+import Product from "./scenes/product";
 
 function App() {
 	const [theme, colorMode] = useMode();
@@ -35,6 +36,7 @@ function App() {
 									element={<Employee />}
 								/>
 								<Route path="/partner" element={<Partner />} />
+								<Route path="/product" element={<Product />} />
 								{/* </Route> */}
 							</Routes>
 						</main>
