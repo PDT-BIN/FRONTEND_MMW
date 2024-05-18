@@ -11,14 +11,14 @@ const PasswordField = (props) => {
 		<TextField
 			name={props.name}
 			label={props.label}
-			color={props.color}
-			style={props.style}
 			type={showPassword ? "text" : "password"}
 			value={props.value}
 			onBlur={props.handleBlur}
 			onChange={props.handleChange}
 			error={props.error}
 			helperText={props.helperText}
+			color={props.color}
+			style={props.style}
 			InputProps={{
 				endAdornment: (
 					<InputAdornment position="end">
