@@ -1,3 +1,9 @@
+export const mockDataDepot = [
+	{ id: 1, name: "Depot X", address: "TP. Hồ Chí Minh" },
+	{ id: 2, name: "Depot Y", address: "TP. Hồ Chí Minh" },
+	{ id: 3, name: "Depot Z", address: "TP. Hồ Chí Minh" },
+];
+
 export const mockDataEmployee = [
 	{
 		id: 1,
@@ -294,5 +300,78 @@ export const mockDataProduct = [
 		inventory: 80,
 		category: { id: 7, name: "Beverage" },
 		price: "1000",
+	},
+];
+
+export const mockDataOrder = [
+	{
+		id: 1,
+		partner: { id: 1, name: "Jon Snow" },
+		depot: { id: 2, name: "Depot Y" },
+		created_date: "06/08/2023",
+		total: 6446.62,
+	},
+	{
+		id: 2,
+		partner: { id: 2, name: "Cersei Lannister" },
+		depot: { id: 3, name: "Depot Z" },
+		created_date: "08/03/2023",
+		total: 2880.13,
+	},
+	{
+		id: 3,
+		partner: { id: 1, name: "Jon Snow" },
+		depot: { id: 2, name: "Depot Y" },
+		created_date: "10/02/2021",
+		total: 9348.55,
+	},
+	{
+		id: 4,
+		partner: { id: 2, name: "Cersei Lannister" },
+		depot: { id: 2, name: "Depot Y" },
+		created_date: "15/05/2021",
+		total: 1465.22,
+	},
+	{
+		id: 5,
+		partner: { id: 3, name: "Anya Stark" },
+		depot: { id: 1, name: "Depot X" },
+		created_date: "29/09/2020",
+		total: 3864.11,
+	},
+	{
+		id: 6,
+		partner: { id: 1, name: "Jon Snow" },
+		depot: { id: 1, name: "Depot X" },
+		created_date: "07/01/2020",
+		total: 7390.86,
+	},
+	{
+		id: 7,
+		partner: { id: 1, name: "Jon Snow" },
+		depot: { id: 1, name: "Depot X" },
+		created_date: "08/04/2021",
+		total: 9342.8,
+	},
+	{
+		id: 8,
+		partner: { id: 3, name: "Anya Stark" },
+		depot: { id: 2, name: "Depot Y" },
+		created_date: "13/09/2023",
+		total: 4154.25,
+	},
+	{
+		id: 9,
+		partner: { id: 3, name: "Anya Stark" },
+		depot: { id: 2, name: "Depot Y" },
+		created_date: "05/04/2023",
+		total: 6670.4,
+	},
+	{
+		id: 10,
+		partner: { id: 1, name: "Jon Snow" },
+		depot: { id: 3, name: "Depot Z" },
+		created_date: "06/03/2023",
+		total: 2044.37,
 	},
 ];

@@ -7,6 +7,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import Button from "../../components/customs/Button";
 import TextField from "../../components/customs/TextField";
 import Dialog from "../../components/customs/Dialog";
+import AutoCompleteField from "../../components/customs/AutoCompleteField";
 
 const initialValues = {
 	name: "",
@@ -18,10 +19,13 @@ const initialValues = {
 
 const validationSchema = yup.object({
 	name: yup.string().trim().required("Field is required!"),
-	category: yup.mixed().when([], {
-		is: (value) => typeof value === "string",
-		then: yup.string().trim("Field is not valid!").strict(true),
-	}),
+	category: yup
+		.mixed()
+		.nullable()
+		.when([], {
+			is: (value) => typeof value === "string",
+			then: yup.string().trim("Field is not valid!").strict(true),
+		}),
 	unit: yup
 		.string()
 		.trim("Field is not valid!")
@@ -83,61 +87,38 @@ function DataDialog({
 									sx={{ gridColumn: "span 2" }}
 									fullWidth
 								/>
-								<Autocomplete
-									name="category-field"
-									freeSolo
+								<AutoCompleteField
+									name="category"
 									options={categories}
-									getOptionLabel={(option) =>
-										option.name || option
-									}
-									groupBy={(option) => option.name[0]}
-									renderOption={(
-										{ key, ...props },
-										option
-									) => (
-										<li
-											key={key}
-											{...props}
-											style={{
-												padding: "15px",
-												fontStyle: "italic",
-											}}
-										>
-											{option.name}
-										</li>
-									)}
-									value={values.category?.name || null}
+									value={values.category}
 									onBlur={handleBlur}
-									onChange={(e, value) => {
+									style={{ gridColumn: "span 2" }}
+									error={
+										!!touched.category && !!errors.category
+									}
+									helperText={
+										touched.category && errors.category
+									}
+									setValue={(value) => {
 										values.category = value;
-										if (values.category === null)
-											values.category = "";
 									}}
-									onInputChange={(event) => {
-										if (event === null) return;
-										values.category = event.target.value;
-									}}
-									sx={{ gridColumn: "span 2" }}
-									renderInput={(params) => (
-										<TextField
-											{...params}
-											name="category"
-											label="CATEGORY"
-											error={
-												!!touched.category &&
-												!!errors.category
-											}
-											helperText={
-												touched.category &&
-												errors.category
-											}
-										/>
-									)}
 								/>
 								<Autocomplete
 									name="unit-field"
 									freeSolo
 									options={units}
+									value={values.unit || null}
+									onBlur={handleBlur}
+									onChange={(_, value) => {
+										values.unit = value;
+										if (values.unit === null)
+											values.unit = "";
+									}}
+									onInputChange={(event) => {
+										if (event === null) return;
+										values.unit = event.target.value;
+									}}
+									sx={{ gridColumn: "span 2" }}
 									renderOption={(
 										{ key, ...props },
 										option
@@ -153,18 +134,6 @@ function DataDialog({
 											{option}
 										</li>
 									)}
-									value={values.unit || null}
-									onBlur={handleBlur}
-									onChange={(e, value) => {
-										values.unit = value;
-										if (values.unit === null)
-											values.unit = "";
-									}}
-									onInputChange={(event) => {
-										if (event === null) return;
-										values.unit = event.target.value;
-									}}
-									sx={{ gridColumn: "span 2" }}
 									renderInput={(params) => (
 										<TextField
 											{...params}
