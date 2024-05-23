@@ -50,7 +50,10 @@ const Order = () => {
 	// DETAIL SECTION.
 	const [details, setDetails] = useState([]);
 	useEffect(() => {
-		if (!Boolean(selectedRow.id)) setDetails([]);
+		if (!Boolean(selectedRow.id)) {
+			setDetails([]);
+			return;
+		}
 		// CALL API TO GET FORM DETAIL.
 		setDetails(
 			mockDataOrderDetail.filter((e) => e.order_id === selectedRow.id)

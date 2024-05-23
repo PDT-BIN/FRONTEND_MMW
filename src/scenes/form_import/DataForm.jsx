@@ -8,18 +8,16 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import Button from "../../components/customs/Button";
 import TextField from "../../components/customs/TextField";
 import { DateTimeUtil } from "../../utils";
-import { mockDataDepot, mockDataOrder } from "../../data/mockData";
+import { mockDataOrder } from "../../data/mockData";
 import AutoCompleteField from "../../components/customs/AutoCompleteField";
 
 const initialValues = {
 	created_date: DateTimeUtil.format(Date.now()),
 	order: null,
-	depot: null,
 };
 
 const validationSchema = yup.object({
 	order: yup.mixed().required("Field is required!"),
-	depot: yup.mixed().required("Field is required!"),
 });
 
 function DataForm({
@@ -27,22 +25,12 @@ function DataForm({
 	handleFormCancel,
 	form,
 	total,
+	selectedOrder,
 	setSelectedOrder,
 }) {
-	// CONTROL INITIAL VALUES.
-	let convertedValues = { ...initialValues };
-	if (Boolean(form.id)) {
-		convertedValues = { ...convertedValues, ...form };
-		convertedValues.order.name = `${form.order.id} - ${form.order.partner.name}`;
-	}
-
-	const [depots, setDepots] = useState([]);
 	const [orders, setOrders] = useState([]);
 	useEffect(() => {
-		// CALL API GET DEPOT & PARTNER DATA.
-		setDepots(
-			[...mockDataDepot].sort((a, b) => a.name.localeCompare(b.name))
-		);
+		// CALL API GET ORDER DATA.
 		setOrders(
 			[...mockDataOrder].map((e) => {
 				return {
@@ -52,6 +40,16 @@ function DataForm({
 			})
 		);
 	}, []);
+
+	// CONTROL INITIAL VALUES.
+	let convertedValues = {
+		...initialValues,
+		order: orders.filter((e) => e.id === selectedOrder)?.[0],
+	};
+	if (Boolean(form.id)) {
+		convertedValues = { ...convertedValues, ...form };
+		convertedValues.order.name = `${form.order.id} - ${form.order.partner.name}`;
+	}
 
 	return (
 		<Formik
@@ -129,18 +127,7 @@ function DataForm({
 									freeSolo={false}
 									onInputChange={null}
 									groupBy={null}
-								/>
-								<AutoCompleteField
-									name="depot"
-									options={depots}
-									value={values.depot}
-									onBlur={handleBlur}
-									style={{ gridColumn: "span 4" }}
-									error={!!touched.depot && !!errors.depot}
-									helperText={touched.depot && errors.depot}
-									setValue={(value) => (values.depot = value)}
-									freeSolo={false}
-									onInputChange={null}
+									disabled={Boolean(form.id)}
 								/>
 							</Box>
 

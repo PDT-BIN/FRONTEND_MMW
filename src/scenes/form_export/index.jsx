@@ -50,7 +50,10 @@ const Export = () => {
 	// DETAIL SECTION.
 	const [details, setDetails] = useState([]);
 	useEffect(() => {
-		if (!Boolean(selectedRow.id)) setDetails([]);
+		if (!Boolean(selectedRow.id)) {
+			setDetails([]);
+			return;
+		}
 		// CALL API TO GET FORM DETAIL.
 		setDetails(
 			mockDataExportDetail.filter((e) => e.export_id === selectedRow.id)

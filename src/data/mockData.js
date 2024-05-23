@@ -705,7 +705,6 @@ export const mockDataImport = [
 			created_date: "06/08/2023",
 			total: 6446.62,
 		},
-		depot: { id: 2, name: "Depot Y" },
 		created_date: "06/08/2023",
 		total: 6446.62,
 	},

@@ -41,10 +41,14 @@ const Import = () => {
 	// FORM SECTION.
 	const [selectedRow, setSelectedRow] = useState({});
 	// DETAIL SECTION.
-	const [selectedOrder, setSelectedOrder] = useState({});
+	const [selectedOrder, setSelectedOrder] = useState(null);
 	const [details, setDetails] = useState([]);
 	useEffect(() => {
-		if (!Boolean(selectedRow.id)) setDetails([]);
+		if (!Boolean(selectedRow.id)) {
+			setSelectedOrder(null);
+			setDetails([]);
+			return;
+		}
 		setSelectedOrder(selectedRow.order?.id);
 		// CALL API TO GET FORM DETAIL.
 		setDetails(
@@ -167,6 +171,7 @@ const Import = () => {
 						handleFormCancel={handleFormCancel}
 						form={selectedRow}
 						total={total}
+						selectedOrder={selectedOrder}
 						setSelectedOrder={setSelectedOrder}
 					/>
 				</Box>
