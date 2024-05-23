@@ -11,8 +11,8 @@ import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import BookmarkRemoveOutlinedIcon from "@mui/icons-material/BookmarkRemoveOutlined";
+import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import { tokens } from "../../theme";
-import react from "../../assets/react.svg";
 import { URL_TO_TAB } from "../constants";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -61,7 +61,7 @@ const GroupItem = ({ isCollapsed, title, children }) => {
 	);
 };
 
-const Sidebar = () => {
+export default function Sidebar() {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 
@@ -115,18 +115,15 @@ const Sidebar = () => {
 								justifyContent="center"
 								alignItems="center"
 							>
-								<img
-									alt="profile-user"
-									width="100px"
-									height="100px"
-									src={react}
-									style={{
-										cursor: "pointer",
-										borderRadius: "50%",
+								<AdminPanelSettingsOutlinedIcon
+									sx={{
+										width: "128px",
+										height: "128px",
+										color: colors.greenAccent[400],
 									}}
 								/>
 							</Box>
-							{/* NAME & TITLE */}
+							{/* NAME & ROLE */}
 							<Box textAlign="center">
 								<Typography
 									variant="h3"
@@ -207,6 +204,4 @@ const Sidebar = () => {
 			</ProSidebar>
 		</Box>
 	);
-};
-
-export default Sidebar;
+}

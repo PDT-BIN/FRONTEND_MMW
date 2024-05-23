@@ -1,9 +1,11 @@
 import * as yup from "yup";
 import { Formik } from "formik";
-import { Box, Typography } from "@mui/material";
-import TextField from "../../components/customs/TextField";
+import { Box, Typography, colors } from "@mui/material";
 import Button from "../../components/customs/Button";
+import TextField from "../../components/customs/TextField";
 import PasswordField from "../../components/customs/PasswordField";
+import { useTheme } from "@emotion/react";
+import { tokens } from "../../theme";
 
 const validationSchema = yup.object({
 	username: yup.string().required("Username is required!"),
@@ -15,7 +17,10 @@ const handleFormSubmit = (values, { setSubmitting }) => {
 	setSubmitting(false);
 };
 
-const Login = () => {
+export default function Login() {
+	const theme = useTheme();
+	const colors = tokens(theme.palette.mode);
+
 	return (
 		<Box
 			width="100%"
@@ -24,21 +29,21 @@ const Login = () => {
 			justifyContent="center"
 			alignItems="center"
 			sx={{
-				backgroundImage: "url(src/assets/bg_login.jpg)",
-				backgroundSize: "cover",
-				backgroundPosition: "center",
+				backgroundColor: "#8BC6EC",
+				backgroundImage:
+					"linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%)",
 			}}
 		>
 			<Box
 				width="35%"
-				height="75%"
+				height="70%"
 				display="flex"
 				flexDirection="column"
 				justifyContent="center"
 				alignItems="center"
 				gap="50px"
+				bgcolor={colors.primary[400]}
 				borderRadius="10px"
-				sx={{ backdropFilter: "blur(20px)" }}
 			>
 				<Typography variant="h2" fontWeight="bold" letterSpacing={3}>
 					ADMINISTRATOR
@@ -72,7 +77,6 @@ const Login = () => {
 								label="USERNAME"
 								color="secondary"
 								style={{ width: "80%" }}
-								type="text"
 								value={values.username}
 								onBlur={handleBlur}
 								onChange={handleChange}
@@ -113,6 +117,4 @@ const Login = () => {
 			</Box>
 		</Box>
 	);
-};
-
-export default Login;
+}

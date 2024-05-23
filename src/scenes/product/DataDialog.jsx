@@ -33,11 +33,10 @@ const validationSchema = yup.object({
 		.strict(true),
 });
 
-function DataDialog({
+export default function DataDialog({
 	isOpened,
 	handleClose,
 	handleFormSubmit,
-	title,
 	data: { categories, units, selectedRow },
 }) {
 	// CONTROL INITIAL VALUES.
@@ -47,7 +46,11 @@ function DataDialog({
 	}
 
 	return (
-		<Dialog isOpened={isOpened} handleClose={handleClose} title={title}>
+		<Dialog
+			isOpened={isOpened}
+			handleClose={handleClose}
+			title="MODIFY PRODUCT"
+		>
 			<Formik
 				initialValues={convertedValues}
 				validationSchema={validationSchema}
@@ -213,5 +216,3 @@ function DataDialog({
 		</Dialog>
 	);
 }
-
-export default DataDialog;

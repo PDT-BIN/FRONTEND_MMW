@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useTheme } from "@emotion/react";
 import { Box } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
@@ -8,11 +8,11 @@ import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import { DataGrid, GridToolbarContainer } from "@mui/x-data-grid";
 import Header from "../../components/Header";
-import { tokens } from "../../theme";
-import { mockDataPartner } from "../../data/mockData";
+import DataDialog from "./DataDialog";
 import Button from "../../components/customs/Button";
 import ConfirmDialog from "../../components/ConfirmDialog";
-import DataDialog from "./DataDialog";
+import { tokens } from "../../theme";
+import { mockDataPartner } from "../../data/mockData";
 
 const Toolbar = (props) => {
 	const theme = useTheme();
@@ -29,14 +29,14 @@ const Toolbar = (props) => {
 			<Button
 				label="EDIT RECORD"
 				onClick={props.openModifyDialog}
-				disabled={!Boolean(props.selectedRow.current.id)}
+				disabled={!props.openForCreating}
 				startIcon={<EditIcon />}
 				style={{ padding: "10px", color: colors.greenAccent[500] }}
 			/>
 			<Button
 				label="DELETE RECORD"
 				onClick={props.openDeleteDialog}
-				disabled={!Boolean(props.selectedRow.current.id)}
+				disabled={!props.openForCreating}
 				startIcon={<DeleteIcon />}
 				style={{ padding: "10px", color: colors.greenAccent[500] }}
 			/>
@@ -44,7 +44,7 @@ const Toolbar = (props) => {
 	);
 };
 
-const Partner = () => {
+export default function Partner() {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	// DATAGRID SECTION.
@@ -93,6 +93,10 @@ const Partner = () => {
 		},
 	];
 	// DIALOG SECTION.
+	const openForCreating = useMemo(
+		() => Boolean(selectedRow.current.id),
+		[selectedRow.current]
+	);
 	const [openModify, setOpenModify] = useState(false);
 	const [openDelete, setOpenDelete] = useState(false);
 
@@ -109,20 +113,11 @@ const Partner = () => {
 		setOpenDelete(true);
 	};
 
-	const cancelSelect = () => {
-		selectedRow.current = {};
-		document
-			.querySelector(".Mui-selected")
-			?.classList.remove("Mui-selected");
-	};
-
 	const closeModifyDialog = () => {
-		cancelSelect();
 		setOpenModify(false);
 	};
 
 	const closeDeleteDialog = () => {
-		cancelSelect();
 		setOpenDelete(false);
 	};
 
@@ -136,7 +131,7 @@ const Partner = () => {
 			province
 		);
 		console.log(contentValues);
-		if (!Boolean(contentValues.id)) {
+		if (!openForCreating) {
 			// CALL API CREATE BUSINESS PARTNER.
 		} else {
 			// CALL API UPDATE BUSINESS PARTNER.
@@ -213,7 +208,7 @@ const Partner = () => {
 							openCreateDialog,
 							openModifyDialog,
 							openDeleteDialog,
-							selectedRow,
+							openForCreating,
 						},
 					}}
 					rowSelectionModel={selectedRowModel}
@@ -235,22 +230,14 @@ const Partner = () => {
 				isOpened={openModify}
 				handleClose={closeModifyDialog}
 				handleFormSubmit={handleModifySubmit}
-				title={
-					!Boolean(selectedRow.current.id)
-						? "ADD NEW BUSINESS PARTNER"
-						: `EDIT BUSINESS PARTNER #${selectedRow.current.id}`
-				}
 				data={selectedRow.current}
 			/>
 			<ConfirmDialog
 				isOpened={openDelete}
 				handleClose={closeDeleteDialog}
 				handleFormSubmit={handleDeleteSubmit}
-				title="DELETE A RECORD"
 				content={`ARE YOU SURE TO DELETE THE BUSINESS PARTER WITH ID #${selectedRow.current.id} ?`}
 			/>
 		</Box>
 	);
-};
-
-export default Partner;
+}

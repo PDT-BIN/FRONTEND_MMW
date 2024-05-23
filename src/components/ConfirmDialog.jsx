@@ -15,7 +15,7 @@ function ConfirmDialog(props) {
 		<Dialog
 			isOpened={props.isOpened}
 			handleClose={props.handleClose}
-			title={props.title}
+			title="DELETE A RECORD"
 			content={<DialogDescription content={props.content} />}
 		>
 			<DialogActions sx={{ gap: "10px" }}>

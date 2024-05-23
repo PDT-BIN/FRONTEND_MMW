@@ -1,17 +1,17 @@
-import { ColorModeContext, useMode } from "./theme";
-import { CssBaseline, ThemeProvider } from "@mui/material";
 import { Route, Routes, useLocation } from "react-router-dom";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./scenes/auth/Login";
-import Dashboard from "./scenes/dashboard/index";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
+import Dashboard from "./scenes/dashboard/index";
 import Employee from "./scenes/employee";
 import Partner from "./scenes/partner";
 import Product from "./scenes/product";
 import Order from "./scenes/form_order";
 import Import from "./scenes/form_import";
 import Export from "./scenes/form_export";
+import { ColorModeContext, useMode } from "./theme";
 
 function App() {
 	const [theme, colorMode] = useMode();

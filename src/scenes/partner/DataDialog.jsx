@@ -5,6 +5,7 @@ import { Box, MenuItem } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import Dialog from "../../components/customs/Dialog";
 import Button from "../../components/customs/Button";
 import TextField from "../../components/customs/TextField";
 import {
@@ -12,7 +13,6 @@ import {
 	DistrictField,
 	WardField,
 } from "../../components/customs/AddressField";
-import Dialog from "../../components/customs/Dialog";
 import { AddressUtil } from "../../utils";
 import { GENDERS } from "../constants";
 
@@ -43,11 +43,10 @@ const validationSchema = yup.object({
 		.strict(true),
 });
 
-function DataDialog({
+export default function DataDialog({
 	isOpened,
 	handleClose,
 	handleFormSubmit,
-	title,
 	data: { address, birthdate, ...data },
 }) {
 	// CONTROL ADDRESS DISABILITY.
@@ -69,7 +68,11 @@ function DataDialog({
 	}, [isOpened]);
 
 	return (
-		<Dialog isOpened={isOpened} handleClose={handleClose} title={title}>
+		<Dialog
+			isOpened={isOpened}
+			handleClose={handleClose}
+			title="MODIFY BUSINESS PARTNER"
+		>
 			<Formik
 				initialValues={convertedValues}
 				validationSchema={validationSchema}
@@ -284,5 +287,3 @@ function DataDialog({
 		</Dialog>
 	);
 }
-
-export default DataDialog;

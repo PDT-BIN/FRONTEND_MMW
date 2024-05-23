@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import { DataGrid, GridToolbarContainer } from "@mui/x-data-grid";
 import AddIcon from "@mui/icons-material/Add";
@@ -6,12 +6,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import BlockOutlinedIcon from "@mui/icons-material/BlockOutlined";
-import { tokens } from "../../theme";
-import { AddressUtil, DateTimeUtil } from "../../utils";
+import DataDialog from "./DataDialog";
 import Header from "../../components/Header";
 import Button from "../../components/customs/Button";
 import ConfirmDialog from "../../components/ConfirmDialog";
-import DataDialog from "./DataDialog";
+import { tokens } from "../../theme";
+import { AddressUtil, DateTimeUtil } from "../../utils";
 import { mockDataEmployee } from "../../data/mockData";
 
 const Toolbar = (props) => {
@@ -29,14 +29,14 @@ const Toolbar = (props) => {
 			<Button
 				label="EDIT RECORD"
 				onClick={props.openModifyDialog}
-				disabled={!Boolean(props.selectedRow.current.id)}
+				disabled={!props.openForCreating}
 				startIcon={<EditIcon />}
 				style={{ padding: "10px", color: colors.greenAccent[500] }}
 			/>
 			<Button
 				label="DELETE RECORD"
 				onClick={props.openDeleteDialog}
-				disabled={!Boolean(props.selectedRow.current.id)}
+				disabled={!props.openForCreating}
 				startIcon={<DeleteIcon />}
 				style={{ padding: "10px", color: colors.greenAccent[500] }}
 			/>
@@ -44,7 +44,7 @@ const Toolbar = (props) => {
 	);
 };
 
-const Employee = () => {
+export default function Employee() {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	// DATAGRID SECTION.
@@ -125,6 +125,10 @@ const Employee = () => {
 		},
 	];
 	// DIALOG SECTION.
+	const openForCreating = useMemo(
+		() => Boolean(selectedRow.current.id),
+		[selectedRow.current]
+	);
 	const [openModify, setOpenModify] = useState(false);
 	const [openDelete, setOpenDelete] = useState(false);
 
@@ -141,20 +145,11 @@ const Employee = () => {
 		setOpenDelete(true);
 	};
 
-	const cancelSelect = () => {
-		selectedRow.current = {};
-		document
-			.querySelector(".Mui-selected")
-			?.classList.remove("Mui-selected");
-	};
-
 	const closeModifyDialog = () => {
-		cancelSelect();
 		setOpenModify(false);
 	};
 
 	const closeDeleteDialog = () => {
-		cancelSelect();
 		setOpenDelete(false);
 	};
 
@@ -168,7 +163,7 @@ const Employee = () => {
 			province
 		);
 		console.log(contentValues);
-		if (!Boolean(contentValues.id)) {
+		if (!openForCreating) {
 			// CALL API CREATE EMPLOYEE.
 		} else {
 			// CALL API UPDATE EMPLOYEE.
@@ -245,17 +240,17 @@ const Employee = () => {
 							openCreateDialog,
 							openModifyDialog,
 							openDeleteDialog,
-							selectedRow,
+							openForCreating,
 						},
 					}}
 					rowSelectionModel={selectedRowModel}
-					onRowClick={(params) => (selectedRow.current = params.row)}
 					onRowSelectionModelChange={(params) => {
 						if (selectedRowModel[0] === params[0]) {
 							selectedRow.current = {};
 							setSelectedRowModel([]);
 						} else setSelectedRowModel(params);
 					}}
+					onRowClick={(params) => (selectedRow.current = params.row)}
 					onRowDoubleClick={(params) => {
 						selectedRow.current = params.row;
 						openModifyDialog();
@@ -267,22 +262,14 @@ const Employee = () => {
 				isOpened={openModify}
 				handleClose={closeModifyDialog}
 				handleFormSubmit={handleModifySubmit}
-				title={
-					!Boolean(selectedRow.current.id)
-						? "ADD NEW EMPLOYEE"
-						: `EDIT EMPLOYEE #${selectedRow.current.id}`
-				}
 				data={selectedRow.current}
 			/>
 			<ConfirmDialog
 				isOpened={openDelete}
 				handleClose={closeDeleteDialog}
 				handleFormSubmit={handleDeleteSubmit}
-				title="DELETE A RECORD"
 				content={`ARE YOU SURE TO DELETE THE EMPLOYEE WITH ID #${selectedRow.current.id} ?`}
 			/>
 		</Box>
 	);
-};
-
-export default Employee;
+}

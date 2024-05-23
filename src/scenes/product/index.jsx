@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useTheme } from "@emotion/react";
 import { Box, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
@@ -28,14 +28,14 @@ const Toolbar = (props) => {
 			<Button
 				label="EDIT RECORD"
 				onClick={props.openModifyDialog}
-				disabled={!Boolean(props.selectedRow.current.id)}
+				disabled={!props.openForCreating}
 				startIcon={<EditIcon />}
 				style={{ padding: "10px", color: colors.greenAccent[500] }}
 			/>
 			<Button
 				label="DELETE RECORD"
 				onClick={props.openDeleteDialog}
-				disabled={!Boolean(props.selectedRow.current.id)}
+				disabled={!props.openForCreating}
 				startIcon={<DeleteIcon />}
 				style={{ padding: "10px", color: colors.greenAccent[500] }}
 			/>
@@ -43,7 +43,7 @@ const Toolbar = (props) => {
 	);
 };
 
-const Product = () => {
+export default function Product() {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	// DATAGRID SECTION.
@@ -87,6 +87,10 @@ const Product = () => {
 		},
 	];
 	// DIALOG SECTION.
+	const openForCreating = useMemo(
+		() => Boolean(selectedRow.current.id),
+		[selectedRow.current]
+	);
 	const [openModify, setOpenModify] = useState(false);
 	const [openDelete, setOpenDelete] = useState(false);
 
@@ -113,7 +117,7 @@ const Product = () => {
 
 	const handleModifySubmit = (contentValues, { setSubmitting }) => {
 		console.log(contentValues);
-		if (!Boolean(contentValues.id)) {
+		if (!openForCreating) {
 			// CALL API CREATE PRODUCT.
 		} else {
 			// CALL API UPDATE PRODUCT.
@@ -190,7 +194,7 @@ const Product = () => {
 							openCreateDialog,
 							openModifyDialog,
 							openDeleteDialog,
-							selectedRow,
+							openForCreating,
 						},
 					}}
 					rowSelectionModel={selectedRowModel}
@@ -212,11 +216,6 @@ const Product = () => {
 				isOpened={openModify}
 				handleClose={closeModifyDialog}
 				handleFormSubmit={handleModifySubmit}
-				title={
-					!Boolean(selectedRow.current.id)
-						? "ADD NEW PRODUCT"
-						: `EDIT PRODUCT #${selectedRow.current.id}`
-				}
 				data={{
 					categories: FilterUtil.distinct(
 						rows
@@ -232,11 +231,8 @@ const Product = () => {
 				isOpened={openDelete}
 				handleClose={closeDeleteDialog}
 				handleFormSubmit={handleDeleteSubmit}
-				title="DELETE A RECORD"
 				content={`ARE YOU SURE TO DELETE THE PRODUCT WITH ID #${selectedRow.current.id} ?`}
 			/>
 		</Box>
 	);
-};
-
-export default Product;
+}
