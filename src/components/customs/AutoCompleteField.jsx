@@ -17,7 +17,7 @@ export default function AutoCompleteField({
 			freeSolo
 			name={`${name}-field`}
 			options={options}
-			groupBy={(option) => option.name[0]}
+			groupBy={(option) => option?.name?.[0]}
 			getOptionLabel={(option) => option.name || option}
 			isOptionEqualToValue={(option, value) => value.id === option.id}
 			value={value || null}

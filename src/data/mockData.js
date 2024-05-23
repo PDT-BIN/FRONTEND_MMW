@@ -375,3 +375,126 @@ export const mockDataOrder = [
 		total: 2044.37,
 	},
 ];
+
+export const mockDataOrderDetail = [
+	{
+		order_id: 1,
+		product: { id: 1, name: "Apple", unit: "kg" },
+		quantity: 4,
+		price: 1000,
+	},
+	{
+		order_id: 1,
+		product: { id: 2, name: "Banana", unit: "kg" },
+		quantity: 3,
+		price: 2000,
+	},
+	{
+		order_id: 2,
+		product: { id: 3, name: "Carrot", unit: "kg" },
+		quantity: 2,
+		price: 1000,
+	},
+	{
+		order_id: 2,
+		product: { id: 4, name: "Broccoli", unit: "kg" },
+		quantity: 1,
+		price: 3000,
+	},
+	{
+		order_id: 3,
+		product: { id: 5, name: "Chicken Breast", unit: "kg" },
+		quantity: 6,
+		price: 1000,
+	},
+	{
+		order_id: 3,
+		product: { id: 6, name: "Salmon", unit: "kg" },
+		quantity: 4,
+		price: 1000,
+	},
+	{
+		order_id: 4,
+		product: { id: 7, name: "Rice", unit: "kg" },
+		quantity: 7,
+		price: 1000,
+	},
+	{
+		order_id: 4,
+		product: { id: 8, name: "Milk", unit: "liters" },
+		quantity: 5,
+		price: 1000,
+	},
+	{
+		order_id: 5,
+		product: { id: 9, name: "Cheese", unit: "kg" },
+		quantity: 8,
+		price: 1000,
+	},
+	{
+		order_id: 5,
+		product: { id: 10, name: "Orange Juice", unit: "liters" },
+		quantity: 3,
+		price: 1000,
+	},
+	{
+		order_id: 6,
+		product: { id: 1, name: "Apple", unit: "kg" },
+		quantity: 10,
+		price: 1000,
+	},
+	{
+		order_id: 6,
+		product: { id: 2, name: "Banana", unit: "kg" },
+		quantity: 15,
+		price: 2000,
+	},
+	{
+		order_id: 7,
+		product: { id: 3, name: "Carrot", unit: "kg" },
+		quantity: 12,
+		price: 1000,
+	},
+	{
+		order_id: 7,
+		product: { id: 4, name: "Broccoli", unit: "kg" },
+		quantity: 9,
+		price: 3000,
+	},
+	{
+		order_id: 8,
+		product: { id: 5, name: "Chicken Breast", unit: "kg" },
+		quantity: 5,
+		price: 1000,
+	},
+	{
+		order_id: 8,
+		product: { id: 6, name: "Salmon", unit: "kg" },
+		quantity: 7,
+		price: 1000,
+	},
+	{
+		order_id: 9,
+		product: { id: 7, name: "Rice", unit: "kg" },
+		quantity: 11,
+		price: 1000,
+	},
+	{
+		order_id: 9,
+		product: { id: 8, name: "Milk", unit: "liters" },
+		quantity: 14,
+		price: 1000,
+	},
+	{
+		order_id: 10,
+		product: { id: 9, name: "Cheese", unit: "kg" },
+		quantity: 6,
+		price: 1000,
+	},
+	{
+		order_id: 10,
+		product: { id: 10, name: "Orange Juice", unit: "liters" },
+		quantity: 8,
+		price: 1000,
+	},
+];

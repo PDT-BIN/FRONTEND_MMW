@@ -49,6 +49,7 @@ const Product = () => {
 	// DATAGRID SECTION.
 	const selectedRow = useRef({});
 	const [rows, setRows] = useState(mockDataProduct);
+	const [selectedRowModel, setSelectedRowModel] = useState([]);
 	const columns = [
 		{ field: "id", headerName: "ID", flex: 1, hideable: false },
 		{
@@ -73,9 +74,7 @@ const Product = () => {
 				return (
 					<Box display="flex" gap="5px">
 						<Typography>{inventory}</Typography>
-						<Typography fontStyle="italic">
-							({unit.toUpperCase()})
-						</Typography>
+						<Typography fontStyle="italic">({unit})</Typography>
 					</Box>
 				);
 			},
@@ -104,20 +103,11 @@ const Product = () => {
 		setOpenDelete(true);
 	};
 
-	const cancelSelect = () => {
-		selectedRow.current = {};
-		document
-			.querySelector(".Mui-selected")
-			?.classList.remove("Mui-selected");
-	};
-
 	const closeModifyDialog = () => {
-		cancelSelect();
 		setOpenModify(false);
 	};
 
 	const closeDeleteDialog = () => {
-		cancelSelect();
 		setOpenDelete(false);
 	};
 
@@ -203,8 +193,13 @@ const Product = () => {
 							selectedRow,
 						},
 					}}
-					onRowClick={(params) => {
-						selectedRow.current = params.row;
+					rowSelectionModel={selectedRowModel}
+					onRowClick={(params) => (selectedRow.current = params.row)}
+					onRowSelectionModelChange={(params) => {
+						if (selectedRowModel[0] === params[0]) {
+							selectedRow.current = {};
+							setSelectedRowModel([]);
+						} else setSelectedRowModel(params);
 					}}
 					onRowDoubleClick={(params) => {
 						selectedRow.current = params.row;

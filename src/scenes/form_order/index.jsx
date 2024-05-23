@@ -1,47 +1,18 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTheme } from "@emotion/react";
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { DateTimeUtil } from "../../utils";
-import { mockDataOrder } from "../../data/mockData";
+import { mockDataOrder, mockDataOrderDetail } from "../../data/mockData";
 import DataForm from "./DataForm";
-
-// const Toolbar = (props) => {
-// 	const theme = useTheme();
-// 	const colors = tokens(theme.palette.mode);
-
-// 	return (
-// 		<GridToolbarContainer style={{ padding: "10px 0" }}>
-// 			<Button
-// 				label="ADD RECORD"
-// 				onClick={props.openCreateDialog}
-// 				startIcon={<AddIcon />}
-// 				style={{ padding: "10px", color: colors.greenAccent[500] }}
-// 			/>
-// 			<Button
-// 				label="EDIT RECORD"
-// 				onClick={props.openModifyDialog}
-// 				disabled={!Boolean(props.selectedRow.current.id)}
-// 				startIcon={<EditIcon />}
-// 				style={{ padding: "10px", color: colors.greenAccent[500] }}
-// 			/>
-// 			<Button
-// 				label="DELETE RECORD"
-// 				onClick={props.openDeleteDialog}
-// 				disabled={!Boolean(props.selectedRow.current.id)}
-// 				startIcon={<DeleteIcon />}
-// 				style={{ padding: "10px", color: colors.greenAccent[500] }}
-// 			/>
-// 		</GridToolbarContainer>
-// 	);
-// };
+import DataDetail from "./DataDetail";
 
 const Order = () => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	// DATAGRID SECTION.
-	const [selectedRow, setSelectedRow] = useState({});
+	const [selectedRowModel, setSelectedRowModel] = useState([]);
 	const [rows, setRows] = useState(mockDataOrder);
 	const columns = [
 		{ field: "id", headerName: "ID", flex: 1, hideable: false },
@@ -74,8 +45,31 @@ const Order = () => {
 			flex: 1,
 		},
 	];
+	// FORM SECTION.
+	const [selectedRow, setSelectedRow] = useState({});
+	// DETAIL SECTION.
+	const [details, setDetails] = useState([]);
+	useEffect(() => {
+		if (!Boolean(selectedRow.id)) setDetails([]);
+		// CALL API TO GET FORM DETAIL.
+		setDetails(
+			mockDataOrderDetail.filter((e) => e.order_id === selectedRow.id)
+		);
+	}, [selectedRow]);
+	// CALCULATE TOTAL AUTOMATICALLY.
+	const total = useMemo(
+		() =>
+			details.map((e) => e.quantity * e.price).reduce((a, b) => a + b, 0),
+		[details]
+	);
+
+	const handleFormCancel = () => {
+		setSelectedRowModel([]);
+		setSelectedRow({});
+	};
 
 	const handleFormSubmit = (contentValues, { setSubmitting }) => {
+		contentValues = { ...contentValues, total: total, details: details };
 		console.log(contentValues);
 		if (!Boolean(contentValues.id)) {
 			// CALL API CREATE ORDER.
@@ -83,6 +77,7 @@ const Order = () => {
 			// CALL API UPDATE ORDER.
 		}
 		setSubmitting(false);
+		handleFormCancel();
 	};
 
 	return (
@@ -93,7 +88,7 @@ const Order = () => {
 			display="flex"
 			flexDirection="column"
 			justifyContent="space-between"
-			gap="15px"
+			gap="20px"
 		>
 			<Box
 				width="100%"
@@ -141,8 +136,12 @@ const Order = () => {
 					rows={rows}
 					autoPageSize
 					disableColumnResize
-					onRowClick={(params) => {
-						setSelectedRow(params.row);
+					rowSelectionModel={selectedRowModel}
+					onRowClick={(params) => setSelectedRow(params.row)}
+					onRowSelectionModelChange={(params) => {
+						if (selectedRowModel[0] === params[0])
+							handleFormCancel();
+						else setSelectedRowModel(params);
 					}}
 				/>
 			</Box>
@@ -150,20 +149,30 @@ const Order = () => {
 			<Box
 				mb="20px"
 				flex="1"
-				padding="20px"
-				bgcolor={colors.primary[400]}
-				borderRadius="5px"
 				display="flex"
 				justifyContent="space-between"
 			>
-				<Box width="40%">
+				<Box
+					width="45%"
+					padding="25px"
+					borderRadius="5px"
+					bgcolor={colors.primary[400]}
+				>
 					<DataForm
 						handleFormSubmit={handleFormSubmit}
-						data={selectedRow}
+						handleFormCancel={handleFormCancel}
+						form={selectedRow}
+						total={total}
 					/>
 				</Box>
 
-				<Box width="60%"></Box>
+				<Box width="52%">
+					<DataDetail
+						orderId={selectedRow.order_id}
+						details={details}
+						setDetails={setDetails}
+					/>
+				</Box>
 			</Box>
 		</Box>
 	);

@@ -50,6 +50,7 @@ const Employee = () => {
 	// DATAGRID SECTION.
 	const selectedRow = useRef({});
 	const [rows, setRows] = useState(mockDataEmployee);
+	const [selectedRowModel, setSelectedRowModel] = useState([]);
 	const columns = [
 		{ field: "id", headerName: "ID", flex: 0.5, hideable: false },
 		{
@@ -247,8 +248,13 @@ const Employee = () => {
 							selectedRow,
 						},
 					}}
-					onRowClick={(params) => {
-						selectedRow.current = params.row;
+					rowSelectionModel={selectedRowModel}
+					onRowClick={(params) => (selectedRow.current = params.row)}
+					onRowSelectionModelChange={(params) => {
+						if (selectedRowModel[0] === params[0]) {
+							selectedRow.current = {};
+							setSelectedRowModel([]);
+						} else setSelectedRowModel(params);
 					}}
 					onRowDoubleClick={(params) => {
 						selectedRow.current = params.row;

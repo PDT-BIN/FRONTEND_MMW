@@ -15,7 +15,6 @@ const initialValues = {
 	created_date: DateTimeUtil.format(Date.now()),
 	partner: null,
 	depot: null,
-	total: 0,
 };
 
 const validationSchema = yup.object({
@@ -23,20 +22,22 @@ const validationSchema = yup.object({
 	depot: yup.mixed().required("Field is required!"),
 });
 
-function DataForm({ handleFormSubmit, data }) {
+function DataForm({ handleFormSubmit, handleFormCancel, form, total }) {
 	// CONTROL INITIAL VALUES.
 	let convertedValues = { ...initialValues };
-	if (Boolean(data.id)) {
-		convertedValues = { ...convertedValues, ...data };
+	if (Boolean(form.id)) {
+		convertedValues = { ...convertedValues, ...form };
 	}
 
-	const [DEPOTS, setDepots] = useState([]);
-	const [PARTNERS, setPartners] = useState([]);
+	const [depots, setDepots] = useState([]);
+	const [partners, setPartners] = useState([]);
 	useEffect(() => {
 		// CALL API GET DEPOT & PARTNER DATA.
-		setDepots(mockDataDepot.sort((a, b) => a.name.localeCompare(b.name)));
+		setDepots(
+			[...mockDataDepot].sort((a, b) => a.name.localeCompare(b.name))
+		);
 		setPartners(
-			mockDataPartner.sort((a, b) => a.name.localeCompare(b.name))
+			[...mockDataPartner].sort((a, b) => a.name.localeCompare(b.name))
 		);
 	}, []);
 
@@ -77,7 +78,6 @@ function DataForm({ handleFormSubmit, data }) {
 								<TextField
 									name="created_date"
 									label="CREATED_DATE"
-									type="text"
 									value={values.created_date}
 									onBlur={handleBlur}
 									onChange={handleChange}
@@ -96,19 +96,15 @@ function DataForm({ handleFormSubmit, data }) {
 								<TextField
 									name="total"
 									label="TOTAL"
-									type="text"
-									value={values.total}
-									onBlur={handleBlur}
-									onChange={handleChange}
-									error={!!touched.total && !!errors.total}
-									helperText={touched.total && errors.total}
+									type="number"
+									value={total}
 									sx={{ gridColumn: "span 2" }}
 									fullWidth
 									disabled
 								/>
 								<AutoCompleteField
 									name="partner"
-									options={PARTNERS}
+									options={partners}
 									value={values.partner}
 									onBlur={handleBlur}
 									style={{ gridColumn: "span 4" }}
@@ -126,7 +122,7 @@ function DataForm({ handleFormSubmit, data }) {
 								/>
 								<AutoCompleteField
 									name="depot"
-									options={DEPOTS}
+									options={depots}
 									value={values.depot}
 									onBlur={handleBlur}
 									style={{ gridColumn: "span 4" }}
@@ -143,10 +139,11 @@ function DataForm({ handleFormSubmit, data }) {
 									p: "0",
 									mt: "20px",
 									justifyContent: "center",
+									gap: "20px",
 								}}
 							>
 								<Button
-									label="SUBMIT"
+									label={form.id ? "MODIFY" : "CREATE"}
 									variant="contained"
 									type="submit"
 									disabled={isSubmitting}
@@ -156,6 +153,18 @@ function DataForm({ handleFormSubmit, data }) {
 										color: "white",
 									}}
 								/>
+								{form.id && (
+									<Button
+										label={"CANCEL"}
+										variant="contained"
+										onClick={handleFormCancel}
+										style={{
+											width: "25%",
+											padding: "10px",
+											color: "white",
+										}}
+									/>
+								)}
 							</DialogActions>
 						</Box>
 					</LocalizationProvider>

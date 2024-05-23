@@ -10,15 +10,18 @@ export default function Dialog({ children, title, content, ...props }) {
 
 	return (
 		<MDialog
+			fullWidth
+			maxWidth="xl"
 			open={props.isOpened}
 			onClose={props.handleClose}
 			PaperProps={{
 				sx: {
-					minWidth: "50%",
+					width: "50%",
 					backgroundColor: colors.primary[400],
 					"& .MuiDialogContent-root": {
 						padding: "25px 25px 10px 25px !important",
 					},
+					...props.style,
 				},
 			}}
 		>
