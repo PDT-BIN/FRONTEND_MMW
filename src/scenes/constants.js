@@ -11,3 +11,13 @@ export const ROLES = [
 	{ value: true, label: "MANAGER" },
 	{ value: false, label: "STAFF" },
 ];
+
+export const URL_TO_TAB = {
+	"/": "Dashboard",
+	"/employee": "Employee",
+	"/partner": "Business Partner",
+	"/product": "Product",
+	"/order": "Order",
+	"/import": "Import",
+	"/export": "Export",
+};

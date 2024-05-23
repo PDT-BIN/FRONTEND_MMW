@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
 import { Box, Typography, useTheme, Divider } from "@mui/material";
@@ -13,6 +13,7 @@ import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import BookmarkRemoveOutlinedIcon from "@mui/icons-material/BookmarkRemoveOutlined";
 import { tokens } from "../../theme";
 import react from "../../assets/react.svg";
+import { URL_TO_TAB } from "../constants";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
 	const theme = useTheme();
@@ -63,8 +64,10 @@ const GroupItem = ({ isCollapsed, title, children }) => {
 const Sidebar = () => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
+
+	const location = useLocation();
 	const [isCollapsed, setIsCollapsed] = useState(false);
-	const [selected, setSelected] = useState("Dashboard");
+	const [selected, setSelected] = useState(URL_TO_TAB[location.pathname]);
 
 	return (
 		<Box
