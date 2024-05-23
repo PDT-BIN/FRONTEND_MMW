@@ -574,123 +574,148 @@ export const mockDataExport = [
 
 export const mockDataExportDetail = [
 	{
-		order_id: 1,
+		export_id: 1,
 		product: { id: 1, name: "Apple", unit: "kg" },
 		quantity: 4,
 		price: 1000,
 	},
 	{
-		order_id: 1,
+		export_id: 1,
 		product: { id: 2, name: "Banana", unit: "kg" },
 		quantity: 3,
 		price: 2000,
 	},
 	{
-		order_id: 2,
+		export_id: 2,
 		product: { id: 3, name: "Carrot", unit: "kg" },
 		quantity: 2,
 		price: 1000,
 	},
 	{
-		order_id: 2,
+		export_id: 2,
 		product: { id: 4, name: "Broccoli", unit: "kg" },
 		quantity: 1,
 		price: 3000,
 	},
 	{
-		order_id: 3,
+		export_id: 3,
 		product: { id: 5, name: "Chicken Breast", unit: "kg" },
 		quantity: 6,
 		price: 1000,
 	},
 	{
-		order_id: 3,
+		export_id: 3,
 		product: { id: 6, name: "Salmon", unit: "kg" },
 		quantity: 4,
 		price: 1000,
 	},
 	{
-		order_id: 4,
+		export_id: 4,
 		product: { id: 7, name: "Rice", unit: "kg" },
 		quantity: 7,
 		price: 1000,
 	},
 	{
-		order_id: 4,
+		export_id: 4,
 		product: { id: 8, name: "Milk", unit: "liters" },
 		quantity: 5,
 		price: 1000,
 	},
 	{
-		order_id: 5,
+		export_id: 5,
 		product: { id: 9, name: "Cheese", unit: "kg" },
 		quantity: 8,
 		price: 1000,
 	},
 	{
-		order_id: 5,
+		export_id: 5,
 		product: { id: 10, name: "Orange Juice", unit: "liters" },
 		quantity: 3,
 		price: 1000,
 	},
 	{
-		order_id: 6,
+		export_id: 6,
 		product: { id: 1, name: "Apple", unit: "kg" },
 		quantity: 10,
 		price: 1000,
 	},
 	{
-		order_id: 6,
+		export_id: 6,
 		product: { id: 2, name: "Banana", unit: "kg" },
 		quantity: 15,
 		price: 2000,
 	},
 	{
-		order_id: 7,
+		export_id: 7,
 		product: { id: 3, name: "Carrot", unit: "kg" },
 		quantity: 12,
 		price: 1000,
 	},
 	{
-		order_id: 7,
+		export_id: 7,
 		product: { id: 4, name: "Broccoli", unit: "kg" },
 		quantity: 9,
 		price: 3000,
 	},
 	{
-		order_id: 8,
+		export_id: 8,
 		product: { id: 5, name: "Chicken Breast", unit: "kg" },
 		quantity: 5,
 		price: 1000,
 	},
 	{
-		order_id: 8,
+		export_id: 8,
 		product: { id: 6, name: "Salmon", unit: "kg" },
 		quantity: 7,
 		price: 1000,
 	},
 	{
-		order_id: 9,
+		export_id: 9,
 		product: { id: 7, name: "Rice", unit: "kg" },
 		quantity: 11,
 		price: 1000,
 	},
 	{
-		order_id: 9,
+		export_id: 9,
 		product: { id: 8, name: "Milk", unit: "liters" },
 		quantity: 14,
 		price: 1000,
 	},
 	{
-		order_id: 10,
+		export_id: 10,
 		product: { id: 9, name: "Cheese", unit: "kg" },
 		quantity: 6,
 		price: 1000,
 	},
 	{
-		order_id: 10,
+		export_id: 10,
 		product: { id: 10, name: "Orange Juice", unit: "liters" },
 		quantity: 8,
+		price: 1000,
+	},
+];
+
+export const mockDataImport = [
+	{
+		id: 1,
+		order: {
+			id: 1,
+			partner: { id: 1, name: "Jon Snow" },
+			depot: { id: 2, name: "Depot Y" },
+			created_date: "06/08/2023",
+			total: 6446.62,
+		},
+		depot: { id: 2, name: "Depot Y" },
+		created_date: "06/08/2023",
+		total: 6446.62,
+	},
+];
+
+export const mockDataImportDetail = [
+	{
+		import_id: 1,
+		product: { id: 1, name: "Apple", unit: "kg" },
+		quantity: 1,
 		price: 1000,
 	},
 ];

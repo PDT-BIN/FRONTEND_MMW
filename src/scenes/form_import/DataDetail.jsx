@@ -7,7 +7,7 @@ import Button from "../../components/customs/Button";
 import { tokens } from "../../theme";
 import DetailDialog from "./DetailDialog";
 
-const Toolbar = ({ openDialog, openForCreating }) => {
+const Toolbar = ({ openDialog, openForCreating, selectedOrder }) => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 
@@ -17,13 +17,14 @@ const Toolbar = ({ openDialog, openForCreating }) => {
 				label={openForCreating ? "CREATE" : "MODIFY"}
 				onClick={openDialog}
 				startIcon={<AddIcon />}
+				disabled={!Boolean(selectedOrder)}
 				style={{ padding: "10px", color: colors.greenAccent[500] }}
 			/>
 		</GridToolbarContainer>
 	);
 };
 
-function DataDetail({ details, setDetails }) {
+function DataDetail({ details, setDetails, selectedOrder }) {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	// DATAGRID SECTION.
@@ -139,6 +140,7 @@ function DataDetail({ details, setDetails }) {
 					toolbar: {
 						openDialog: openDialog,
 						openForCreating: Object.keys(details).length === 0,
+						selectedOrder: selectedOrder,
 					},
 				}}
 			/>
@@ -148,6 +150,7 @@ function DataDetail({ details, setDetails }) {
 				handleClose={closeDialog}
 				handleFormSubmit={handleFormSubmit}
 				details={details}
+				selectedOrder={selectedOrder}
 			/>
 		</Box>
 	);

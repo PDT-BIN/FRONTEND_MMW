@@ -19,6 +19,7 @@ function CustomList({ data, checked, handleToggle }) {
 	return (
 		<Box
 			width="25%"
+			minHeight="359.55px"
 			maxHeight="359.55px"
 			bgcolor={colors.primary[700]}
 			borderRadius="5px"

@@ -23,7 +23,7 @@ const Toolbar = ({ openDialog, openForCreating }) => {
 	);
 };
 
-function DataDetail({ orderId, details, setDetails }) {
+function DataDetail({ details, setDetails }) {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	// DATAGRID SECTION.
@@ -76,13 +76,7 @@ function DataDetail({ orderId, details, setDetails }) {
 	};
 
 	const handleFormSubmit = (modifiedData) => {
-		const cleanedData = modifiedData.map((e) => {
-			return {
-				id: `${orderId}-${e.product.id}`,
-				...e,
-			};
-		});
-		setDetails(cleanedData);
+		setDetails(modifiedData);
 		closeDialog();
 	};
 
@@ -134,7 +128,7 @@ function DataDetail({ orderId, details, setDetails }) {
 			<DataGrid
 				columns={columns}
 				rows={details}
-				getRowId={(row) => `${row.order_id}-${row.product.id}`}
+				getRowId={(row) => `${row.export_id}-${row.product.id}`}
 				autoPageSize
 				disableColumnResize
 				columnVisibilityModel={{ id: false }}

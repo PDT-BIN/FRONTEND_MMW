@@ -4,31 +4,24 @@ import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { DateTimeUtil } from "../../utils";
-import { mockDataExport, mockDataExportDetail } from "../../data/mockData";
+import { mockDataImport, mockDataImportDetail } from "../../data/mockData";
 import DataForm from "./DataForm";
 import DataDetail from "./DataDetail";
 
-const Export = () => {
+const Import = () => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	// DATAGRID SECTION.
 	const [selectedRowModel, setSelectedRowModel] = useState([]);
-	const [rows, setRows] = useState(mockDataExport);
+	const [rows, setRows] = useState(mockDataImport);
 	const columns = [
 		{ field: "id", headerName: "ID", flex: 1, hideable: false },
 		{
-			field: "partner",
-			headerName: "PARTNER",
+			field: "order",
+			headerName: "ORDER",
 			flex: 1,
 			hideable: false,
-			valueGetter: (value) => value.name,
-		},
-		{
-			field: "depot",
-			headerName: "DEPOT",
-			flex: 1,
-			hideable: false,
-			valueGetter: (value) => value.name,
+			valueGetter: (value) => `${value.id} - ${value.partner.name}`,
 		},
 		{
 			field: "created_date",
@@ -48,12 +41,14 @@ const Export = () => {
 	// FORM SECTION.
 	const [selectedRow, setSelectedRow] = useState({});
 	// DETAIL SECTION.
+	const [selectedOrder, setSelectedOrder] = useState({});
 	const [details, setDetails] = useState([]);
 	useEffect(() => {
 		if (!Boolean(selectedRow.id)) setDetails([]);
+		setSelectedOrder(selectedRow.order?.id);
 		// CALL API TO GET FORM DETAIL.
 		setDetails(
-			mockDataExportDetail.filter((e) => e.export_id === selectedRow.id)
+			mockDataImportDetail.filter((e) => e.import_id === selectedRow.id)
 		);
 	}, [selectedRow]);
 	// CALCULATE TOTAL AUTOMATICALLY.
@@ -74,16 +69,16 @@ const Export = () => {
 			total: total,
 			details: details.map((e) => {
 				return {
-					id: `${selectedRow.id}-${e.product.id}`,
+					id: `${selectedOrder}-${e.product.id}`,
 					...e,
 				};
 			}),
 		};
 		console.log(contentValues);
 		if (!Boolean(contentValues.id)) {
-			// CALL API CREATE EXPORT FORM.
+			// CALL API CREATE IMPORT FORM.
 		} else {
-			// CALL API UPDATE EXPORT FORM.
+			// CALL API UPDATE IMPORT FORM.
 		}
 		setSubmitting(false);
 		handleFormCancel();
@@ -172,15 +167,21 @@ const Export = () => {
 						handleFormCancel={handleFormCancel}
 						form={selectedRow}
 						total={total}
+						setSelectedOrder={setSelectedOrder}
 					/>
 				</Box>
 
 				<Box width="52%">
-					<DataDetail details={details} setDetails={setDetails} />
+					<DataDetail
+						orderId={selectedRow.order_id}
+						details={details}
+						setDetails={setDetails}
+						selectedOrder={selectedOrder}
+					/>
 				</Box>
 			</Box>
 		</Box>
 	);
 };
 
-export default Export;
+export default Import;

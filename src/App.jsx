@@ -10,6 +10,7 @@ import Employee from "./scenes/employee";
 import Partner from "./scenes/partner";
 import Product from "./scenes/product";
 import Order from "./scenes/form_order";
+import Import from "./scenes/form_import";
 import Export from "./scenes/form_export";
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
 								<Route path="/product" element={<Product />} />
 								{/* RECEIPT */}
 								<Route path="/order" element={<Order />} />
+								<Route path="/import" element={<Import />} />
 								<Route path="/export" element={<Export />} />
 								{/* </Route> */}
 							</Routes>

@@ -69,7 +69,16 @@ const Order = () => {
 	};
 
 	const handleFormSubmit = (contentValues, { setSubmitting }) => {
-		contentValues = { ...contentValues, total: total, details: details };
+		contentValues = {
+			...contentValues,
+			total: total,
+			details: details.map((e) => {
+				return {
+					id: `${selectedRow.id}-${e.product.id}`,
+					...e,
+				};
+			}),
+		};
 		console.log(contentValues);
 		if (!Boolean(contentValues.id)) {
 			// CALL API CREATE ORDER.
@@ -167,11 +176,7 @@ const Order = () => {
 				</Box>
 
 				<Box width="52%">
-					<DataDetail
-						orderId={selectedRow.order_id}
-						details={details}
-						setDetails={setDetails}
-					/>
+					<DataDetail details={details} setDetails={setDetails} />
 				</Box>
 			</Box>
 		</Box>

@@ -9,7 +9,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Dialog from "../../components/customs/Dialog";
 import Button from "../../components/customs/Button";
 import { tokens } from "../../theme";
-import { mockDataProduct } from "../../data/mockData";
+import { mockDataOrderDetail } from "../../data/mockData";
 import TextField from "../../components/customs/TextField";
 
 function CustomList({ data, checked, handleToggle }) {
@@ -215,13 +215,23 @@ function TransferList({
 	);
 }
 
-function DetailDialog({ isOpened, handleClose, handleFormSubmit, details }) {
+function DetailDialog({
+	isOpened,
+	handleClose,
+	handleFormSubmit,
+	details,
+	selectedOrder,
+}) {
 	const modifiedProducts = useRef([]);
 	const [allProducts, setAllProducts] = useState([]);
 	useEffect(() => {
 		// CALL API GET PRODUCT DATA.
-		setAllProducts(mockDataProduct);
-	}, []);
+		setAllProducts(
+			[...mockDataOrderDetail]
+				.filter((e) => e.order_id === selectedOrder)
+				.map((e) => e.product)
+		);
+	}, [selectedOrder]);
 
 	const handleSubmit = () => {
 		handleFormSubmit(
