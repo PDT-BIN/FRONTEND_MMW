@@ -1,6 +1,6 @@
 import * as yup from "yup";
 import { Formik } from "formik";
-import { Box, Typography, colors } from "@mui/material";
+import { Box, Link, Typography } from "@mui/material";
 import Button from "../../components/customs/Button";
 import TextField from "../../components/customs/TextField";
 import PasswordField from "../../components/customs/PasswordField";
@@ -57,6 +57,7 @@ export default function Login() {
 						values,
 						errors,
 						touched,
+						submitCount,
 						isSubmitting,
 						handleBlur,
 						handleChange,
@@ -65,7 +66,7 @@ export default function Login() {
 						<form
 							onSubmit={handleSubmit}
 							style={{
-								width: "100%",
+								width: "80%",
 								display: "flex",
 								flexDirection: "column",
 								alignItems: "center",
@@ -76,24 +77,51 @@ export default function Login() {
 								name="username"
 								label="USERNAME"
 								color="secondary"
-								style={{ width: "80%" }}
+								style={{ width: "100%" }}
 								value={values.username}
 								onBlur={handleBlur}
 								onChange={handleChange}
-								error={!!touched.username && !!errors.username}
-								helperText={touched.username && errors.username}
+								error={
+									Boolean(submitCount > 0) &&
+									Boolean(touched.username) &&
+									Boolean(errors.username)
+								}
+								helperText={
+									Boolean(submitCount > 0) &&
+									touched.username &&
+									errors.username
+								}
+								autoFocus
 							/>
 							<PasswordField
 								name="password"
 								label="PASSWORD"
 								color="secondary"
-								style={{ width: "80%" }}
+								style={{ width: "100%" }}
 								value={values.password}
 								handleBlur={handleBlur}
 								handleChange={handleChange}
-								error={!!touched.password && !!errors.password}
-								helperText={touched.password && errors.password}
+								error={
+									Boolean(submitCount > 0) &&
+									Boolean(touched.password) &&
+									Boolean(errors.password)
+								}
+								helperText={
+									Boolean(submitCount > 0) &&
+									touched.password &&
+									errors.password
+								}
 							/>
+							<Link
+								href="/forgot-password"
+								underline="none"
+								fontStyle="italic"
+								color={colors.grey[400]}
+								marginLeft="auto"
+								tabIndex={-1}
+							>
+								Forgot password ?
+							</Link>
 
 							<Button
 								label="LOGIN"
@@ -103,7 +131,7 @@ export default function Login() {
 								disabled={isSubmitting}
 								style={{
 									marginTop: "50px",
-									width: "80%",
+									width: "100%",
 									padding: "10px",
 									color: "white",
 									fontWeight: "bold",

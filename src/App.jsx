@@ -11,12 +11,14 @@ import Product from "./scenes/product";
 import Order from "./scenes/form_order";
 import Import from "./scenes/form_import";
 import Export from "./scenes/form_export";
+import NotFound from "./scenes/auth/NotFound";
+import { URL_TO_TAB } from "./scenes/constants";
 import { ColorModeContext, useMode } from "./theme";
 
 function App() {
 	const [theme, colorMode] = useMode();
 	const location = useLocation();
-	const isAuthPage = location.pathname === "/login";
+	const isAuthPage = !Boolean(URL_TO_TAB[location.pathname]);
 
 	return (
 		<ColorModeContext.Provider value={colorMode}>
@@ -25,6 +27,7 @@ function App() {
 				{isAuthPage ? (
 					<Routes>
 						<Route path="/login" element={<Login />} />
+						<Route path="*" element={<NotFound />} />
 					</Routes>
 				) : (
 					<div className="app">
