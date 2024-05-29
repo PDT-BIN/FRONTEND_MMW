@@ -100,6 +100,11 @@ export default function Partner() {
 	const [openModify, setOpenModify] = useState(false);
 	const [openDelete, setOpenDelete] = useState(false);
 
+	const handleFormCancel = () => {
+		setSelectedRowModel([]);
+		selectedRow.current = {};
+	};
+
 	const openCreateDialog = () => {
 		selectedRow.current = {};
 		setOpenModify(true);
@@ -115,10 +120,12 @@ export default function Partner() {
 
 	const closeModifyDialog = () => {
 		setOpenModify(false);
+		handleFormCancel();
 	};
 
 	const closeDeleteDialog = () => {
 		setOpenDelete(false);
+		handleFormCancel();
 	};
 
 	const handleModifySubmit = (

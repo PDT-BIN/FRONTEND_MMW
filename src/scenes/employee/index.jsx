@@ -6,10 +6,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import BlockOutlinedIcon from "@mui/icons-material/BlockOutlined";
-import DataDialog from "./DataDialog";
 import Header from "../../components/Header";
 import Button from "../../components/customs/Button";
 import ConfirmDialog from "../../components/ConfirmDialog";
+import ProfileModal from "../../components/ProfileModal";
 import { tokens } from "../../theme";
 import { AddressUtil, DateTimeUtil } from "../../utils";
 import { mockDataEmployee } from "../../data/mockData";
@@ -132,6 +132,11 @@ export default function Employee() {
 	const [openModify, setOpenModify] = useState(false);
 	const [openDelete, setOpenDelete] = useState(false);
 
+	const handleFormCancel = () => {
+		setSelectedRowModel([]);
+		selectedRow.current = {};
+	};
+
 	const openCreateDialog = () => {
 		selectedRow.current = {};
 		setOpenModify(true);
@@ -147,10 +152,12 @@ export default function Employee() {
 
 	const closeModifyDialog = () => {
 		setOpenModify(false);
+		handleFormCancel();
 	};
 
 	const closeDeleteDialog = () => {
 		setOpenDelete(false);
+		handleFormCancel();
 	};
 
 	const handleModifySubmit = (
@@ -258,10 +265,11 @@ export default function Employee() {
 				/>
 			</Box>
 
-			<DataDialog
+			<ProfileModal
 				isOpened={openModify}
 				handleClose={closeModifyDialog}
 				handleFormSubmit={handleModifySubmit}
+				title="EMPLOYEE PROFILE"
 				data={selectedRow.current}
 			/>
 			<ConfirmDialog

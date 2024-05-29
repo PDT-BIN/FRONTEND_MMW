@@ -30,6 +30,11 @@ const SettingMenu = ({ open, anchorRef, handleClose }) => {
 		navigate("/login");
 	};
 
+	const openDialog = (setOpen) => {
+		handleClose();
+		setOpen(true);
+	};
+
 	const closeUpdateProfile = () => {
 		setOpenUpdateProfile(false);
 	};
@@ -94,7 +99,7 @@ const SettingMenu = ({ open, anchorRef, handleClose }) => {
 											paddingY: "10px",
 										}}
 										onClick={() =>
-											setOpenUpdateProfile(true)
+											openDialog(setOpenUpdateProfile)
 										}
 									>
 										PROFILE
@@ -105,7 +110,7 @@ const SettingMenu = ({ open, anchorRef, handleClose }) => {
 											paddingY: "10px",
 										}}
 										onClick={() =>
-											setOpenChangePassword(true)
+											openDialog(setOpenChangePassword)
 										}
 									>
 										CHANGE PASSWORD
@@ -148,6 +153,7 @@ export default function Topbar() {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	const colorMode = useContext(ColorModeContext);
+	// CONTROL SETTING TOOLS.
 	const [open, setOpen] = useState(false);
 	const anchorRef = useRef(null);
 
@@ -155,10 +161,7 @@ export default function Topbar() {
 		setOpen((prevOpen) => !prevOpen);
 	};
 
-	const handleClose = (event) => {
-		if (anchorRef.current && anchorRef.current.contains(event.target)) {
-			return;
-		}
+	const handleClose = () => {
 		setOpen(false);
 	};
 
