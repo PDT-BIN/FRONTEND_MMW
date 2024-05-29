@@ -11,6 +11,11 @@ export class DateTimeUtil {
 		const date = moment(value).format(DateTimeUtil.FORMAT);
 		return date !== "Invalid date" ? date : "";
 	}
+
+	static format(value, format = DateTimeUtil.FORMAT) {
+		const date = moment(value).format(format);
+		return date !== "Invalid date" ? date : "";
+	}
 }
 
 export class AddressUtil {

@@ -4,8 +4,10 @@ import { Box, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import PriceChangeIcon from "@mui/icons-material/PriceChange";
 import { DataGrid, GridToolbarContainer } from "@mui/x-data-grid";
 import DataDialog from "./DataDialog";
+import PriceDialog from "./PriceDialog";
 import Header from "../../components/Header";
 import Button from "../../components/customs/Button";
 import ConfirmDialog from "../../components/ConfirmDialog";
@@ -37,6 +39,12 @@ const Toolbar = (props) => {
 				onClick={props.openDeleteDialog}
 				disabled={!props.openForCreating}
 				startIcon={<DeleteIcon />}
+				style={{ padding: "10px", color: colors.greenAccent[500] }}
+			/>
+			<Button
+				label="ESTABLISH PRICE"
+				onClick={props.openPriceDialog}
+				startIcon={<PriceChangeIcon />}
 				style={{ padding: "10px", color: colors.greenAccent[500] }}
 			/>
 		</GridToolbarContainer>
@@ -93,6 +101,7 @@ export default function Product() {
 	);
 	const [openModify, setOpenModify] = useState(false);
 	const [openDelete, setOpenDelete] = useState(false);
+	const [openPrice, setOpenPrice] = useState(false);
 
 	const handleFormCancel = () => {
 		setSelectedRowModel([]);
@@ -136,6 +145,15 @@ export default function Product() {
 	const handleDeleteSubmit = () => {
 		// CALL API DELETE PRODUCT.
 		closeDeleteDialog();
+	};
+
+	const openPriceDialog = () => {
+		setOpenPrice(true);
+	};
+
+	const closePriceDialog = () => {
+		setOpenPrice(false);
+		handleFormCancel();
 	};
 
 	return (
@@ -201,6 +219,7 @@ export default function Product() {
 							openCreateDialog,
 							openModifyDialog,
 							openDeleteDialog,
+							openPriceDialog,
 							openForCreating,
 						},
 					}}
@@ -240,6 +259,7 @@ export default function Product() {
 				handleFormSubmit={handleDeleteSubmit}
 				content={`ARE YOU SURE TO DELETE THE PRODUCT WITH ID #${selectedRow.current.id} ?`}
 			/>
+			<PriceDialog isOpened={openPrice} handleClose={closePriceDialog} />
 		</Box>
 	);
 }
