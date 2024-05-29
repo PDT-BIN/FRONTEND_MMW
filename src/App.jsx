@@ -4,6 +4,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./scenes/auth/Login";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
+import NotFound from "./scenes/auth/NotFound";
 import Dashboard from "./scenes/dashboard/index";
 import Employee from "./scenes/employee";
 import Partner from "./scenes/partner";
@@ -11,7 +12,8 @@ import Product from "./scenes/product";
 import Order from "./scenes/form_order";
 import Import from "./scenes/form_import";
 import Export from "./scenes/form_export";
-import NotFound from "./scenes/auth/NotFound";
+import ForgotPassword from "./scenes/auth/ForgotPassword";
+import ResetPassword from "./scenes/auth/ResetPassword";
 import { URL_TO_TAB } from "./scenes/constants";
 import { ColorModeContext, useMode } from "./theme";
 
@@ -27,6 +29,14 @@ function App() {
 				{isAuthPage ? (
 					<Routes>
 						<Route path="/login" element={<Login />} />
+						<Route
+							path="/forgot-password"
+							element={<ForgotPassword />}
+						/>
+						<Route
+							path="/password-reset/:token"
+							element={<ResetPassword />}
+						/>
 						<Route path="*" element={<NotFound />} />
 					</Routes>
 				) : (
@@ -35,20 +45,32 @@ function App() {
 						<main className="content">
 							<Topbar />
 							<Routes>
-								{/* <Route path="/" element={<ProtectedRoute />}> */}
-								<Route path="/" element={<Dashboard />} />
-								{/* INFORMATION */}
-								<Route
-									path="/employee"
-									element={<Employee />}
-								/>
-								<Route path="/partner" element={<Partner />} />
-								<Route path="/product" element={<Product />} />
-								{/* RECEIPT */}
-								<Route path="/order" element={<Order />} />
-								<Route path="/import" element={<Import />} />
-								<Route path="/export" element={<Export />} />
-								{/* </Route> */}
+								<Route path="/" element={<ProtectedRoute />}>
+									<Route path="/" element={<Dashboard />} />
+									{/* INFORMATION */}
+									<Route
+										path="/employee"
+										element={<Employee />}
+									/>
+									<Route
+										path="/partner"
+										element={<Partner />}
+									/>
+									<Route
+										path="/product"
+										element={<Product />}
+									/>
+									{/* RECEIPT */}
+									<Route path="/order" element={<Order />} />
+									<Route
+										path="/import"
+										element={<Import />}
+									/>
+									<Route
+										path="/export"
+										element={<Export />}
+									/>
+								</Route>
 							</Routes>
 						</main>
 					</div>
