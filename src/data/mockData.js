@@ -228,6 +228,7 @@ export const mockDataProduct = [
 		inventory: 150,
 		category: { id: 1, name: "Fruit" },
 		price: "1000",
+		in_stock: true,
 	},
 	{
 		id: 2,
@@ -236,6 +237,7 @@ export const mockDataProduct = [
 		inventory: 200,
 		category: { id: 1, name: "Fruit" },
 		price: "2000",
+		in_stock: false,
 	},
 	{
 		id: 3,
@@ -244,6 +246,7 @@ export const mockDataProduct = [
 		inventory: 100,
 		category: { id: 2, name: "Vegetable" },
 		price: "1000",
+		in_stock: true,
 	},
 	{
 		id: 4,
@@ -252,6 +255,7 @@ export const mockDataProduct = [
 		inventory: 75,
 		category: null,
 		price: "3000",
+		in_stock: true,
 	},
 	{
 		id: 5,
@@ -260,6 +264,7 @@ export const mockDataProduct = [
 		inventory: 50,
 		category: { id: 3, name: "Meat" },
 		price: "1000",
+		in_stock: false,
 	},
 	{
 		id: 6,
@@ -268,6 +273,7 @@ export const mockDataProduct = [
 		inventory: 30,
 		category: { id: 4, name: "Fish" },
 		price: "1000",
+		in_stock: false,
 	},
 	{
 		id: 7,
@@ -276,6 +282,7 @@ export const mockDataProduct = [
 		inventory: 500,
 		category: { id: 5, name: "Grain" },
 		price: "1000",
+		in_stock: true,
 	},
 	{
 		id: 8,
@@ -284,6 +291,7 @@ export const mockDataProduct = [
 		inventory: 200,
 		category: { id: 6, name: "Dairy" },
 		price: "1000",
+		in_stock: false,
 	},
 	{
 		id: 9,
@@ -292,6 +300,7 @@ export const mockDataProduct = [
 		inventory: 100,
 		category: null,
 		price: "1000",
+		in_stock: true,
 	},
 	{
 		id: 10,
@@ -300,6 +309,7 @@ export const mockDataProduct = [
 		inventory: 80,
 		category: { id: 7, name: "Beverage" },
 		price: "1000",
+		in_stock: true,
 	},
 ];
 

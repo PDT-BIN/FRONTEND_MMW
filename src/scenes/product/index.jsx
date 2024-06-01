@@ -93,6 +93,12 @@ export default function Product() {
 			type: "number",
 			flex: 1,
 		},
+		{
+			field: "in_stock",
+			headerName: "IN STOCK",
+			type: "boolean",
+			flex: 1,
+		},
 	];
 	// DIALOG SECTION.
 	const openForCreating = useMemo(
