@@ -189,6 +189,7 @@ function TransferList({
 								type="number"
 								color="secondary"
 								style={{ width: "47%" }}
+								InputProps={{ inputProps: { min: 0 } }}
 								defaultValue={
 									currentDetails.filter(
 										(detail) => detail.id === e.id
@@ -201,6 +202,7 @@ function TransferList({
 								type="number"
 								color="secondary"
 								style={{ width: "47%" }}
+								InputProps={{ inputProps: { min: 0 } }}
 								defaultValue={
 									currentDetails.filter(
 										(detail) => detail.id === e.id

@@ -189,6 +189,15 @@ function TransferList({
 								type="number"
 								color="secondary"
 								style={{ width: "47%" }}
+								InputProps={{
+									inputProps: {
+										min: 0,
+										max:
+											allProducts.filter(
+												(product) => product.id === e.id
+											)?.[0]?.inventory || 0,
+									},
+								}}
 								defaultValue={
 									currentDetails.filter(
 										(detail) => detail.id === e.id
@@ -201,9 +210,10 @@ function TransferList({
 								type="number"
 								color="secondary"
 								style={{ width: "47%" }}
+								disabled
 								defaultValue={
-									currentDetails.filter(
-										(detail) => detail.id === e.id
+									allProducts.filter(
+										(product) => product.id === e.id
 									)?.[0]?.price || 0
 								}
 							/>
@@ -258,7 +268,13 @@ function DetailDialog({ isOpened, handleClose, handleFormSubmit, details }) {
 							).length === 0
 					)
 					.map((e) => {
-						return { id: e.id, name: e.name, unit: e.unit };
+						return {
+							id: e.id,
+							name: e.name,
+							unit: e.unit,
+							price: e.price,
+							inventory: e.inventory,
+						};
 					})}
 				currentProducts={details.map((e) => {
 					return {

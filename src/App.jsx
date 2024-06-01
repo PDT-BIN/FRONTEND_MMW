@@ -45,32 +45,20 @@ function App() {
 						<main className="content">
 							<Topbar />
 							<Routes>
-								<Route path="/" element={<ProtectedRoute />}>
-									<Route path="/" element={<Dashboard />} />
-									{/* INFORMATION */}
-									<Route
-										path="/employee"
-										element={<Employee />}
-									/>
-									<Route
-										path="/partner"
-										element={<Partner />}
-									/>
-									<Route
-										path="/product"
-										element={<Product />}
-									/>
-									{/* RECEIPT */}
-									<Route path="/order" element={<Order />} />
-									<Route
-										path="/import"
-										element={<Import />}
-									/>
-									<Route
-										path="/export"
-										element={<Export />}
-									/>
-								</Route>
+								{/* <Route path="/" element={<ProtectedRoute />}> */}
+								<Route path="/" element={<Dashboard />} />
+								{/* INFORMATION */}
+								<Route
+									path="/employee"
+									element={<Employee />}
+								/>
+								<Route path="/partner" element={<Partner />} />
+								<Route path="/product" element={<Product />} />
+								{/* RECEIPT */}
+								<Route path="/order" element={<Order />} />
+								<Route path="/import" element={<Import />} />
+								<Route path="/export" element={<Export />} />
+								{/* </Route> */}
 							</Routes>
 						</main>
 					</div>

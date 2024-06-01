@@ -56,7 +56,7 @@ function TransferList({
 	modifiedProducts,
 	allProducts,
 	currentProducts,
-	currentDetails,
+	allDetails,
 }) {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
@@ -189,8 +189,17 @@ function TransferList({
 								type="number"
 								color="secondary"
 								style={{ width: "47%" }}
+								InputProps={{
+									inputProps: {
+										min: 0,
+										max:
+											allDetails.filter(
+												(detail) => detail.id === e.id
+											)?.[0]?.quantity || 0,
+									},
+								}}
 								defaultValue={
-									currentDetails.filter(
+									allDetails.filter(
 										(detail) => detail.id === e.id
 									)?.[0]?.quantity || 0
 								}
@@ -201,8 +210,9 @@ function TransferList({
 								type="number"
 								color="secondary"
 								style={{ width: "47%" }}
+								disabled
 								defaultValue={
-									currentDetails.filter(
+									allDetails.filter(
 										(detail) => detail.id === e.id
 									)?.[0]?.price || 0
 								}
@@ -223,8 +233,21 @@ function DetailDialog({
 	selectedOrder,
 }) {
 	const modifiedProducts = useRef([]);
+	const [allDetails, setAllDetails] = useState([]);
 	const [allProducts, setAllProducts] = useState([]);
 	useEffect(() => {
+		// CALL API GET DETAIL DATA OF ORDER FORM.
+		setAllDetails(
+			[...mockDataOrderDetail]
+				.filter((e) => e.order_id === selectedOrder)
+				.map((e) => {
+					return {
+						id: e.product.id,
+						quantity: e.quantity,
+						price: e.price,
+					};
+				})
+		);
 		// CALL API GET PRODUCT DATA.
 		setAllProducts(
 			[...mockDataOrderDetail]
@@ -277,13 +300,7 @@ function DetailDialog({
 						unit: e.product.unit,
 					};
 				})}
-				currentDetails={details.map((e) => {
-					return {
-						id: e.product.id,
-						quantity: e.quantity,
-						price: e.price,
-					};
-				})}
+				allDetails={allDetails}
 			/>
 
 			<DialogActions sx={{ mt: "25px", gap: "10px" }}>
