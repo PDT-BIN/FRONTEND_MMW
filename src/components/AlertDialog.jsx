@@ -1,10 +1,26 @@
 import { Alert, AlertTitle, Snackbar } from "@mui/material";
+import { useState } from "react";
+import { EMPTY_NOTICE } from "../notice";
 
-export default function AlertDialog({ onClose, ...props }) {
+export let control;
+
+export default function AlertDialog() {
+	const [props, setProps] = useState({
+		open: false,
+		title: "",
+		message: "",
+		severity: "",
+	});
+	control = setProps;
+
+	const closeDialog = () => {
+		setProps(EMPTY_NOTICE);
+	};
+
 	return (
 		<Snackbar
 			open={props.open}
-			onClose={onClose}
+			onClose={closeDialog}
 			autoHideDuration={3000}
 			sx={{
 				position: "absolute !important",
@@ -16,7 +32,7 @@ export default function AlertDialog({ onClose, ...props }) {
 		>
 			<Alert
 				severity={props.severity}
-				onClose={onClose}
+				onClose={closeDialog}
 				sx={{
 					position: "relative",
 					minWidth: "375px",

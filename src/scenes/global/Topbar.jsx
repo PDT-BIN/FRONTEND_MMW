@@ -19,13 +19,14 @@ import ProfileModal from "../../components/ProfileModal";
 import { AddressUtil } from "../../utils";
 import { ColorModeContext, tokens } from "../../theme";
 import ChangePasswordModal from "../../components/ChangePasswordModal";
-import { ACCESS_TOKEN } from "../../api/constants";
 import AxiosInstance from "../../api/api";
+import { LOGOUT_FAILED, LOGOUT_SUCCESS } from "../../notice";
 
 const SettingMenu = ({ open, anchorRef, handleClose }) => {
 	const navigate = useNavigate();
 	const [openUpdateProfile, setOpenUpdateProfile] = useState(false);
 	const [openChangePassword, setOpenChangePassword] = useState(false);
+	const { setAlert } = useContext(ColorModeContext);
 
 	// CALL API LOGOUT.
 	const handleLogout = async () => {
@@ -33,10 +34,11 @@ const SettingMenu = ({ open, anchorRef, handleClose }) => {
 			const response = await AxiosInstance.post("logoutall/");
 			if (response.status !== 204) return;
 
-			localStorage.removeItem(ACCESS_TOKEN);
+			setAlert(LOGOUT_SUCCESS);
+			localStorage.clear();
 			navigate("/login");
 		} catch (error) {
-			console.log(error);
+			setAlert(LOGOUT_FAILED);
 		}
 	};
 

@@ -5,12 +5,12 @@ import Button from "../../components/customs/Button";
 import TextField from "../../components/customs/TextField";
 import PasswordField from "../../components/customs/PasswordField";
 import { useTheme } from "@emotion/react";
-import { tokens } from "../../theme";
+import { ColorModeContext, tokens } from "../../theme";
 import AxiosInstance from "../../api/api";
 import { useNavigate } from "react-router-dom";
-import { ACCESS_TOKEN } from "../../api/constants";
-import { useState } from "react";
-import AlertDialog from "../../components/AlertDialog";
+import { ACCESS_TOKEN, PROFILE_ID } from "../../api/constants";
+import { useContext } from "react";
+import { LOGIN_FAILED, LOGIN_SUCCESS } from "../../notice";
 
 const validationSchema = yup.object({
 	username: yup.string().required("Username is required!"),
@@ -21,21 +21,7 @@ export default function Login() {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	const navigate = useNavigate();
-	const [alert, setAlert] = useState({
-		open: false,
-		title: "",
-		message: "",
-		severity: "",
-	});
-
-	const closeAlert = () => {
-		setAlert({
-			open: false,
-			title: "",
-			message: "",
-			severity: "",
-		});
-	};
+	const { setAlert } = useContext(ColorModeContext);
 
 	// CALL API LOGIN.
 	const handleFormSubmit = async (values, { setSubmitting }) => {
@@ -43,15 +29,12 @@ export default function Login() {
 			const response = await AxiosInstance.post("api/web/login/", values);
 			if (response.status !== 200) return;
 
+			setAlert(LOGIN_SUCCESS);
 			localStorage.setItem(ACCESS_TOKEN, response.data["token"]);
+			localStorage.setItem(PROFILE_ID, response.data["profile_id"]);
 			navigate("/");
 		} catch (error) {
-			setAlert({
-				open: true,
-				title: "Failed to login",
-				message: "Username or password is not correct!",
-				severity: "error",
-			});
+			setAlert(LOGIN_FAILED);
 		} finally {
 			setSubmitting(false);
 		}
@@ -179,8 +162,6 @@ export default function Login() {
 					)}
 				</Formik>
 			</Box>
-
-			<AlertDialog {...alert} onClose={closeAlert} />
 		</Box>
 	);
 }

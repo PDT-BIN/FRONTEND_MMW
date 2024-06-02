@@ -16,14 +16,24 @@ import ForgotPassword from "./scenes/auth/ForgotPassword";
 import ResetPassword from "./scenes/auth/ResetPassword";
 import { URL_TO_TAB } from "./scenes/constants";
 import { ColorModeContext, useMode } from "./theme";
+import AlertDialog, { control } from "./components/AlertDialog";
 
 function App() {
 	const [theme, colorMode] = useMode();
 	const location = useLocation();
 	const isAuthPage = !Boolean(URL_TO_TAB[location.pathname]);
 
+	const setAlert = ({ open, title, message, severity }) => {
+		control({
+			open: open,
+			title: title,
+			message: message,
+			severity: severity,
+		});
+	};
+
 	return (
-		<ColorModeContext.Provider value={colorMode}>
+		<ColorModeContext.Provider value={{ colorMode, setAlert }}>
 			<ThemeProvider theme={theme}>
 				<CssBaseline />
 				{isAuthPage ? (
@@ -75,6 +85,7 @@ function App() {
 						</main>
 					</div>
 				)}
+				<AlertDialog />
 			</ThemeProvider>
 		</ColorModeContext.Provider>
 	);
