@@ -6,20 +6,56 @@ import TextField from "../../components/customs/TextField";
 import PasswordField from "../../components/customs/PasswordField";
 import { useTheme } from "@emotion/react";
 import { tokens } from "../../theme";
+import AxiosInstance from "../../api/api";
+import { useNavigate } from "react-router-dom";
+import { ACCESS_TOKEN } from "../../api/constants";
+import { useState } from "react";
+import AlertDialog from "../../components/AlertDialog";
 
 const validationSchema = yup.object({
 	username: yup.string().required("Username is required!"),
 	password: yup.string().required("Password is required!"),
 });
 
-const handleFormSubmit = (values, { setSubmitting }) => {
-	// CALL API LOGIN.
-	setSubmitting(false);
-};
-
 export default function Login() {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
+	const navigation = useNavigate();
+	const [alert, setAlert] = useState({
+		open: false,
+		title: "",
+		message: "",
+		severity: "",
+	});
+
+	const closeAlert = () => {
+		setAlert({
+			open: false,
+			title: "",
+			message: "",
+			severity: "",
+		});
+	};
+
+	const handleFormSubmit = async (values, { setSubmitting }) => {
+		// CALL API LOGIN.
+		try {
+			const response = await AxiosInstance.post("api/web/login/", values);
+			if (response.status !== 200) return;
+
+			localStorage.setItem(ACCESS_TOKEN, response.data["token"]);
+			navigation("/");
+		} catch (error) {
+			setAlert({
+				open: true,
+				title: "Failed to login",
+				message: "Username or password is not correct!",
+				severity: "error",
+			});
+		} finally {
+			setSubmitting(false);
+		}
+	};
 
 	return (
 		<Box
@@ -143,6 +179,8 @@ export default function Login() {
 					)}
 				</Formik>
 			</Box>
+
+			<AlertDialog {...alert} onClose={closeAlert} />
 		</Box>
 	);
 }

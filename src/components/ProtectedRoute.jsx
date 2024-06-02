@@ -12,23 +12,23 @@ function ProtectedRoute() {
 		authenticate().catch(() => setIsAuthenticated(false));
 	}, []);
 
-	const refreshToken = async () => {
-		const token = localStorage.getItem(REFRESH_TOKEN);
-		if (!token) {
-			setIsAuthenticated(false);
-			return;
-		}
-		// REFRESH TOKEN.
-		const respone = await AxiosInstance.post("/api/token/refresh/", {
-			refresh: token,
-		});
-		// CHECK RESPONE.
-		if (respone.status !== 200) setIsAuthenticated(false);
-		else {
-			localStorage.setItem(ACCESS_TOKEN, respone.data.access);
-			setIsAuthenticated(true);
-		}
-	};
+	// const refreshToken = async () => {
+	// 	const token = localStorage.getItem(REFRESH_TOKEN);
+	// 	if (!token) {
+	// 		setIsAuthenticated(false);
+	// 		return;
+	// 	}
+	// 	// REFRESH TOKEN.
+	// 	const respone = await AxiosInstance.post("/api/token/refresh/", {
+	// 		refresh: token,
+	// 	});
+	// 	// CHECK RESPONE.
+	// 	if (respone.status !== 200) setIsAuthenticated(false);
+	// 	else {
+	// 		localStorage.setItem(ACCESS_TOKEN, respone.data.access);
+	// 		setIsAuthenticated(true);
+	// 	}
+	// };
 
 	const authenticate = async () => {
 		const token = localStorage.getItem(ACCESS_TOKEN);
@@ -37,9 +37,10 @@ function ProtectedRoute() {
 			return;
 		}
 		// CHECK TOKEN.
-		const decoded = jwtDecode(token);
-		if (decoded.exp < Date.now() / 1000) await refreshToken();
-		else setIsAuthenticated(true);
+		// const decoded = jwtDecode(token);
+		// if (decoded.exp < Date.now() / 1000) await refreshToken();
+		// else setIsAuthenticated(true);
+		setIsAuthenticated(true);
 	};
 
 	switch (isAuthenticated) {

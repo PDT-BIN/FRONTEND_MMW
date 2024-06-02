@@ -19,6 +19,7 @@ import ProfileModal from "../../components/ProfileModal";
 import { AddressUtil } from "../../utils";
 import { ColorModeContext, tokens } from "../../theme";
 import ChangePasswordModal from "../../components/ChangePasswordModal";
+import { ACCESS_TOKEN } from "../../api/constants";
 
 const SettingMenu = ({ open, anchorRef, handleClose }) => {
 	const navigate = useNavigate();
@@ -27,6 +28,7 @@ const SettingMenu = ({ open, anchorRef, handleClose }) => {
 
 	const handleLogout = () => {
 		// HANDLE LOGOUT LOGIC.
+		localStorage.removeItem(ACCESS_TOKEN);
 		navigate("/login");
 	};
 
