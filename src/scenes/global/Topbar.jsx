@@ -20,16 +20,24 @@ import { AddressUtil } from "../../utils";
 import { ColorModeContext, tokens } from "../../theme";
 import ChangePasswordModal from "../../components/ChangePasswordModal";
 import { ACCESS_TOKEN } from "../../api/constants";
+import AxiosInstance from "../../api/api";
 
 const SettingMenu = ({ open, anchorRef, handleClose }) => {
 	const navigate = useNavigate();
 	const [openUpdateProfile, setOpenUpdateProfile] = useState(false);
 	const [openChangePassword, setOpenChangePassword] = useState(false);
 
-	const handleLogout = () => {
-		// HANDLE LOGOUT LOGIC.
-		localStorage.removeItem(ACCESS_TOKEN);
-		navigate("/login");
+	// CALL API LOGOUT.
+	const handleLogout = async () => {
+		try {
+			const response = await AxiosInstance.post("logoutall/");
+			if (response.status !== 204) return;
+
+			localStorage.removeItem(ACCESS_TOKEN);
+			navigate("/login");
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const openDialog = (setOpen) => {

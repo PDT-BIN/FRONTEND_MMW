@@ -20,7 +20,7 @@ const validationSchema = yup.object({
 export default function Login() {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
-	const navigation = useNavigate();
+	const navigate = useNavigate();
 	const [alert, setAlert] = useState({
 		open: false,
 		title: "",
@@ -37,14 +37,14 @@ export default function Login() {
 		});
 	};
 
+	// CALL API LOGIN.
 	const handleFormSubmit = async (values, { setSubmitting }) => {
-		// CALL API LOGIN.
 		try {
 			const response = await AxiosInstance.post("api/web/login/", values);
 			if (response.status !== 200) return;
 
 			localStorage.setItem(ACCESS_TOKEN, response.data["token"]);
-			navigation("/");
+			navigate("/");
 		} catch (error) {
 			setAlert({
 				open: true,
