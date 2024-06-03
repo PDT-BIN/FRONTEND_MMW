@@ -130,3 +130,45 @@ export const DELETE_PARTNER_FAILED = {
 	message: "Something went wrong!",
 	severity: "error",
 };
+
+export const CREATE_EMPLOYEE_SUCCESS = {
+	open: true,
+	title: "",
+	message: "Create employee successfully!",
+	severity: "success",
+};
+
+export const CREATE_EMPLOYEE_FAILED = {
+	open: true,
+	title: "Failed to create employee",
+	message: "Something went wrong!",
+	severity: "error",
+};
+
+export const UPDATE_EMPLOYEE_SUCCESS = {
+	open: true,
+	title: "",
+	message: "Update employee successfully!",
+	severity: "success",
+};
+
+export const UPDATE_EMPLOYEE_FAILED = {
+	open: true,
+	title: "Failed to update employee",
+	message: "Something went wrong!",
+	severity: "error",
+};
+
+export const DELETE_EMPLOYEE_SUCCESS = {
+	open: true,
+	title: "",
+	message: "Delete employee successfully!",
+	severity: "success",
+};
+
+export const DELETE_EMPLOYEE_FAILED = {
+	open: true,
+	title: "Failed to delete employee",
+	message: "Something went wrong!",
+	severity: "error",
+};

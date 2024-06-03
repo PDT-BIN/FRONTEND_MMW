@@ -16,7 +16,7 @@ import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import ProfileModal from "../../components/ProfileModal";
-import { AddressUtil } from "../../utils";
+import { AddressUtil, DateTimeUtil } from "../../utils";
 import { ColorModeContext, tokens } from "../../theme";
 import ChangePasswordModal from "../../components/ChangePasswordModal";
 import AxiosInstance from "../../api/api";
@@ -79,6 +79,9 @@ const SettingMenu = ({ open, anchorRef, handleClose }) => {
 		{ ward, district, province, ...contentValues },
 		{ setSubmitting }
 	) => {
+		contentValues["birthdate"] = DateTimeUtil.format(
+			contentValues["birthdate"]
+		);
 		contentValues["address"] = AddressUtil.combine(
 			ward,
 			district,

@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import { DataGrid, GridToolbarContainer } from "@mui/x-data-grid";
 import AddIcon from "@mui/icons-material/Add";
@@ -10,9 +10,19 @@ import Header from "../../components/Header";
 import Button from "../../components/customs/Button";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import ProfileModal from "../../components/ProfileModal";
-import { tokens } from "../../theme";
+import { ColorModeContext, tokens } from "../../theme";
 import { AddressUtil, DateTimeUtil } from "../../utils";
 import { mockDataEmployee } from "../../data/mockData";
+import AxiosInstance from "../../api/api";
+import {
+	CREATE_EMPLOYEE_FAILED,
+	CREATE_EMPLOYEE_SUCCESS,
+	DATA_NOTICE,
+	DELETE_EMPLOYEE_FAILED,
+	DELETE_EMPLOYEE_SUCCESS,
+	UPDATE_EMPLOYEE_FAILED,
+	UPDATE_EMPLOYEE_SUCCESS,
+} from "../../notice";
 
 const Toolbar = (props) => {
 	const theme = useTheme();
@@ -131,6 +141,13 @@ export default function Employee() {
 	);
 	const [openModify, setOpenModify] = useState(false);
 	const [openDelete, setOpenDelete] = useState(false);
+	// API.
+	const { setAlert } = useContext(ColorModeContext);
+	useEffect(() => {
+		AxiosInstance.get("api/web/profile/")
+			.then((response) => setRows(response.data))
+			.catch((_) => setAlert(DATA_NOTICE));
+	}, [openModify, openDelete]);
 
 	const handleFormCancel = () => {
 		setSelectedRowModel([]);
@@ -160,28 +177,49 @@ export default function Employee() {
 		handleFormCancel();
 	};
 
+	// CALL API CREATE & UPDATE.
 	const handleModifySubmit = (
 		{ ward, district, province, ...contentValues },
 		{ setSubmitting }
 	) => {
+		contentValues["birthdate"] = DateTimeUtil.format(
+			contentValues["birthdate"]
+		);
 		contentValues["address"] = AddressUtil.combine(
 			ward,
 			district,
 			province
 		);
-		console.log(contentValues);
+
 		if (!openForCreating) {
-			// CALL API CREATE EMPLOYEE.
+			AxiosInstance.post("api/web/profile/", contentValues)
+				.then((_) => {
+					setAlert(CREATE_EMPLOYEE_SUCCESS);
+					closeModifyDialog();
+				})
+				.catch((_) => setAlert(CREATE_EMPLOYEE_FAILED));
 		} else {
-			// CALL API UPDATE EMPLOYEE.
+			AxiosInstance.put(
+				`api/web/profile/${contentValues["id"]}/`,
+				contentValues
+			)
+				.then((_) => {
+					setAlert(UPDATE_EMPLOYEE_SUCCESS);
+					closeModifyDialog();
+				})
+				.catch((_) => setAlert(UPDATE_EMPLOYEE_FAILED));
 		}
 		setSubmitting(false);
-		closeModifyDialog();
 	};
 
+	// CALL API DELETE.
 	const handleDeleteSubmit = () => {
-		// CALL API DELETE EMPLOYEE.
-		closeDeleteDialog();
+		AxiosInstance.delete(`api/web/profile/${selectedRow.current["id"]}/`)
+			.then((_) => {
+				setAlert(DELETE_EMPLOYEE_SUCCESS);
+				closeDeleteDialog();
+			})
+			.catch((_) => setAlert(DELETE_EMPLOYEE_FAILED));
 	};
 
 	return (
