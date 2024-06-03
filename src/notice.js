@@ -74,3 +74,17 @@ export const UPDATE_PROFILE_FAILED = {
 	message: "Something went wrong!",
 	severity: "error",
 };
+
+export const CHANGE_PASSWORD_SUCCESS = {
+	open: true,
+	title: "",
+	message: "Change password successfully!",
+	severity: "success",
+};
+
+export const CHANGE_PASSWORD_FAILED = {
+	open: true,
+	title: "Failed to change profile",
+	message: "Something went wrong!",
+	severity: "error",
+};

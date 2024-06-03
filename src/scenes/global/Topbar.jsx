@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
 	Box,
@@ -21,6 +21,8 @@ import { ColorModeContext, tokens } from "../../theme";
 import ChangePasswordModal from "../../components/ChangePasswordModal";
 import AxiosInstance from "../../api/api";
 import {
+	CHANGE_PASSWORD_FAILED,
+	CHANGE_PASSWORD_SUCCESS,
 	DATA_NOTICE,
 	LOGOUT_FAILED,
 	LOGOUT_SUCCESS,
@@ -95,11 +97,18 @@ const SettingMenu = ({ open, anchorRef, handleClose }) => {
 		setSubmitting(false);
 	};
 
+	// CALL API CHANGE PASSWORD.
 	const handleChangePassword = (values, { setSubmitting }) => {
-		console.log(values);
-		// CALL API CHANGE PASSWORD.
+		AxiosInstance.put("api/web/change_password/", {
+			old_password: values["current_password"],
+			new_password: values["changed_password"],
+		})
+			.then((_) => {
+				setAlert(CHANGE_PASSWORD_SUCCESS);
+				closeChangePassword();
+			})
+			.catch((_) => setAlert(CHANGE_PASSWORD_FAILED));
 		setSubmitting(false);
-		closeChangePassword();
 	};
 
 	return (
