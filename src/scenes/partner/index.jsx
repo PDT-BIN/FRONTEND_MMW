@@ -60,7 +60,7 @@ export default function Partner() {
 	const colors = tokens(theme.palette.mode);
 	// DATAGRID SECTION.
 	const selectedRow = useRef({});
-	const [rows, setRows] = useState(mockDataPartner);
+	const [rows, setRows] = useState([]);
 	const [selectedRowModel, setSelectedRowModel] = useState([]);
 	const columns = [
 		{ field: "id", headerName: "ID", flex: 0.5, hideable: false },

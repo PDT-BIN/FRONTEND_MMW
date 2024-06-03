@@ -1,6 +1,12 @@
 import { Formik } from "formik";
 import * as yup from "yup";
-import { Autocomplete, Box, Divider } from "@mui/material";
+import {
+	Autocomplete,
+	Box,
+	Checkbox,
+	Divider,
+	FormControlLabel,
+} from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -12,9 +18,10 @@ import AutoCompleteField from "../../components/customs/AutoCompleteField";
 const initialValues = {
 	name: "",
 	unit: "",
-	category: null,
+	category: "",
 	inventory: 0,
 	price: 0,
+	in_stock: false,
 };
 
 const validationSchema = yup.object({
@@ -150,6 +157,18 @@ export default function DataDialog({
 											}
 										/>
 									)}
+								/>
+								<FormControlLabel
+									label="IN STOCK"
+									control={
+										<Checkbox
+											name="in_stock"
+											checked={values.in_stock}
+											onBlur={handleBlur}
+											onChange={handleChange}
+											color="success"
+										/>
+									}
 								/>
 								{/* UNCHANGABLE FIELDS */}
 								<Divider sx={{ gridColumn: "span 4" }} />

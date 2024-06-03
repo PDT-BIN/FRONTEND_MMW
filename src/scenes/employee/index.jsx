@@ -59,7 +59,7 @@ export default function Employee() {
 	const colors = tokens(theme.palette.mode);
 	// DATAGRID SECTION.
 	const selectedRow = useRef({});
-	const [rows, setRows] = useState(mockDataEmployee);
+	const [rows, setRows] = useState([]);
 	const [selectedRowModel, setSelectedRowModel] = useState([]);
 	const columns = [
 		{ field: "id", headerName: "ID", flex: 0.5, hideable: false },

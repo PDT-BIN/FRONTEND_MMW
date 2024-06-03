@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useTheme } from "@emotion/react";
 import { Box, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
@@ -11,9 +11,19 @@ import PriceDialog from "./PriceDialog";
 import Header from "../../components/Header";
 import Button from "../../components/customs/Button";
 import ConfirmDialog from "../../components/ConfirmDialog";
-import { tokens } from "../../theme";
+import { ColorModeContext, tokens } from "../../theme";
 import { FilterUtil } from "../../utils";
 import { mockDataProduct } from "../../data/mockData";
+import AxiosInstance from "../../api/api";
+import {
+	CREATE_PRODUCT_FAILED,
+	CREATE_PRODUCT_SUCCESS,
+	DATA_NOTICE,
+	DELETE_PARTNER_SUCCESS,
+	DELETE_PRODUCT_FAILED,
+	UPDATE_PRODUCT_FAILED,
+	UPDATE_PRODUCT_SUCCESS,
+} from "../../notice";
 
 const Toolbar = (props) => {
 	const theme = useTheme();
@@ -56,7 +66,7 @@ export default function Product() {
 	const colors = tokens(theme.palette.mode);
 	// DATAGRID SECTION.
 	const selectedRow = useRef({});
-	const [rows, setRows] = useState(mockDataProduct);
+	const [rows, setRows] = useState([]);
 	const [selectedRowModel, setSelectedRowModel] = useState([]);
 	const columns = [
 		{ field: "id", headerName: "ID", flex: 1, hideable: false },
@@ -108,6 +118,13 @@ export default function Product() {
 	const [openModify, setOpenModify] = useState(false);
 	const [openDelete, setOpenDelete] = useState(false);
 	const [openPrice, setOpenPrice] = useState(false);
+	// API.
+	const { setAlert } = useContext(ColorModeContext);
+	useEffect(() => {
+		AxiosInstance.get("api/web/product/")
+			.then((response) => setRows(response.data))
+			.catch((_) => setAlert(DATA_NOTICE));
+	}, [openModify, openDelete]);
 
 	const handleFormCancel = () => {
 		setSelectedRowModel([]);
@@ -137,20 +154,37 @@ export default function Product() {
 		handleFormCancel();
 	};
 
+	// CALL API CREATE & UPDATE.
 	const handleModifySubmit = (contentValues, { setSubmitting }) => {
-		console.log(contentValues);
 		if (!openForCreating) {
-			// CALL API CREATE PRODUCT.
+			AxiosInstance.post("api/web/product/", contentValues)
+				.then((_) => {
+					setAlert(CREATE_PRODUCT_SUCCESS);
+					closeModifyDialog();
+				})
+				.catch((_) => setAlert(CREATE_PRODUCT_FAILED));
 		} else {
-			// CALL API UPDATE PRODUCT.
+			AxiosInstance.put(
+				`api/web/product/${contentValues["id"]}/`,
+				contentValues
+			)
+				.then((_) => {
+					setAlert(UPDATE_PRODUCT_SUCCESS);
+					closeModifyDialog();
+				})
+				.catch((_) => setAlert(UPDATE_PRODUCT_FAILED));
 		}
 		setSubmitting(false);
-		closeModifyDialog();
 	};
 
+	// CALL API DELETE.
 	const handleDeleteSubmit = () => {
-		// CALL API DELETE PRODUCT.
-		closeDeleteDialog();
+		AxiosInstance.delete(`api/web/product/${selectedRow.current["id"]}/`)
+			.then((_) => {
+				setAlert(DELETE_PARTNER_SUCCESS);
+				closeDeleteDialog();
+			})
+			.catch((_) => setAlert(DELETE_PRODUCT_FAILED));
 	};
 
 	const openPriceDialog = () => {

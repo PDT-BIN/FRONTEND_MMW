@@ -12,6 +12,8 @@ export const DATA_NOTICE = {
 	severity: "error",
 };
 
+// LOGIN.
+
 export const LOGIN_SUCCESS = {
 	open: true,
 	title: "",
@@ -26,6 +28,8 @@ export const LOGIN_FAILED = {
 	severity: "error",
 };
 
+// LOGOUT.
+
 export const LOGOUT_SUCCESS = {
 	open: true,
 	title: "",
@@ -39,6 +43,8 @@ export const LOGOUT_FAILED = {
 	message: "Something went wrong!",
 	severity: "error",
 };
+
+// RESET PASSWORD.
 
 export const RESET_PASSWORD_INFO = {
 	open: true,
@@ -61,6 +67,8 @@ export const RESET_PASSWORD_FAILED = {
 	severity: "error",
 };
 
+// PROFILE.
+
 export const UPDATE_PROFILE_SUCCESS = {
 	open: true,
 	title: "",
@@ -75,6 +83,8 @@ export const UPDATE_PROFILE_FAILED = {
 	severity: "error",
 };
 
+// CHANGE PASSWORD.
+
 export const CHANGE_PASSWORD_SUCCESS = {
 	open: true,
 	title: "",
@@ -88,6 +98,8 @@ export const CHANGE_PASSWORD_FAILED = {
 	message: "Something went wrong!",
 	severity: "error",
 };
+
+// BUSINESS PARTNER.
 
 export const CREATE_PARTNER_SUCCESS = {
 	open: true,
@@ -131,6 +143,8 @@ export const DELETE_PARTNER_FAILED = {
 	severity: "error",
 };
 
+// EMPLOYEE.
+
 export const CREATE_EMPLOYEE_SUCCESS = {
 	open: true,
 	title: "",
@@ -169,6 +183,50 @@ export const DELETE_EMPLOYEE_SUCCESS = {
 export const DELETE_EMPLOYEE_FAILED = {
 	open: true,
 	title: "Failed to delete employee",
+	message: "Something went wrong!",
+	severity: "error",
+};
+
+// PRODUCT.
+
+export const CREATE_PRODUCT_SUCCESS = {
+	open: true,
+	title: "",
+	message: "Create product successfully!",
+	severity: "success",
+};
+
+export const CREATE_PRODUCT_FAILED = {
+	open: true,
+	title: "Failed to create product",
+	message: "Something went wrong!",
+	severity: "error",
+};
+
+export const UPDATE_PRODUCT_SUCCESS = {
+	open: true,
+	title: "",
+	message: "Update product successfully!",
+	severity: "success",
+};
+
+export const UPDATE_PRODUCT_FAILED = {
+	open: true,
+	title: "Failed to update product",
+	message: "Something went wrong!",
+	severity: "error",
+};
+
+export const DELETE_PRODUCT_SUCCESS = {
+	open: true,
+	title: "",
+	message: "Delete product successfully!",
+	severity: "success",
+};
+
+export const DELETE_PRODUCT_FAILED = {
+	open: true,
+	title: "Failed to delete product",
 	message: "Something went wrong!",
 	severity: "error",
 };
