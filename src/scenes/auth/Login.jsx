@@ -28,13 +28,12 @@ export default function Login() {
 	const handleFormSubmit = async (values, { setSubmitting }) => {
 		try {
 			const response = await AxiosInstance.post("api/web/login/", values);
-			if (response.status !== 200) return;
 
 			setAlert(LOGIN_SUCCESS);
 			localStorage.setItem(ACCESS_TOKEN, response.data["token"]);
 			localStorage.setItem(PROFILE_ID, response.data["profile_id"]);
 			navigate("/");
-		} catch (error) {
+		} catch {
 			setAlert(LOGIN_FAILED);
 		} finally {
 			setSubmitting(false);

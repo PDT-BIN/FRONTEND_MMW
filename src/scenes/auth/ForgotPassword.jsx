@@ -28,7 +28,7 @@ export default function ForgotPassword() {
 		try {
 			await AxiosInstance.post("api/web/password_reset/", values);
 			setAlert(RESET_PASSWORD_INFO);
-		} catch (error) {
+		} catch {
 		} finally {
 			setSubmitting(false);
 			resetForm();

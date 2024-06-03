@@ -62,7 +62,7 @@ const alterValues = ({ birthdate, address, ...data }) => {
 		...initialValues,
 		...data,
 		...AddressUtil.analyze(address),
-		birthdate: moment(birthdate, "DD/MM/YYYY"),
+		birthdate: birthdate && moment(birthdate, "DD/MM/YYYY"),
 	};
 };
 
@@ -80,10 +80,8 @@ export default function ProfileModal({
 	// CONTROL INITIAL VALUES.
 	let convertedValues = alterValues(data);
 	// CONTROL REF VALUES.
-	useEffect(() => {
-		selectedProvince.current = convertedValues.province;
-		selectedDistrict.current = convertedValues.district;
-	}, [isOpened]);
+	selectedProvince.current = convertedValues.province;
+	selectedDistrict.current = convertedValues.district;
 
 	return (
 		<Dialog title={title} isOpened={isOpened} handleClose={handleClose}>
@@ -91,6 +89,7 @@ export default function ProfileModal({
 				initialValues={convertedValues}
 				validationSchema={validationSchema}
 				onSubmit={handleFormSubmit}
+				enableReinitialize
 			>
 				{({
 					values,

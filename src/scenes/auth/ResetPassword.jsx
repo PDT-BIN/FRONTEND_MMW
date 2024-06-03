@@ -40,11 +40,10 @@ export default function ResetPassword() {
 					token: token,
 				}
 			);
-			if (response.status !== 200) return;
 
 			setAlert(RESET_PASSWORD_SUCCESS);
 			navigate("/login");
-		} catch (error) {
+		} catch {
 			setAlert(RESET_PASSWORD_FAILED);
 		} finally {
 			setSubmitting(false);

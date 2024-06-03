@@ -5,6 +5,13 @@ export const EMPTY_NOTICE = {
 	severity: "",
 };
 
+export const DATA_NOTICE = {
+	open: true,
+	title: "",
+	message: "Error when fetching data!",
+	severity: "error",
+};
+
 export const LOGIN_SUCCESS = {
 	open: true,
 	title: "",
@@ -50,6 +57,20 @@ export const RESET_PASSWORD_SUCCESS = {
 export const RESET_PASSWORD_FAILED = {
 	open: true,
 	title: "Failed to reset password",
+	message: "Something went wrong!",
+	severity: "error",
+};
+
+export const UPDATE_PROFILE_SUCCESS = {
+	open: true,
+	title: "",
+	message: "Update profile successfully!",
+	severity: "success",
+};
+
+export const UPDATE_PROFILE_FAILED = {
+	open: true,
+	title: "Failed to update profile",
 	message: "Something went wrong!",
 	severity: "error",
 };
