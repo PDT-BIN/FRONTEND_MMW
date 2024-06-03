@@ -32,3 +32,24 @@ export const LOGOUT_FAILED = {
 	message: "Something went wrong!",
 	severity: "error",
 };
+
+export const RESET_PASSWORD_INFO = {
+	open: true,
+	title: "",
+	message: "An email was sent to your email address!",
+	severity: "info",
+};
+
+export const RESET_PASSWORD_SUCCESS = {
+	open: true,
+	title: "",
+	message: "Reset password successfully!",
+	severity: "success",
+};
+
+export const RESET_PASSWORD_FAILED = {
+	open: true,
+	title: "Failed to reset password",
+	message: "Something went wrong!",
+	severity: "error",
+};

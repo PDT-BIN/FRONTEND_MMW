@@ -20,6 +20,7 @@ const validationSchema = yup.object({
 export default function Login() {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
+	// API.
 	const navigate = useNavigate();
 	const { setAlert } = useContext(ColorModeContext);
 

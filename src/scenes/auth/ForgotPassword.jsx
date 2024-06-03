@@ -4,7 +4,10 @@ import { Box, Link, Typography } from "@mui/material";
 import Button from "../../components/customs/Button";
 import TextField from "../../components/customs/TextField";
 import { useTheme } from "@emotion/react";
-import { tokens } from "../../theme";
+import { ColorModeContext, tokens } from "../../theme";
+import { useContext } from "react";
+import AxiosInstance from "../../api/api";
+import { RESET_PASSWORD_INFO } from "../../notice";
 
 const validationSchema = yup.object({
 	username: yup.string().required("Username is required!"),
@@ -14,14 +17,23 @@ const validationSchema = yup.object({
 		.email("Field must be an email!"),
 });
 
-const handleFormSubmit = (values, { setSubmitting }) => {
-	// CALL API GET RESET-PASSWORD EMAIL.
-	setSubmitting(false);
-};
-
 export default function ForgotPassword() {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
+	// API.
+	const { setAlert } = useContext(ColorModeContext);
+
+	// CALL API GET RESET-PASSWORD EMAIL.
+	const handleFormSubmit = async (values, { setSubmitting, resetForm }) => {
+		try {
+			await AxiosInstance.post("api/web/password_reset/", values);
+			setAlert(RESET_PASSWORD_INFO);
+		} catch (error) {
+		} finally {
+			setSubmitting(false);
+			resetForm();
+		}
+	};
 
 	return (
 		<Box

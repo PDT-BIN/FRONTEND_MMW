@@ -4,7 +4,11 @@ import { Box, Typography } from "@mui/material";
 import Button from "../../components/customs/Button";
 import PasswordField from "../../components/customs/PasswordField";
 import { useTheme } from "@emotion/react";
-import { tokens } from "../../theme";
+import { ColorModeContext, tokens } from "../../theme";
+import { useContext } from "react";
+import AxiosInstance from "../../api/api";
+import { useNavigate, useParams } from "react-router-dom";
+import { RESET_PASSWORD_SUCCESS, RESET_PASSWORD_FAILED } from "../../notice";
 
 const validationSchema = yup.object({
 	changed_password: yup.string().trim().required("New password is required!"),
@@ -18,14 +22,34 @@ const validationSchema = yup.object({
 		.required("Confirm password is required!"),
 });
 
-const handleFormSubmit = (values, { setSubmitting }) => {
-	// CALL API RESET PASSWORD.
-	setSubmitting(false);
-};
-
 export default function ResetPassword() {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
+	// API.
+	const navigate = useNavigate();
+	const { token } = useParams();
+	const { setAlert } = useContext(ColorModeContext);
+
+	// CALL API RESET PASSWORD.
+	const handleFormSubmit = async (values, { setSubmitting }) => {
+		try {
+			const response = await AxiosInstance.post(
+				"api/web/password_reset/confirm/",
+				{
+					password: values["changed_password"],
+					token: token,
+				}
+			);
+			if (response.status !== 200) return;
+
+			setAlert(RESET_PASSWORD_SUCCESS);
+			navigate("/login");
+		} catch (error) {
+			setAlert(RESET_PASSWORD_FAILED);
+		} finally {
+			setSubmitting(false);
+		}
+	};
 
 	return (
 		<Box

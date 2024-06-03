@@ -23,9 +23,10 @@ import AxiosInstance from "../../api/api";
 import { LOGOUT_FAILED, LOGOUT_SUCCESS } from "../../notice";
 
 const SettingMenu = ({ open, anchorRef, handleClose }) => {
-	const navigate = useNavigate();
 	const [openUpdateProfile, setOpenUpdateProfile] = useState(false);
 	const [openChangePassword, setOpenChangePassword] = useState(false);
+	// API.
+	const navigate = useNavigate();
 	const { setAlert } = useContext(ColorModeContext);
 
 	// CALL API LOGOUT.
