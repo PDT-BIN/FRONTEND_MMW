@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
@@ -14,6 +14,9 @@ import BookmarkRemoveOutlinedIcon from "@mui/icons-material/BookmarkRemoveOutlin
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import { tokens } from "../../theme";
 import { URL_TO_TAB } from "../constants";
+import AxiosInstance from "../../api/api";
+import { DATA_NOTICE } from "../../notice";
+import { IS_MANAGER, PROFILE_ID } from "../../api/constants";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
 	const theme = useTheme();
@@ -68,6 +71,16 @@ export default function Sidebar() {
 	const location = useLocation();
 	const [isCollapsed, setIsCollapsed] = useState(false);
 	const [selected, setSelected] = useState(URL_TO_TAB[location.pathname]);
+	// USER INFORMATION.
+	const [profile, setProfile] = useState({});
+	useEffect(() => {
+		const profileId = localStorage.getItem(PROFILE_ID);
+		if (profileId === null) return;
+
+		AxiosInstance.get(`api/web/profile/${profileId}`)
+			.then((response) => setProfile(response.data))
+			.catch((_) => setAlert(DATA_NOTICE));
+	}, []);
 
 	return (
 		<Box
@@ -131,13 +144,15 @@ export default function Sidebar() {
 									fontWeight="bold"
 									sx={{ m: "10px 0 0 0" }}
 								>
-									BIN BIN
+									{`${profile.last_name} ${profile.first_name}`.toUpperCase()}
 								</Typography>
 								<Typography
 									variant="h5"
 									color={colors.greenAccent[500]}
 								>
-									MANAGER
+									{localStorage.getItem(IS_MANAGER)
+										? "MANAGER"
+										: "STAFF"}
 								</Typography>
 							</Box>
 						</Box>
