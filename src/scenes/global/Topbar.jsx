@@ -198,7 +198,7 @@ const SettingMenu = ({ open, anchorRef, handleClose }) => {
 export default function Topbar() {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
-	const colorMode = useContext(ColorModeContext);
+	const { colorMode } = useContext(ColorModeContext);
 	// CONTROL SETTING TOOLS.
 	const [open, setOpen] = useState(false);
 	const anchorRef = useRef(null);
