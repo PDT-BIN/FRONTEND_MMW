@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useTheme } from "@emotion/react";
 import { Box } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
@@ -11,8 +11,19 @@ import Header from "../../components/Header";
 import DataDialog from "./DataDialog";
 import Button from "../../components/customs/Button";
 import ConfirmDialog from "../../components/ConfirmDialog";
-import { tokens } from "../../theme";
+import { ColorModeContext, tokens } from "../../theme";
 import { mockDataPartner } from "../../data/mockData";
+import { AddressUtil } from "../../utils";
+import AxiosInstance from "../../api/api";
+import {
+	CREATE_PARTNER_FAILED,
+	CREATE_PARTNER_SUCCESS,
+	DATA_NOTICE,
+	DELETE_PARTNER_FAILED,
+	DELETE_PARTNER_SUCCESS,
+	UPDATE_PARTNER_FAILED,
+	UPDATE_PARTNER_SUCCESS,
+} from "../../notice";
 
 const Toolbar = (props) => {
 	const theme = useTheme();
@@ -99,6 +110,13 @@ export default function Partner() {
 	);
 	const [openModify, setOpenModify] = useState(false);
 	const [openDelete, setOpenDelete] = useState(false);
+	// API.
+	const { setAlert } = useContext(ColorModeContext);
+	useEffect(() => {
+		AxiosInstance.get("api/web/business_Partner/")
+			.then((response) => setRows(response.data))
+			.catch((_) => setAlert(DATA_NOTICE));
+	}, [openModify, openDelete]);
 
 	const handleFormCancel = () => {
 		setSelectedRowModel([]);
@@ -128,6 +146,7 @@ export default function Partner() {
 		handleFormCancel();
 	};
 
+	// CALL API CREATE & UPDATE.
 	const handleModifySubmit = (
 		{ ward, district, province, ...contentValues },
 		{ setSubmitting }
@@ -137,19 +156,38 @@ export default function Partner() {
 			district,
 			province
 		);
-		console.log(contentValues);
+
 		if (!openForCreating) {
-			// CALL API CREATE BUSINESS PARTNER.
+			AxiosInstance.post("api/web/business_Partner/", contentValues)
+				.then((_) => {
+					setAlert(CREATE_PARTNER_SUCCESS);
+					closeModifyDialog();
+				})
+				.catch((_) => setAlert(CREATE_PARTNER_FAILED));
 		} else {
-			// CALL API UPDATE BUSINESS PARTNER.
+			AxiosInstance.put(
+				`api/web/business_Partner/${contentValues["id"]}/`,
+				contentValues
+			)
+				.then((_) => {
+					setAlert(UPDATE_PARTNER_SUCCESS);
+					closeModifyDialog();
+				})
+				.catch((_) => setAlert(UPDATE_PARTNER_FAILED));
 		}
 		setSubmitting(false);
-		closeModifyDialog();
 	};
 
+	// CALL API DELETE.
 	const handleDeleteSubmit = () => {
-		// CALL API DELETE BUSINESS PARTNER.
-		closeDeleteDialog();
+		AxiosInstance.delete(
+			`api/web/business_Partner/${selectedRow.current["id"]}/`
+		)
+			.then((_) => {
+				setAlert(DELETE_PARTNER_SUCCESS);
+				closeDeleteDialog();
+			})
+			.catch((_) => setAlert(DELETE_PARTNER_FAILED));
 	};
 
 	return (

@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import * as yup from "yup";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { Box, MenuItem } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -43,29 +43,29 @@ const validationSchema = yup.object({
 		.strict(true),
 });
 
+const alterValues = ({ address, ...data }) => {
+	if (!data.hasOwnProperty("id")) return initialValues;
+	return {
+		...initialValues,
+		...data,
+		...AddressUtil.analyze(address),
+	};
+};
+
 export default function DataDialog({
 	isOpened,
 	handleClose,
 	handleFormSubmit,
-	data: { address, birthdate, ...data },
+	data,
 }) {
 	// CONTROL ADDRESS DISABILITY.
 	const selectedProvince = useRef("");
 	const selectedDistrict = useRef("");
 	// CONTROL INITIAL VALUES.
-	let convertedValues = { ...initialValues };
-	if (Boolean(data.id)) {
-		convertedValues = {
-			...convertedValues,
-			...data,
-			...AddressUtil.analyze(address),
-		};
-	}
+	let convertedValues = alterValues(data);
 	// CONTROL REF VALUES.
-	useEffect(() => {
-		selectedProvince.current = convertedValues.province;
-		selectedDistrict.current = convertedValues.district;
-	}, [isOpened]);
+	selectedProvince.current = convertedValues.province;
+	selectedDistrict.current = convertedValues.district;
 
 	return (
 		<Dialog

@@ -88,3 +88,45 @@ export const CHANGE_PASSWORD_FAILED = {
 	message: "Something went wrong!",
 	severity: "error",
 };
+
+export const CREATE_PARTNER_SUCCESS = {
+	open: true,
+	title: "",
+	message: "Create partner successfully!",
+	severity: "success",
+};
+
+export const CREATE_PARTNER_FAILED = {
+	open: true,
+	title: "Failed to create partner",
+	message: "Something went wrong!",
+	severity: "error",
+};
+
+export const UPDATE_PARTNER_SUCCESS = {
+	open: true,
+	title: "",
+	message: "Update partner successfully!",
+	severity: "success",
+};
+
+export const UPDATE_PARTNER_FAILED = {
+	open: true,
+	title: "Failed to update partner",
+	message: "Something went wrong!",
+	severity: "error",
+};
+
+export const DELETE_PARTNER_SUCCESS = {
+	open: true,
+	title: "",
+	message: "Delete partner successfully!",
+	severity: "success",
+};
+
+export const DELETE_PARTNER_FAILED = {
+	open: true,
+	title: "Failed to delete partner",
+	message: "Something went wrong!",
+	severity: "error",
+};
