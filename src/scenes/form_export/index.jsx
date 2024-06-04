@@ -54,11 +54,12 @@ const Export = () => {
 	];
 	// API.
 	const { setAlert } = useContext(ColorModeContext);
-	useEffect(() => {
+	const fetchData = () => {
 		AxiosInstance.get("api/web/export_form/")
 			.then((response) => setRows(response.data))
 			.catch((_) => setAlert(DATA_NOTICE));
-	}, []);
+	};
+	useEffect(() => fetchData(), []);
 	// FORM SECTION.
 	const [selectedRow, setSelectedRow] = useState({});
 	// DETAIL SECTION.
@@ -108,6 +109,7 @@ const Export = () => {
 					setAlert(CREATE_FORM_SUCCESS);
 					handleFormCancel();
 					resetForm();
+					fetchData();
 				})
 				.catch((_) => setAlert(CREATE_FORM_FAILED));
 		} else {
@@ -119,6 +121,7 @@ const Export = () => {
 					setAlert(UPDATE_FORM_SUCCESS);
 					handleFormCancel();
 					resetForm();
+					fetchData();
 				})
 				.catch((_) => setAlert(UPDATE_FORM_FAILED));
 		}

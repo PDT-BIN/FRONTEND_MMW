@@ -54,11 +54,12 @@ const Order = () => {
 	];
 	// API.
 	const { setAlert } = useContext(ColorModeContext);
-	useEffect(() => {
+	const fetchData = () => {
 		AxiosInstance.get("api/web/order_form/")
 			.then((response) => setRows(response.data))
 			.catch((_) => setAlert(DATA_NOTICE));
-	}, []);
+	};
+	useEffect(() => fetchData(), []);
 	// FORM SECTION.
 	const [selectedRow, setSelectedRow] = useState({});
 	// DETAIL SECTION.
@@ -108,6 +109,7 @@ const Order = () => {
 					setAlert(CREATE_ORDER_SUCCESS);
 					handleFormCancel();
 					resetForm();
+					fetchData();
 				})
 				.catch((_) => setAlert(CREATE_ORDER_FAILED));
 		} else {
@@ -119,6 +121,7 @@ const Order = () => {
 					setAlert(UPDATE_ORDER_SUCCESS);
 					handleFormCancel();
 					resetForm();
+					fetchData();
 				})
 				.catch((_) => setAlert(UPDATE_ORDER_FAILED));
 		}
