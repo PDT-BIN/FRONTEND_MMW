@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useTheme } from "@emotion/react";
 import { Box, DialogActions } from "@mui/material";
 import List from "@mui/material/List";
@@ -8,9 +8,10 @@ import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
 import Dialog from "../../components/customs/Dialog";
 import Button from "../../components/customs/Button";
-import { tokens } from "../../theme";
-import { mockDataOrderDetail } from "../../data/mockData";
+import { ColorModeContext, tokens } from "../../theme";
 import TextField from "../../components/customs/TextField";
+import AxiosInstance from "../../api/api";
+import { DATA_NOTICE } from "../../notice";
 
 function CustomList({ data, checked, handleToggle }) {
 	const theme = useTheme();
@@ -235,25 +236,27 @@ function DetailDialog({
 	const modifiedProducts = useRef([]);
 	const [allDetails, setAllDetails] = useState([]);
 	const [allProducts, setAllProducts] = useState([]);
+	// API.
+	const { setAlert } = useContext(ColorModeContext);
 	useEffect(() => {
+		if (selectedOrder === null) return;
 		// CALL API GET DETAIL DATA OF ORDER FORM.
-		setAllDetails(
-			[...mockDataOrderDetail]
-				.filter((e) => e.order_id === selectedOrder)
-				.map((e) => {
-					return {
-						id: e.product.id,
-						quantity: e.quantity,
-						price: e.price,
-					};
-				})
-		);
-		// CALL API GET PRODUCT DATA.
-		setAllProducts(
-			[...mockDataOrderDetail]
-				.filter((e) => e.order_id === selectedOrder)
-				.map((e) => e.product)
-		);
+		AxiosInstance.get(
+			`api/web/order_detail/${selectedOrder}/filter_detail/`
+		)
+			.then((response) => {
+				setAllProducts([...response.data].map((e) => e.product));
+				setAllDetails(
+					[...response.data].map((e) => {
+						return {
+							id: e.product.id,
+							quantity: e.quantity,
+							price: e.price,
+						};
+					})
+				);
+			})
+			.catch((_) => setAlert(DATA_NOTICE));
 	}, [selectedOrder]);
 
 	const handleSubmit = () => {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { Box } from "@mui/material";
@@ -8,8 +8,10 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import Button from "../../components/customs/Button";
 import TextField from "../../components/customs/TextField";
 import { DateTimeUtil } from "../../utils";
-import { mockDataOrder } from "../../data/mockData";
 import AutoCompleteField from "../../components/customs/AutoCompleteField";
+import AxiosInstance from "../../api/api";
+import { ColorModeContext } from "../../theme";
+import { DATA_NOTICE } from "../../notice";
 
 const initialValues = {
 	created_date: DateTimeUtil.format(Date.now()),
@@ -29,16 +31,21 @@ function DataForm({
 	setSelectedOrder,
 }) {
 	const [orders, setOrders] = useState([]);
+	// CALL API GET ORDER DATA.
+	const { setAlert } = useContext(ColorModeContext);
 	useEffect(() => {
-		// CALL API GET ORDER DATA.
-		setOrders(
-			[...mockDataOrder].map((e) => {
-				return {
-					name: `${e.id} - ${e.partner.name}`,
-					...e,
-				};
-			})
-		);
+		AxiosInstance.get("api/web/order_form/")
+			.then((response) =>
+				setOrders(
+					response.data.map((e) => {
+						return {
+							name: `${e.id} - ${e.partner.name}`,
+							...e,
+						};
+					})
+				)
+			)
+			.catch((_) => setAlert(DATA_NOTICE));
 	}, []);
 
 	// CONTROL INITIAL VALUES.
