@@ -4,16 +4,23 @@ import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { DateTimeUtil } from "../../utils";
-import { mockDataExport, mockDataExportDetail } from "../../data/mockData";
 import DataForm from "./DataForm";
 import DataDetail from "./DataDetail";
+import AxiosInstance from "../../api/api";
+import {
+	CREATE_FORM_FAILED,
+	CREATE_FORM_SUCCESS,
+	DATA_NOTICE,
+	UPDATE_FORM_FAILED,
+	UPDATE_FORM_SUCCESS,
+} from "../../notice";
 
 const Export = () => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	// DATAGRID SECTION.
 	const [selectedRowModel, setSelectedRowModel] = useState([]);
-	const [rows, setRows] = useState(mockDataExport);
+	const [rows, setRows] = useState([]);
 	const columns = [
 		{ field: "id", headerName: "ID", flex: 1, hideable: false },
 		{
@@ -45,6 +52,13 @@ const Export = () => {
 			flex: 1,
 		},
 	];
+	// API.
+	const { setAlert } = useContext(ColorModeContext);
+	useEffect(() => {
+		AxiosInstance.get("api/web/export_form/")
+			.then((response) => setRows(response.data))
+			.catch((_) => setAlert(DATA_NOTICE));
+	}, []);
 	// FORM SECTION.
 	const [selectedRow, setSelectedRow] = useState({});
 	// DETAIL SECTION.
@@ -55,9 +69,11 @@ const Export = () => {
 			return;
 		}
 		// CALL API TO GET FORM DETAIL.
-		setDetails(
-			mockDataExportDetail.filter((e) => e.export_id === selectedRow.id)
-		);
+		AxiosInstance.get(
+			`api/web/export_detail/${selectedRow.id}/filter_detail/`
+		)
+			.then((response) => setDetails(response.data))
+			.catch((_) => setAlert(DATA_NOTICE));
 	}, [selectedRow]);
 	// CALCULATE TOTAL AUTOMATICALLY.
 	const total = useMemo(
@@ -71,25 +87,42 @@ const Export = () => {
 		setSelectedRow({});
 	};
 
-	const handleFormSubmit = (contentValues, { setSubmitting }) => {
+	// CALL API CREATE & UPDATE.
+	const handleFormSubmit = (contentValues, { setSubmitting, resetForm }) => {
 		contentValues = {
 			...contentValues,
 			total: total,
-			details: details.map((e) => {
-				return {
-					id: `${selectedRow.id}-${e.product.id}`,
-					...e,
-				};
-			}),
+			details: !Boolean(selectedRow.id)
+				? details
+				: details.map((e) => {
+						return {
+							id: `${selectedRow.id}-${e.product.id}`,
+							...e,
+						};
+				  }),
 		};
-		console.log(contentValues);
+
 		if (!Boolean(contentValues.id)) {
-			// CALL API CREATE EXPORT FORM.
+			AxiosInstance.post("api/web/export_form/", contentValues)
+				.then((_) => {
+					setAlert(CREATE_FORM_SUCCESS);
+					handleFormCancel();
+					resetForm();
+				})
+				.catch((_) => setAlert(CREATE_FORM_FAILED));
 		} else {
-			// CALL API UPDATE EXPORT FORM.
+			AxiosInstance.put(
+				`api/web/export_form/${selectedRow.id}/`,
+				contentValues
+			)
+				.then((_) => {
+					setAlert(UPDATE_FORM_SUCCESS);
+					handleFormCancel();
+					resetForm();
+				})
+				.catch((_) => setAlert(UPDATE_FORM_FAILED));
 		}
 		setSubmitting(false);
-		handleFormCancel();
 	};
 
 	return (

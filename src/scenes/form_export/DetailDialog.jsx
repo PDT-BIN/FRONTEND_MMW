@@ -9,8 +9,9 @@ import Checkbox from "@mui/material/Checkbox";
 import Dialog from "../../components/customs/Dialog";
 import Button from "../../components/customs/Button";
 import { tokens } from "../../theme";
-import { mockDataProduct } from "../../data/mockData";
 import TextField from "../../components/customs/TextField";
+import AxiosInstance from "../../api/api";
+import { DATA_NOTICE } from "../../notice";
 
 function CustomList({ data, checked, handleToggle }) {
 	const theme = useTheme();
@@ -228,9 +229,12 @@ function TransferList({
 function DetailDialog({ isOpened, handleClose, handleFormSubmit, details }) {
 	const modifiedProducts = useRef([]);
 	const [allProducts, setAllProducts] = useState([]);
+	// CALL API GET PRODUCT DATA.
+	const { setAlert } = useContext(ColorModeContext);
 	useEffect(() => {
-		// CALL API GET PRODUCT DATA.
-		setAllProducts(mockDataProduct);
+		AxiosInstance.get("api/web/product/")
+			.then((response) => setAllProducts(response.data))
+			.catch((_) => setAlert(DATA_NOTICE));
 	}, []);
 
 	const handleSubmit = () => {

@@ -8,8 +8,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import Button from "../../components/customs/Button";
 import TextField from "../../components/customs/TextField";
 import { DateTimeUtil } from "../../utils";
-import { mockDataDepot, mockDataPartner } from "../../data/mockData";
 import AutoCompleteField from "../../components/customs/AutoCompleteField";
+import AxiosInstance from "../../api/api";
+import { DATA_NOTICE } from "../../notice";
 
 const initialValues = {
 	created_date: DateTimeUtil.format(Date.now()),
@@ -31,14 +32,22 @@ function DataForm({ handleFormSubmit, handleFormCancel, form, total }) {
 
 	const [depots, setDepots] = useState([]);
 	const [partners, setPartners] = useState([]);
+	// CALL API GET DEPOT & PARTNER DATA.
 	useEffect(() => {
-		// CALL API GET DEPOT & PARTNER DATA.
-		setDepots(
-			[...mockDataDepot].sort((a, b) => a.name.localeCompare(b.name))
-		);
-		setPartners(
-			[...mockDataPartner].sort((a, b) => a.name.localeCompare(b.name))
-		);
+		AxiosInstance.get("api/web/business_Partner/")
+			.then((response) =>
+				setPartners(
+					response.data.sort((a, b) => a.name.localeCompare(b.name))
+				)
+			)
+			.catch((_) => setAlert(DATA_NOTICE));
+		AxiosInstance.get("api/web/depot/")
+			.then((response) =>
+				setDepots(
+					response.data.sort((a, b) => a.name.localeCompare(b.name))
+				)
+			)
+			.catch((_) => setAlert(DATA_NOTICE));
 	}, []);
 
 	return (

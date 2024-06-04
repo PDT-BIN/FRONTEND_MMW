@@ -274,3 +274,47 @@ export const DELETE_ORDER_FAILED = {
 	message: "Something went wrong!",
 	severity: "error",
 };
+
+// FORM.
+
+export const CREATE_FORM_SUCCESS = {
+	open: true,
+	title: "",
+	message: "Create form successfully!",
+	severity: "success",
+};
+
+export const CREATE_FORM_FAILED = {
+	open: true,
+	title: "Failed to create form",
+	message: "Something went wrong!",
+	severity: "error",
+};
+
+export const UPDATE_FORM_SUCCESS = {
+	open: true,
+	title: "",
+	message: "Update form successfully!",
+	severity: "success",
+};
+
+export const UPDATE_FORM_FAILED = {
+	open: true,
+	title: "Failed to update form",
+	message: "Something went wrong!",
+	severity: "error",
+};
+
+export const DELETE_FORM_SUCCESS = {
+	open: true,
+	title: "",
+	message: "Delete form successfully!",
+	severity: "success",
+};
+
+export const DELETE_FORM_FAILED = {
+	open: true,
+	title: "Failed to delete form",
+	message: "Something went wrong!",
+	severity: "error",
+};
