@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { Box } from "@mui/material";
@@ -10,6 +10,7 @@ import TextField from "../../components/customs/TextField";
 import { DateTimeUtil } from "../../utils";
 import AutoCompleteField from "../../components/customs/AutoCompleteField";
 import AxiosInstance from "../../api/api";
+import { ColorModeContext } from "../../theme";
 import { DATA_NOTICE } from "../../notice";
 
 const initialValues = {
@@ -33,6 +34,7 @@ function DataForm({ handleFormSubmit, handleFormCancel, form, total }) {
 	const [depots, setDepots] = useState([]);
 	const [partners, setPartners] = useState([]);
 	// CALL API GET DEPOT & PARTNER DATA.
+	const { setAlert } = useContext(ColorModeContext);
 	useEffect(() => {
 		AxiosInstance.get("api/web/business_Partner/")
 			.then((response) =>
