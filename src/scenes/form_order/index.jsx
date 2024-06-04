@@ -1,19 +1,26 @@
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useTheme } from "@emotion/react";
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { tokens } from "../../theme";
+import { ColorModeContext, tokens } from "../../theme";
 import { DateTimeUtil } from "../../utils";
-import { mockDataOrder, mockDataOrderDetail } from "../../data/mockData";
 import DataForm from "./DataForm";
 import DataDetail from "./DataDetail";
+import AxiosInstance from "../../api/api";
+import {
+	CREATE_ORDER_FAILED,
+	CREATE_ORDER_SUCCESS,
+	DATA_NOTICE,
+	UPDATE_ORDER_FAILED,
+	UPDATE_ORDER_SUCCESS,
+} from "../../notice";
 
 const Order = () => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	// DATAGRID SECTION.
 	const [selectedRowModel, setSelectedRowModel] = useState([]);
-	const [rows, setRows] = useState(mockDataOrder);
+	const [rows, setRows] = useState([]);
 	const columns = [
 		{ field: "id", headerName: "ID", flex: 1, hideable: false },
 		{
@@ -45,6 +52,13 @@ const Order = () => {
 			flex: 1,
 		},
 	];
+	// API.
+	const { setAlert } = useContext(ColorModeContext);
+	useEffect(() => {
+		AxiosInstance.get("api/web/order_form/")
+			.then((response) => setRows(response.data))
+			.catch((_) => setAlert(DATA_NOTICE));
+	}, []);
 	// FORM SECTION.
 	const [selectedRow, setSelectedRow] = useState({});
 	// DETAIL SECTION.
@@ -55,9 +69,11 @@ const Order = () => {
 			return;
 		}
 		// CALL API TO GET FORM DETAIL.
-		setDetails(
-			mockDataOrderDetail.filter((e) => e.order_id === selectedRow.id)
-		);
+		AxiosInstance.get(
+			`api/web/order_detail/${selectedRow.id}/filter_detail/`
+		)
+			.then((response) => setDetails(response.data))
+			.catch((_) => setAlert(DATA_NOTICE));
 	}, [selectedRow]);
 	// CALCULATE TOTAL AUTOMATICALLY.
 	const total = useMemo(
@@ -71,25 +87,42 @@ const Order = () => {
 		setSelectedRow({});
 	};
 
-	const handleFormSubmit = (contentValues, { setSubmitting }) => {
+	// CALL API CREATE & UPDATE.
+	const handleFormSubmit = (contentValues, { setSubmitting, resetForm }) => {
 		contentValues = {
 			...contentValues,
 			total: total,
-			details: details.map((e) => {
-				return {
-					id: `${selectedRow.id}-${e.product.id}`,
-					...e,
-				};
-			}),
+			details: !Boolean(selectedRow.id)
+				? details
+				: details.map((e) => {
+						return {
+							id: `${selectedRow.id}-${e.product.id}`,
+							...e,
+						};
+				  }),
 		};
-		console.log(contentValues);
+
 		if (!Boolean(contentValues.id)) {
-			// CALL API CREATE ORDER.
+			AxiosInstance.post("api/web/order_form/", contentValues)
+				.then((_) => {
+					setAlert(CREATE_ORDER_SUCCESS);
+					handleFormCancel();
+					resetForm();
+				})
+				.catch((_) => setAlert(CREATE_ORDER_FAILED));
 		} else {
-			// CALL API UPDATE ORDER.
+			AxiosInstance.put(
+				`api/web/order_form/${selectedRow.id}/`,
+				contentValues
+			)
+				.then((_) => {
+					setAlert(UPDATE_ORDER_SUCCESS);
+					handleFormCancel();
+					resetForm();
+				})
+				.catch((_) => setAlert(UPDATE_ORDER_FAILED));
 		}
 		setSubmitting(false);
-		handleFormCancel();
 	};
 
 	return (

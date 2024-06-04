@@ -230,3 +230,47 @@ export const DELETE_PRODUCT_FAILED = {
 	message: "Something went wrong!",
 	severity: "error",
 };
+
+// ORDER.
+
+export const CREATE_ORDER_SUCCESS = {
+	open: true,
+	title: "",
+	message: "Create order successfully!",
+	severity: "success",
+};
+
+export const CREATE_ORDER_FAILED = {
+	open: true,
+	title: "Failed to create order",
+	message: "Something went wrong!",
+	severity: "error",
+};
+
+export const UPDATE_ORDER_SUCCESS = {
+	open: true,
+	title: "",
+	message: "Update order successfully!",
+	severity: "success",
+};
+
+export const UPDATE_ORDER_FAILED = {
+	open: true,
+	title: "Failed to update order",
+	message: "Something went wrong!",
+	severity: "error",
+};
+
+export const DELETE_ORDER_SUCCESS = {
+	open: true,
+	title: "",
+	message: "Delete order successfully!",
+	severity: "success",
+};
+
+export const DELETE_ORDER_FAILED = {
+	open: true,
+	title: "Failed to delete order",
+	message: "Something went wrong!",
+	severity: "error",
+};
