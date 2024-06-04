@@ -1,10 +1,10 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import ProtectedRoute from "./components/ProtectedRoute";
+import NotFound from "./components/NotFound";
 import Login from "./scenes/auth/Login";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
-import NotFound from "./scenes/auth/NotFound";
 import Dashboard from "./scenes/dashboard/index";
 import Employee from "./scenes/employee";
 import Partner from "./scenes/partner";
