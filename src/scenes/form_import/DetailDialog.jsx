@@ -203,7 +203,7 @@ function TransferList({
 										max:
 											allDetails.filter(
 												(detail) => detail.id === e.id
-											)?.[0]?.quantity || 0,
+											)?.[0]?.quantity || 1,
 									},
 								}}
 								defaultValue={

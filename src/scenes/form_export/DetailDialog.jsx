@@ -56,18 +56,28 @@ function CustomList({ data, checked, handleToggle }) {
 function TransferList({
 	modifiedProducts,
 	allProducts,
-	currentProducts,
+	leftProducts,
+	rightProducts,
 	currentDetails,
 }) {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 
 	const [checked, setChecked] = useState([]);
-	const [left, setLeft] = useState([...allProducts]);
-	const [right, setRight] = useState([...currentProducts]);
+	const [left, setLeft] = useState([...leftProducts]);
+	const [right, setRight] = useState([...rightProducts]);
 	const leftChecked = intersection(checked, left);
 	const rightChecked = intersection(checked, right);
 	modifiedProducts.current = right;
+
+	function handleMaxQuantity(e) {
+		return (
+			(allProducts.filter((product) => product.id === e.id)?.[0]
+				?.inventory || 0) +
+			(currentDetails.filter((detail) => detail.id === e.id)?.[0]
+				?.quantity || 0)
+		);
+	}
 
 	function handleInputChange(e) {
 		e.target.value = Math.max(
@@ -200,10 +210,7 @@ function TransferList({
 								InputProps={{
 									inputProps: {
 										min: 1,
-										max:
-											allProducts.filter(
-												(product) => product.id === e.id
-											)?.[0]?.inventory || 0,
+										max: handleMaxQuantity(e),
 									},
 								}}
 								defaultValue={
@@ -221,9 +228,9 @@ function TransferList({
 								style={{ width: "47%" }}
 								disabled
 								defaultValue={
-									allProducts.filter(
-										(product) => product.id === e.id
-									)?.[0]?.price || 0
+									currentDetails.filter(
+										(detail) => detail.id === e.id
+									)?.[0]?.price
 								}
 							/>
 						</Box>
@@ -241,9 +248,7 @@ function DetailDialog({ isOpened, handleClose, handleFormSubmit, details }) {
 	const { setAlert } = useContext(ColorModeContext);
 	useEffect(() => {
 		AxiosInstance.get("api/web/product/")
-			.then((response) =>
-				setAllProducts(response.data.filter((e) => e.in_stock))
-			)
+			.then((response) => setAllProducts(response.data))
 			.catch((_) => setAlert(DATA_NOTICE));
 	}, []);
 
@@ -274,7 +279,17 @@ function DetailDialog({ isOpened, handleClose, handleFormSubmit, details }) {
 		>
 			<TransferList
 				modifiedProducts={modifiedProducts}
-				allProducts={allProducts
+				allProducts={allProducts.map((e) => {
+					return {
+						id: e.id,
+						name: e.name,
+						unit: e.unit,
+						price: e.price,
+						inventory: e.inventory,
+					};
+				})}
+				leftProducts={allProducts
+					.filter((e) => e.in_stock && e.inventory > 0)
 					.filter(
 						(e) =>
 							details.filter(
@@ -286,11 +301,9 @@ function DetailDialog({ isOpened, handleClose, handleFormSubmit, details }) {
 							id: e.id,
 							name: e.name,
 							unit: e.unit,
-							price: e.price,
-							inventory: e.inventory,
 						};
 					})}
-				currentProducts={details.map((e) => {
+				rightProducts={details.map((e) => {
 					return {
 						id: e.product.id,
 						name: e.product.name,
