@@ -24,7 +24,7 @@ const Order = () => {
 	const [selectedRowModel, setSelectedRowModel] = useState([]);
 	const [rows, setRows] = useState([]);
 	const columns = [
-		{ field: "id", headerName: "ID", flex: 1, hideable: false },
+		{ field: "id", headerName: "ID", flex: 0.5, hideable: false },
 		{
 			field: "partner",
 			headerName: "PARTNER",
@@ -60,6 +60,12 @@ const Order = () => {
 			type: "number",
 			flex: 1,
 		},
+		{
+			field: "imported",
+			headerName: "IMPORTED",
+			type: "boolean",
+			flex: 1,
+		},
 	];
 	// API.
 	const { setAlert } = useContext(ColorModeContext);
@@ -74,7 +80,8 @@ const Order = () => {
 	const canModify = useMemo(
 		() =>
 			!Boolean(selectedRow.id) ||
-			Number(localStorage.getItem(USER_ID)) === selectedRow?.user?.id,
+			(Number(localStorage.getItem(USER_ID)) === selectedRow?.user?.id &&
+				!selectedRow?.imported),
 		[selectedRow]
 	);
 	// DETAIL SECTION.
