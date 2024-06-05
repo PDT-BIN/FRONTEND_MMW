@@ -231,50 +231,6 @@ export const DELETE_PRODUCT_FAILED = {
 	severity: "error",
 };
 
-// ORDER.
-
-export const CREATE_ORDER_SUCCESS = {
-	open: true,
-	title: "",
-	message: "Create order successfully!",
-	severity: "success",
-};
-
-export const CREATE_ORDER_FAILED = {
-	open: true,
-	title: "Failed to create order",
-	message: "Something went wrong!",
-	severity: "error",
-};
-
-export const UPDATE_ORDER_SUCCESS = {
-	open: true,
-	title: "",
-	message: "Update order successfully!",
-	severity: "success",
-};
-
-export const UPDATE_ORDER_FAILED = {
-	open: true,
-	title: "Failed to update order",
-	message: "Something went wrong!",
-	severity: "error",
-};
-
-export const DELETE_ORDER_SUCCESS = {
-	open: true,
-	title: "",
-	message: "Delete order successfully!",
-	severity: "success",
-};
-
-export const DELETE_ORDER_FAILED = {
-	open: true,
-	title: "Failed to delete order",
-	message: "Something went wrong!",
-	severity: "error",
-};
-
 // FORM.
 
 export const CREATE_FORM_SUCCESS = {
@@ -317,6 +273,13 @@ export const DELETE_FORM_FAILED = {
 	title: "Failed to delete form",
 	message: "Something went wrong!",
 	severity: "error",
+};
+
+export const EMPTY_FORM_WARNING = {
+	open: true,
+	title: "",
+	message: "Form is empty!",
+	severity: "warning",
 };
 
 // PRICE.

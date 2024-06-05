@@ -192,7 +192,7 @@ function TransferList({
 								style={{ width: "47%" }}
 								InputProps={{
 									inputProps: {
-										min: 0,
+										min: 1,
 										max:
 											allDetails.filter(
 												(detail) => detail.id === e.id

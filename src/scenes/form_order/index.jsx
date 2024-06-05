@@ -8,11 +8,12 @@ import DataForm from "./DataForm";
 import DataDetail from "./DataDetail";
 import AxiosInstance from "../../api/api";
 import {
-	CREATE_ORDER_FAILED,
-	CREATE_ORDER_SUCCESS,
+	CREATE_FORM_FAILED,
+	CREATE_FORM_SUCCESS,
 	DATA_NOTICE,
-	UPDATE_ORDER_FAILED,
-	UPDATE_ORDER_SUCCESS,
+	EMPTY_FORM_WARNING,
+	UPDATE_FORM_FAILED,
+	UPDATE_FORM_SUCCESS,
 } from "../../notice";
 import { USER_ID } from "../../api/constants";
 
@@ -104,6 +105,11 @@ const Order = () => {
 
 	// CALL API CREATE & UPDATE.
 	const handleFormSubmit = (contentValues, { setSubmitting, resetForm }) => {
+		if (details.length === 0) {
+			setAlert(EMPTY_FORM_WARNING);
+			return;
+		}
+
 		contentValues = {
 			...contentValues,
 			total: total,
@@ -120,24 +126,24 @@ const Order = () => {
 		if (!Boolean(contentValues.id)) {
 			AxiosInstance.post("api/web/order_form/", contentValues)
 				.then((_) => {
-					setAlert(CREATE_ORDER_SUCCESS);
+					setAlert(CREATE_FORM_SUCCESS);
 					handleFormCancel();
 					resetForm();
 					fetchData();
 				})
-				.catch((_) => setAlert(CREATE_ORDER_FAILED));
+				.catch((_) => setAlert(CREATE_FORM_FAILED));
 		} else {
 			AxiosInstance.put(
 				`api/web/order_form/${selectedRow.id}/`,
 				contentValues
 			)
 				.then((_) => {
-					setAlert(UPDATE_ORDER_SUCCESS);
+					setAlert(UPDATE_FORM_SUCCESS);
 					handleFormCancel();
 					resetForm();
 					fetchData();
 				})
-				.catch((_) => setAlert(UPDATE_ORDER_FAILED));
+				.catch((_) => setAlert(UPDATE_FORM_FAILED));
 		}
 		setSubmitting(false);
 	};

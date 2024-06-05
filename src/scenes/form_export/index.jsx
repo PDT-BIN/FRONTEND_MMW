@@ -11,6 +11,7 @@ import {
 	CREATE_FORM_FAILED,
 	CREATE_FORM_SUCCESS,
 	DATA_NOTICE,
+	EMPTY_FORM_WARNING,
 	UPDATE_FORM_FAILED,
 	UPDATE_FORM_SUCCESS,
 } from "../../notice";
@@ -98,6 +99,11 @@ const Export = () => {
 
 	// CALL API CREATE & UPDATE.
 	const handleFormSubmit = (contentValues, { setSubmitting, resetForm }) => {
+		if (details.length === 0) {
+			setAlert(EMPTY_FORM_WARNING);
+			return;
+		}
+
 		contentValues = {
 			...contentValues,
 			total: total,

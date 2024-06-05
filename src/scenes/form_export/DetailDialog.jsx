@@ -192,7 +192,7 @@ function TransferList({
 								style={{ width: "47%" }}
 								InputProps={{
 									inputProps: {
-										min: 0,
+										min: 1,
 										max:
 											allProducts.filter(
 												(product) => product.id === e.id
@@ -202,7 +202,7 @@ function TransferList({
 								defaultValue={
 									currentDetails.filter(
 										(detail) => detail.id === e.id
-									)?.[0]?.quantity || 0
+									)?.[0]?.quantity || 1
 								}
 							/>
 							<TextField
@@ -233,7 +233,9 @@ function DetailDialog({ isOpened, handleClose, handleFormSubmit, details }) {
 	const { setAlert } = useContext(ColorModeContext);
 	useEffect(() => {
 		AxiosInstance.get("api/web/product/")
-			.then((response) => setAllProducts(response.data))
+			.then((response) =>
+				setAllProducts(response.data.filter((e) => e.in_stock))
+			)
 			.catch((_) => setAlert(DATA_NOTICE));
 	}, []);
 

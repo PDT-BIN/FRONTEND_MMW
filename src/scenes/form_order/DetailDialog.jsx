@@ -190,7 +190,7 @@ function TransferList({
 								type="number"
 								color="secondary"
 								style={{ width: "47%" }}
-								InputProps={{ inputProps: { min: 0 } }}
+								InputProps={{ inputProps: { min: 1 } }}
 								defaultValue={
 									currentDetails.filter(
 										(detail) => detail.id === e.id
