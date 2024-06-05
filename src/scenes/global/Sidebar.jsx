@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
@@ -12,7 +12,7 @@ import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlin
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import BookmarkRemoveOutlinedIcon from "@mui/icons-material/BookmarkRemoveOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-import { tokens } from "../../theme";
+import { ColorModeContext, tokens } from "../../theme";
 import { URL_TO_TAB } from "../constants";
 import AxiosInstance from "../../api/api";
 import { DATA_NOTICE } from "../../notice";
@@ -73,6 +73,7 @@ export default function Sidebar() {
 	const [selected, setSelected] = useState(URL_TO_TAB[location.pathname]);
 	// USER INFORMATION.
 	const [profile, setProfile] = useState({});
+	const { setAlert } = useContext(ColorModeContext);
 	useEffect(() => {
 		const profileId = localStorage.getItem(PROFILE_ID);
 		if (profileId === null) return;
