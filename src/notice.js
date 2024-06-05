@@ -318,3 +318,33 @@ export const DELETE_FORM_FAILED = {
 	message: "Something went wrong!",
 	severity: "error",
 };
+
+// PRICE.
+
+export const DOWNLOAD_SUCCESS = {
+	open: true,
+	title: "",
+	message: "Download successfully!",
+	severity: "success",
+};
+
+export const DOWNLOAD_FAILED = {
+	open: true,
+	title: "Failed to download",
+	message: "Something went wrong!",
+	severity: "error",
+};
+
+export const APPLY_PRICE_SUCCESS = {
+	open: true,
+	title: "",
+	message: "Apply price successfully!",
+	severity: "success",
+};
+
+export const APPLY_PRICE_FAILED = {
+	open: true,
+	title: "Failed to apply price",
+	message: "Something went wrong!",
+	severity: "error",
+};

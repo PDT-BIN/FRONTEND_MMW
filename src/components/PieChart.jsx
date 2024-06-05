@@ -70,7 +70,7 @@ export default function MyResponsivePie() {
 				},
 			}}
 			tooltip={CustomTooltip}
-			margin={{ top: 20, right: 0, bottom: 40, left: 0 }}
+			margin={{ top: 40, right: 120, bottom: 40, left: 0 }}
 			innerRadius={0.5}
 			padAngle={0.7}
 			cornerRadius={3}

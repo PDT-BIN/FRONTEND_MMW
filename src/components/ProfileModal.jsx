@@ -61,7 +61,7 @@ const alterValues = ({ birthdate, address, ...data }) => {
 		...initialValues,
 		...data,
 		...AddressUtil.analyze(address),
-		birthdate: birthdate === "" ? null : moment(birthdate, "DD/MM/YYYY"),
+		birthdate: !Boolean(birthdate) ? null : moment(birthdate, "DD/MM/YYYY"),
 	};
 };
 

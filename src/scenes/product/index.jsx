@@ -127,7 +127,7 @@ export default function Product() {
 		AxiosInstance.get("api/web/product/")
 			.then((response) => setRows(response.data))
 			.catch((_) => setAlert(DATA_NOTICE));
-	}, [openModify, openDelete]);
+	}, [openModify, openDelete, openPrice]);
 
 	const handleFormCancel = () => {
 		setSelectedRowModel([]);

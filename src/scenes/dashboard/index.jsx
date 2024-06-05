@@ -10,6 +10,10 @@ import StatBox from "../../components/StatBox";
 import { tokens } from "../../theme";
 import BarChart from "../../components/BarChart";
 import PieChart from "../../components/PieChart";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import moment from "moment";
+import { DateTimeUtil } from "../../utils";
 
 const StatisticBox = ({ title, subtitle, progress, increase, icon }) => {
 	const theme = useTheme();
@@ -36,7 +40,7 @@ const StatisticBox = ({ title, subtitle, progress, increase, icon }) => {
 	);
 };
 
-const ChartBox = ({ column, row, title, chart }) => {
+const ChartBox = ({ column, row, title, chart, formats, handleChange }) => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 
@@ -49,10 +53,29 @@ const ChartBox = ({ column, row, title, chart }) => {
 			bgcolor={colors.primary[400]}
 			overflow="hidden"
 		>
-			<Box>
+			<Box
+				display="flex"
+				justifyContent="space-between"
+				position="relative"
+			>
 				<Typography variant="h6" color={colors.grey[100]}>
 					{title}
 				</Typography>
+				<LocalizationProvider dateAdapter={AdapterMoment}>
+					<DatePicker
+						label="PERIOD"
+						format={formats.format}
+						views={formats.views}
+						defaultValue={moment(Date.now())}
+						onChange={handleChange}
+						sx={{
+							position: "absolute",
+							right: "0",
+							zIndex: 1,
+							width: "150px",
+						}}
+					/>
+				</LocalizationProvider>
 			</Box>
 			<Box height="100%">{chart}</Box>
 		</Box>
@@ -62,6 +85,15 @@ const ChartBox = ({ column, row, title, chart }) => {
 export default function Dashboard() {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
+
+	const handleImportExportStatistic = (e) => {
+		console.log(e._d.getFullYear());
+	};
+
+	const handleFavourteProductStatistic = (e) => {
+		console.log(e._d.getMonth());
+		console.log(e._d.getFullYear());
+	};
 
 	return (
 		<Box height="75vh" m="20px">
@@ -150,17 +182,21 @@ export default function Dashboard() {
 				/>
 				{/* ROW 2 */}
 				<ChartBox
-					column="8"
+					column="7"
 					row="2"
 					title="IMPORT & EXPORT"
 					chart={<BarChart />}
+					formats={{ format: "YYYY", views: ["year"] }}
+					handleChange={handleImportExportStatistic}
 				/>
 
 				<ChartBox
-					column="4"
+					column="5"
 					row="2"
 					title="FAVOURITE PRODUCTS"
 					chart={<PieChart />}
+					formats={{ format: "MM/YYYY", views: ["month", "year"] }}
+					handleChange={handleFavourteProductStatistic}
 				/>
 			</Box>
 		</Box>
