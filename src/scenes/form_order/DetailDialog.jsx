@@ -69,6 +69,10 @@ function TransferList({
 	const rightChecked = intersection(checked, right);
 	modifiedProducts.current = right;
 
+	function handleInputChange(e) {
+		e.target.value = Math.max(e.target.min, e.target.value);
+	}
+
 	function not(a, b) {
 		return a.filter((value) => b.indexOf(value) === -1);
 	}
@@ -194,8 +198,9 @@ function TransferList({
 								defaultValue={
 									currentDetails.filter(
 										(detail) => detail.id === e.id
-									)?.[0]?.quantity || 0
+									)?.[0]?.quantity || 1
 								}
+								onChange={handleInputChange}
 							/>
 							<TextField
 								name={`price-${e.id}`}
@@ -209,6 +214,7 @@ function TransferList({
 										(detail) => detail.id === e.id
 									)?.[0]?.price || 0
 								}
+								onChange={handleInputChange}
 							/>
 						</Box>
 					);
