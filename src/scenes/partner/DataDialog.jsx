@@ -35,7 +35,6 @@ const validationSchema = yup.object({
 		.email("Field is not valid!")
 		.required("Field is required!")
 		.strict(true),
-	province: yup.string().required("Field is required!"),
 	taxcode: yup
 		.string()
 		.trim("Field expects a taxcode!")

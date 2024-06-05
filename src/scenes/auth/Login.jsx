@@ -8,7 +8,12 @@ import { useTheme } from "@emotion/react";
 import { ColorModeContext, tokens } from "../../theme";
 import AxiosInstance from "../../api/api";
 import { useNavigate } from "react-router-dom";
-import { ACCESS_TOKEN, IS_MANAGER, PROFILE_ID } from "../../api/constants";
+import {
+	ACCESS_TOKEN,
+	IS_MANAGER,
+	PROFILE_ID,
+	USER_ID,
+} from "../../api/constants";
 import { useContext } from "react";
 import { LOGIN_FAILED, LOGIN_SUCCESS } from "../../notice";
 
@@ -30,7 +35,8 @@ export default function Login() {
 			const response = await AxiosInstance.post("api/web/login/", values);
 
 			setAlert(LOGIN_SUCCESS);
-			localStorage.setItem(ACCESS_TOKEN, response.data["token"]);
+			localStorage.setItem(ACCESS_TOKEN, response.data[ACCESS_TOKEN]);
+			localStorage.setItem(USER_ID, response.data[USER_ID]);
 			localStorage.setItem(PROFILE_ID, response.data[PROFILE_ID]);
 			localStorage.setItem(IS_MANAGER, response.data[IS_MANAGER]);
 			navigate("/");

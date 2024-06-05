@@ -53,7 +53,6 @@ const validationSchema = yup.object({
 		.matches(PHONE_REGEX, "Field is not valid!")
 		.required("Field is required!")
 		.strict(true),
-	province: yup.string().required("Field is required!"),
 });
 
 const alterValues = ({ birthdate, address, ...data }) => {
@@ -62,7 +61,7 @@ const alterValues = ({ birthdate, address, ...data }) => {
 		...initialValues,
 		...data,
 		...AddressUtil.analyze(address),
-		birthdate: birthdate && moment(birthdate, "DD/MM/YYYY"),
+		birthdate: birthdate === "" ? null : moment(birthdate, "DD/MM/YYYY"),
 	};
 };
 

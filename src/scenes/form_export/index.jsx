@@ -14,6 +14,7 @@ import {
 	UPDATE_FORM_FAILED,
 	UPDATE_FORM_SUCCESS,
 } from "../../notice";
+import { IS_MANAGER } from "../../api/constants";
 
 const Export = () => {
 	const theme = useTheme();
@@ -36,6 +37,13 @@ const Export = () => {
 			flex: 1,
 			hideable: false,
 			valueGetter: (value) => value.name,
+		},
+		{
+			field: "user",
+			headerName: "CREATOR",
+			flex: 1,
+			valueGetter: (_, row) =>
+				`${row.user.profile.id} - ${row.user.profile.last_name} ${row.user.profile.first_name}`,
 		},
 		{
 			field: "created_date",
@@ -190,6 +198,10 @@ const Export = () => {
 						if (selectedRowModel[0] === params[0])
 							handleFormCancel();
 						else setSelectedRowModel(params);
+					}}
+					columnVisibilityModel={{
+						depot: localStorage.getItem(IS_MANAGER) === "true",
+						user: localStorage.getItem(IS_MANAGER) === "true",
 					}}
 				/>
 			</Box>

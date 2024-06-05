@@ -23,7 +23,7 @@ const Toolbar = ({ openDialog, openForCreating }) => {
 	);
 };
 
-function DataDetail({ details, setDetails }) {
+function DataDetail({ details, setDetails, canModify }) {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	// DATAGRID SECTION.
@@ -134,7 +134,7 @@ function DataDetail({ details, setDetails }) {
 				columnVisibilityModel={{ id: false }}
 				editMode="row"
 				onProcessRowUpdateError={(error) => console.log(error)}
-				slots={{ toolbar: Toolbar }}
+				slots={{ toolbar: canModify && Toolbar }}
 				slotProps={{
 					toolbar: {
 						openDialog: openDialog,

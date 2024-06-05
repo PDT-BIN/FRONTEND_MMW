@@ -12,28 +12,27 @@ import AutoCompleteField from "../../components/customs/AutoCompleteField";
 import AxiosInstance from "../../api/api";
 import { ColorModeContext } from "../../theme";
 import { DATA_NOTICE } from "../../notice";
+import { IS_MANAGER } from "../../api/constants";
 
 const initialValues = {
 	created_date: DateTimeUtil.format(Date.now()),
 	partner: null,
-	depot: null,
 };
 
 const validationSchema = yup.object({
 	partner: yup.mixed().required("Field is required!"),
-	depot: yup.mixed().required("Field is required!"),
 });
 
 function DataForm({ handleFormSubmit, handleFormCancel, form, total }) {
+	const CAN_MODIFY = localStorage.getItem(IS_MANAGER) === "false";
 	// CONTROL INITIAL VALUES.
 	let convertedValues = { ...initialValues };
 	if (Boolean(form.id)) {
 		convertedValues = { ...convertedValues, ...form };
 	}
-
+	// CALL API GET DEPOT & PARTNER DATA.
 	const [depots, setDepots] = useState([]);
 	const [partners, setPartners] = useState([]);
-	// CALL API GET DEPOT & PARTNER DATA.
 	const { setAlert } = useContext(ColorModeContext);
 	useEffect(() => {
 		AxiosInstance.get("api/web/business_Partner/")
@@ -130,19 +129,29 @@ function DataForm({ handleFormSubmit, handleFormCancel, form, total }) {
 									}
 									freeSolo={false}
 									onInputChange={null}
+									disabled={!CAN_MODIFY}
 								/>
-								<AutoCompleteField
-									name="depot"
-									options={depots}
-									value={values.depot}
-									onBlur={handleBlur}
-									style={{ gridColumn: "span 4" }}
-									error={!!touched.depot && !!errors.depot}
-									helperText={touched.depot && errors.depot}
-									setValue={(value) => (values.depot = value)}
-									freeSolo={false}
-									onInputChange={null}
-								/>
+								{!CAN_MODIFY && (
+									<AutoCompleteField
+										name="depot"
+										options={depots}
+										value={values.depot}
+										onBlur={handleBlur}
+										style={{ gridColumn: "span 4" }}
+										error={
+											!!touched.depot && !!errors.depot
+										}
+										helperText={
+											touched.depot && errors.depot
+										}
+										setValue={(value) =>
+											(values.depot = value)
+										}
+										freeSolo={false}
+										onInputChange={null}
+										disabled={!CAN_MODIFY}
+									/>
+								)}
 							</Box>
 
 							<DialogActions
@@ -153,17 +162,19 @@ function DataForm({ handleFormSubmit, handleFormCancel, form, total }) {
 									gap: "20px",
 								}}
 							>
-								<Button
-									label={form.id ? "MODIFY" : "CREATE"}
-									variant="contained"
-									type="submit"
-									disabled={isSubmitting}
-									style={{
-										width: "25%",
-										padding: "10px",
-										color: "white",
-									}}
-								/>
+								{CAN_MODIFY && (
+									<Button
+										label={form.id ? "MODIFY" : "CREATE"}
+										variant="contained"
+										type="submit"
+										disabled={isSubmitting}
+										style={{
+											width: "25%",
+											padding: "10px",
+											color: "white",
+										}}
+									/>
+								)}
 								{form.id && (
 									<Button
 										label={"CANCEL"}

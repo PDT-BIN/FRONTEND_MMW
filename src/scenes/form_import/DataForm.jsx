@@ -12,6 +12,7 @@ import AutoCompleteField from "../../components/customs/AutoCompleteField";
 import AxiosInstance from "../../api/api";
 import { ColorModeContext } from "../../theme";
 import { DATA_NOTICE } from "../../notice";
+import { IS_MANAGER } from "../../api/constants";
 
 const initialValues = {
 	created_date: DateTimeUtil.format(Date.now()),
@@ -30,11 +31,13 @@ function DataForm({
 	selectedOrder,
 	setSelectedOrder,
 }) {
+	const CAN_MODIFY = localStorage.getItem(IS_MANAGER) === "false";
+	// CALL API GET ORDER & DEPOT DATA.
+	const [depots, setDepots] = useState([]);
 	const [orders, setOrders] = useState([]);
-	// CALL API GET ORDER DATA.
 	const { setAlert } = useContext(ColorModeContext);
 	useEffect(() => {
-		AxiosInstance.get("api/web/order_form/")
+		AxiosInstance.get("api/web/get_order_dont_have_import/")
 			.then((response) =>
 				setOrders(
 					response.data.map((e) => {
@@ -43,6 +46,14 @@ function DataForm({
 							...e,
 						};
 					})
+				)
+			)
+			.catch((_) => setAlert(DATA_NOTICE));
+
+		AxiosInstance.get("api/web/depot/")
+			.then((response) =>
+				setDepots(
+					response.data.sort((a, b) => a.name.localeCompare(b.name))
 				)
 			)
 			.catch((_) => setAlert(DATA_NOTICE));
@@ -134,8 +145,29 @@ function DataForm({
 									freeSolo={false}
 									onInputChange={null}
 									groupBy={null}
-									disabled={Boolean(form.id)}
+									disabled={!CAN_MODIFY || Boolean(form.id)}
 								/>
+								{!CAN_MODIFY && (
+									<AutoCompleteField
+										name="depot"
+										options={depots}
+										value={values?.order?.depot}
+										onBlur={handleBlur}
+										style={{ gridColumn: "span 4" }}
+										error={
+											!!touched.depot && !!errors.depot
+										}
+										helperText={
+											touched.depot && errors.depot
+										}
+										setValue={(value) =>
+											(values.depot = value)
+										}
+										freeSolo={false}
+										onInputChange={null}
+										disabled={!CAN_MODIFY}
+									/>
+								)}
 							</Box>
 
 							<DialogActions
@@ -146,17 +178,19 @@ function DataForm({
 									gap: "20px",
 								}}
 							>
-								<Button
-									label={form.id ? "MODIFY" : "CREATE"}
-									variant="contained"
-									type="submit"
-									disabled={isSubmitting}
-									style={{
-										width: "25%",
-										padding: "10px",
-										color: "white",
-									}}
-								/>
+								{CAN_MODIFY && (
+									<Button
+										label={form.id ? "MODIFY" : "CREATE"}
+										variant="contained"
+										type="submit"
+										disabled={isSubmitting}
+										style={{
+											width: "25%",
+											padding: "10px",
+											color: "white",
+										}}
+									/>
+								)}
 								{form.id && (
 									<Button
 										label={"CANCEL"}

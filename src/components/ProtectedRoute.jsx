@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import { Outlet, Navigate, useLocation } from "react-router-dom";
 import LoadingIndicator from "./LoadingIndicator.jsx";
-import { ACCESS_TOKEN } from "../api/constants.js";
+import {
+	ACCESS_TOKEN,
+	IS_MANAGER,
+	PROFILE_ID,
+	USER_ID,
+} from "../api/constants.js";
 
 function ProtectedRoute() {
 	// AUTHENTICATE USER.
@@ -10,7 +15,15 @@ function ProtectedRoute() {
 
 	useEffect(() => {
 		const token = localStorage.getItem(ACCESS_TOKEN);
-		setIsAuthenticated(token !== null);
+		const userId = localStorage.getItem(USER_ID);
+		const profileId = localStorage.getItem(PROFILE_ID);
+		const role = localStorage.getItem(IS_MANAGER);
+		setIsAuthenticated(
+			token !== null &&
+				userId !== null &&
+				profileId !== null &&
+				role !== null
+		);
 	}, [location]);
 
 	switch (isAuthenticated) {

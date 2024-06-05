@@ -6,6 +6,7 @@ import { Box, Typography } from "@mui/material";
 import Button from "../../components/customs/Button";
 import { tokens } from "../../theme";
 import DetailDialog from "./DetailDialog";
+import { IS_MANAGER } from "../../api/constants";
 
 const Toolbar = ({ openDialog, openForCreating }) => {
 	const theme = useTheme();
@@ -27,6 +28,7 @@ function DataDetail({ details, setDetails }) {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	// DATAGRID SECTION.
+	const CAN_MODIFY = localStorage.getItem(IS_MANAGER) === "false";
 	const columns = [
 		{ field: "id", headerName: "ID", flex: 1 },
 		{
@@ -134,7 +136,7 @@ function DataDetail({ details, setDetails }) {
 				columnVisibilityModel={{ id: false }}
 				editMode="row"
 				onProcessRowUpdateError={(error) => console.log(error)}
-				slots={{ toolbar: Toolbar }}
+				slots={{ toolbar: CAN_MODIFY && Toolbar }}
 				slotProps={{
 					toolbar: {
 						openDialog: openDialog,

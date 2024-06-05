@@ -13,7 +13,6 @@ import Button from "../../components/customs/Button";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import { ColorModeContext, tokens } from "../../theme";
 import { FilterUtil } from "../../utils";
-import { mockDataProduct } from "../../data/mockData";
 import AxiosInstance from "../../api/api";
 import {
 	CREATE_PRODUCT_FAILED,
@@ -24,10 +23,12 @@ import {
 	UPDATE_PRODUCT_FAILED,
 	UPDATE_PRODUCT_SUCCESS,
 } from "../../notice";
+import { IS_MANAGER } from "../../api/constants";
 
 const Toolbar = (props) => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
+	const role = localStorage.getItem(IS_MANAGER);
 
 	return (
 		<GridToolbarContainer style={{ padding: "10px 0" }}>
@@ -51,12 +52,14 @@ const Toolbar = (props) => {
 				startIcon={<DeleteIcon />}
 				style={{ padding: "10px", color: colors.greenAccent[500] }}
 			/>
-			<Button
-				label="ESTABLISH PRICE"
-				onClick={props.openPriceDialog}
-				startIcon={<PriceChangeIcon />}
-				style={{ padding: "10px", color: colors.greenAccent[500] }}
-			/>
+			{role === "true" && (
+				<Button
+					label="ESTABLISH PRICE"
+					onClick={props.openPriceDialog}
+					startIcon={<PriceChangeIcon />}
+					style={{ padding: "10px", color: colors.greenAccent[500] }}
+				/>
+			)}
 		</GridToolbarContainer>
 	);
 };

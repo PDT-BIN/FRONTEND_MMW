@@ -73,6 +73,8 @@ export default function Sidebar() {
 	const [selected, setSelected] = useState(URL_TO_TAB[location.pathname]);
 	// USER INFORMATION.
 	const [profile, setProfile] = useState({});
+	const role = localStorage.getItem(IS_MANAGER);
+
 	const { setAlert } = useContext(ColorModeContext);
 	useEffect(() => {
 		const profileId = localStorage.getItem(PROFILE_ID);
@@ -151,29 +153,33 @@ export default function Sidebar() {
 									variant="h5"
 									color={colors.greenAccent[500]}
 								>
-									{localStorage.getItem(IS_MANAGER)
-										? "MANAGER"
-										: "STAFF"}
+									{role === "true" ? "MANAGER" : "STAFF"}
 								</Typography>
 							</Box>
 						</Box>
 					)}
 					{/* MENU ITEMS */}
-					<Item
-						title="Dashboard"
-						to="/"
-						icon={<GridViewOutlinedIcon fontSize="large" />}
-						selected={selected}
-						setSelected={setSelected}
-					/>
-					<GroupItem isCollapsed={isCollapsed} title="Information">
+					{role === "true" && (
 						<Item
-							title="Employee"
-							to="/employee"
-							icon={<Diversity2OutlinedIcon fontSize="large" />}
+							title="Dashboard"
+							to="/"
+							icon={<GridViewOutlinedIcon fontSize="large" />}
 							selected={selected}
 							setSelected={setSelected}
 						/>
+					)}
+					<GroupItem isCollapsed={isCollapsed} title="Information">
+						{role === "true" && (
+							<Item
+								title="Employee"
+								to="/employee"
+								icon={
+									<Diversity2OutlinedIcon fontSize="large" />
+								}
+								selected={selected}
+								setSelected={setSelected}
+							/>
+						)}
 						<Item
 							title="Business Partner"
 							to="/partner"
@@ -190,15 +196,17 @@ export default function Sidebar() {
 						/>
 					</GroupItem>
 					<GroupItem isCollapsed={isCollapsed} title="Receipt">
-						<Item
-							title="Order"
-							to="/order"
-							icon={
-								<BookmarkBorderOutlinedIcon fontSize="large" />
-							}
-							selected={selected}
-							setSelected={setSelected}
-						/>
+						{role === "true" && (
+							<Item
+								title="Order"
+								to="/order"
+								icon={
+									<BookmarkBorderOutlinedIcon fontSize="large" />
+								}
+								selected={selected}
+								setSelected={setSelected}
+							/>
+						)}
 						<Item
 							title="Import"
 							to="/import"

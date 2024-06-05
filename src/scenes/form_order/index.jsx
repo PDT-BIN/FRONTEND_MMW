@@ -14,6 +14,7 @@ import {
 	UPDATE_ORDER_FAILED,
 	UPDATE_ORDER_SUCCESS,
 } from "../../notice";
+import { USER_ID } from "../../api/constants";
 
 const Order = () => {
 	const theme = useTheme();
@@ -36,6 +37,13 @@ const Order = () => {
 			flex: 1,
 			hideable: false,
 			valueGetter: (value) => value.name,
+		},
+		{
+			field: "user",
+			headerName: "CREATOR",
+			flex: 1,
+			valueGetter: (_, row) =>
+				`${row.user.profile.id} - ${row.user.profile.last_name} ${row.user.profile.first_name}`,
 		},
 		{
 			field: "created_date",
@@ -62,6 +70,12 @@ const Order = () => {
 	useEffect(() => fetchData(), []);
 	// FORM SECTION.
 	const [selectedRow, setSelectedRow] = useState({});
+	const canModify = useMemo(
+		() =>
+			!Boolean(selectedRow.id) ||
+			Number(localStorage.getItem(USER_ID)) === selectedRow?.user?.id,
+		[selectedRow]
+	);
 	// DETAIL SECTION.
 	const [details, setDetails] = useState([]);
 	useEffect(() => {
@@ -211,11 +225,16 @@ const Order = () => {
 						handleFormCancel={handleFormCancel}
 						form={selectedRow}
 						total={total}
+						canModify={canModify}
 					/>
 				</Box>
 
 				<Box width="52%">
-					<DataDetail details={details} setDetails={setDetails} />
+					<DataDetail
+						details={details}
+						setDetails={setDetails}
+						canModify={canModify}
+					/>
 				</Box>
 			</Box>
 		</Box>
