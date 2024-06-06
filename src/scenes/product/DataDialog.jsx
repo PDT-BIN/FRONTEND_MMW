@@ -62,7 +62,7 @@ export default function DataDialog({
 		AxiosInstance.get("api/web/category/")
 			.then((response) => setCategories(response.data))
 			.catch((_) => setAlert(DATA_NOTICE));
-	}, []);
+	}, [isOpened]);
 
 	return (
 		<Dialog
