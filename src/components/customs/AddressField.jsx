@@ -3,9 +3,9 @@ import { MenuItem } from "@mui/material";
 import TextField from "./TextField";
 import { AddressUtil } from "../../utils";
 
-const URL_PROVINCE = "https://vapi.vnappmob.com/api/province/";
-const URL_DISTRICT = "https://vapi.vnappmob.com/api/province/district/";
-const URL_WARD = "https://vapi.vnappmob.com/api/province/ward/";
+const URL_PROVINCE = "https://esgoo.net/api-tinhthanh/1/0.htm";
+const URL_DISTRICT = "https://esgoo.net/api-tinhthanh/2/";
+const URL_WARD = "https://esgoo.net/api-tinhthanh/3/";
 
 const AddressField = ({ data, props }) => {
 	return (
@@ -29,8 +29,8 @@ export const ProvinceField = (props) => {
 		fetch(URL_PROVINCE)
 			.then((respone) => respone.json())
 			.then((data) =>
-				data.results
-					.map((e) => ({ id: e.province_id, title: e.province_name }))
+				data.data
+					.map((e) => ({ id: e.id, title: e.full_name }))
 					.sort((a, b) => a.title.localeCompare(b.title))
 			)
 			.then((results) => setData(results))
@@ -46,11 +46,11 @@ export const DistrictField = ({ selectedProvince, ...props }) => {
 
 	useEffect(() => {
 		if (!isActived) return;
-		fetch(URL_DISTRICT + AddressUtil.getKey(selectedProvince))
+		fetch(URL_DISTRICT + AddressUtil.getKey(selectedProvince) + ".htm")
 			.then((respone) => respone.json())
 			.then((data) =>
-				data.results
-					.map((e) => ({ id: e.district_id, title: e.district_name }))
+				data.data
+					.map((e) => ({ id: e.id, title: e.full_name }))
 					.sort((a, b) => a.title.localeCompare(b.title))
 			)
 			.then((results) => setData(results))
@@ -68,11 +68,11 @@ export const WardField = ({ selectedDistrict, ...props }) => {
 
 	useEffect(() => {
 		if (!isActived) return;
-		fetch(URL_WARD + AddressUtil.getKey(selectedDistrict))
+		fetch(URL_WARD + AddressUtil.getKey(selectedDistrict) + ".htm")
 			.then((respone) => respone.json())
 			.then((data) =>
-				data.results
-					.map((e) => ({ id: e.ward_id, title: e.ward_name }))
+				data.data
+					.map((e) => ({ id: e.id, title: e.full_name }))
 					.sort((a, b) => a.title.localeCompare(b.title))
 			)
 			.then((results) => setData(results))
