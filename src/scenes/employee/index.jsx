@@ -12,7 +12,6 @@ import ConfirmDialog from "../../components/ConfirmDialog";
 import ProfileModal from "../../components/ProfileModal";
 import { ColorModeContext, tokens } from "../../theme";
 import { AddressUtil, DateTimeUtil } from "../../utils";
-import { mockDataEmployee } from "../../data/mockData";
 import AxiosInstance from "../../api/api";
 import {
 	CREATE_EMPLOYEE_FAILED,
@@ -23,6 +22,7 @@ import {
 	UPDATE_EMPLOYEE_FAILED,
 	UPDATE_EMPLOYEE_SUCCESS,
 } from "../../notice";
+import { USER_ID } from "../../api/constants";
 
 const Toolbar = (props) => {
 	const theme = useTheme();
@@ -39,14 +39,14 @@ const Toolbar = (props) => {
 			<Button
 				label="EDIT RECORD"
 				onClick={props.openModifyDialog}
-				disabled={!props.openForCreating}
+				disabled={!props.openForCreating || !props.canModify}
 				startIcon={<EditIcon />}
 				style={{ padding: "10px", color: colors.greenAccent[500] }}
 			/>
 			<Button
 				label="DELETE RECORD"
 				onClick={props.openDeleteDialog}
-				disabled={!props.openForCreating}
+				disabled={!props.openForCreating || !props.canModify}
 				startIcon={<DeleteIcon />}
 				style={{ padding: "10px", color: colors.greenAccent[500] }}
 			/>
@@ -137,6 +137,10 @@ export default function Employee() {
 	// DIALOG SECTION.
 	const openForCreating = useMemo(
 		() => Boolean(selectedRow.current.id),
+		[selectedRow.current]
+	);
+	const canModify = useMemo(
+		() => selectedRow.current.id !== Number(localStorage.getItem(USER_ID)),
 		[selectedRow.current]
 	);
 	const [openModify, setOpenModify] = useState(false);
@@ -260,9 +264,6 @@ export default function Employee() {
 					"& .MuiDataGrid-columnSeparator": {
 						display: "none !important",
 					},
-					"& .MuiDataGrid-selectedRowCount": {
-						visibility: "hidden !important",
-					},
 				}}
 			>
 				<DataGrid
@@ -286,6 +287,7 @@ export default function Employee() {
 							openModifyDialog,
 							openDeleteDialog,
 							openForCreating,
+							canModify,
 						},
 					}}
 					rowSelectionModel={selectedRowModel}

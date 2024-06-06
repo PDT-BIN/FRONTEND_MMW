@@ -101,6 +101,7 @@ const Export = () => {
 	const handleFormSubmit = (contentValues, { setSubmitting, resetForm }) => {
 		if (details.length === 0) {
 			setAlert(EMPTY_FORM_WARNING);
+			setSubmitting(false);
 			return;
 		}
 
@@ -187,9 +188,6 @@ const Export = () => {
 					},
 					"& .MuiDataGrid-columnSeparator": {
 						display: "none !important",
-					},
-					"& .MuiDataGrid-selectedRowCount": {
-						visibility: "hidden !important",
 					},
 				}}
 			>

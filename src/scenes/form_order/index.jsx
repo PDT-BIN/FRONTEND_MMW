@@ -114,6 +114,7 @@ const Order = () => {
 	const handleFormSubmit = (contentValues, { setSubmitting, resetForm }) => {
 		if (details.length === 0) {
 			setAlert(EMPTY_FORM_WARNING);
+			setSubmitting(false);
 			return;
 		}
 
@@ -200,9 +201,6 @@ const Order = () => {
 					},
 					"& .MuiDataGrid-columnSeparator": {
 						display: "none !important",
-					},
-					"& .MuiDataGrid-selectedRowCount": {
-						visibility: "hidden !important",
 					},
 				}}
 			>

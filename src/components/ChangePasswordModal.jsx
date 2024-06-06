@@ -13,15 +13,24 @@ const initialValues = {
 
 const validationSchema = yup.object({
 	current_password: yup.string().trim().required("Field is required!"),
-	changed_password: yup.string().trim().required("Field is required!"),
+	changed_password: yup
+		.string()
+		.required("New password is required!")
+		.matches(/^\S*$/, "Password must not contain any whitespace!")
+		.notOneOf(
+			[yup.ref("current_password")],
+			"New password must be different from the current password!"
+		)
+		.strict(true),
 	confirm_password: yup
 		.string()
-		.trim()
+		.trim("Password is invalid!")
+		.required("Confirm password is required!")
 		.oneOf(
 			[yup.ref("changed_password"), null],
 			"Confirm password must match changed password!"
 		)
-		.required("Field is required!"),
+		.strict(true),
 });
 
 export default function ChangePasswordModal({

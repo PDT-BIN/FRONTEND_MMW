@@ -237,9 +237,6 @@ export default function Product() {
 					"& .MuiDataGrid-columnSeparator": {
 						display: "none !important",
 					},
-					"& .MuiDataGrid-selectedRowCount": {
-						visibility: "hidden !important",
-					},
 				}}
 			>
 				<DataGrid

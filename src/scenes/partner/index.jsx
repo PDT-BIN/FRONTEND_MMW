@@ -76,11 +76,12 @@ export default function Partner() {
 			flex: 0.5,
 			display: "flex",
 			renderCell: ({ value }) =>
-				value ? (
+				value !== null &&
+				(value ? (
 					<MaleIcon fontSize="large" />
 				) : (
 					<FemaleIcon fontSize="large" />
-				),
+				)),
 		},
 		{ field: "email", headerName: "EMAIL", flex: 1, sortable: false },
 		{
@@ -227,9 +228,6 @@ export default function Partner() {
 					},
 					"& .MuiDataGrid-columnSeparator": {
 						display: "none !important",
-					},
-					"& .MuiDataGrid-selectedRowCount": {
-						visibility: "hidden !important",
 					},
 				}}
 			>
