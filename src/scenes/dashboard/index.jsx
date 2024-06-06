@@ -7,15 +7,17 @@ import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import BookmarkRemoveIcon from "@mui/icons-material/BookmarkRemove";
 import Header from "../../components/Header";
 import StatBox from "../../components/StatBox";
-import { tokens } from "../../theme";
+import { ColorModeContext, tokens } from "../../theme";
 import BarChart from "../../components/BarChart";
 import PieChart from "../../components/PieChart";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import moment from "moment";
-import { DateTimeUtil } from "../../utils";
+import AxiosInstance from "../../api/api";
+import { DATA_NOTICE } from "../../notice";
+import { useContext, useEffect, useState } from "react";
 
-const StatisticBox = ({ title, subtitle, progress, increase, icon }) => {
+const StatisticBox = ({ subtitle, data, icon, onlyTotal = false }) => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 
@@ -30,11 +32,12 @@ const StatisticBox = ({ title, subtitle, progress, increase, icon }) => {
 			borderRadius="5px"
 		>
 			<StatBox
-				title={title}
+				title={Math.ceil(data.current || 0)}
 				subtitle={subtitle}
-				progress={progress}
-				increase={`+${increase}%`}
+				progress={data.percentage || 0}
+				increase={`+${Math.ceil(data.increase || 0)}`}
 				icon={icon}
+				onlyTotal={onlyTotal}
 			/>
 		</Box>
 	);
@@ -85,14 +88,66 @@ const ChartBox = ({ column, row, title, chart, formats, handleChange }) => {
 export default function Dashboard() {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
+	// API.
+	const { setAlert } = useContext(ColorModeContext);
+	const [barChartData, setBarChartData] = useState([]);
+	const [pieChartData, setPieChartData] = useState([]);
+	const [totalImportData, setTotalImportData] = useState([]);
+	const [totalExportData, setTotalExportData] = useState([]);
+	const [totalCustomer, setTotalCustomer] = useState(null);
+	const [totalProduct, setTotalProduct] = useState(null);
 
-	const handleImportExportStatistic = (e) => {
-		console.log(e._d.getFullYear());
+	useEffect(() => {
+		handleTotalPartnerAndProduct();
+		handleImportExportStatistic();
+		handleFavourteProductStatistic();
+		handleTotalImportStatistic();
+		handleTotalExportStatistic();
+	}, []);
+
+	// CALL API TOTAL BUSINESS PARTNER & PRODUCT.
+	const handleTotalPartnerAndProduct = () => {
+		AxiosInstance.get("api/web/business_Partner/")
+			.then((response) => setTotalCustomer(response.data.length))
+			.catch((_) => setAlert(DATA_NOTICE));
+		AxiosInstance.get("api/web/product/")
+			.then((response) => setTotalProduct(response.data.length))
+			.catch((_) => setAlert(DATA_NOTICE));
 	};
 
+	// CALL API TOTAL IMPORT STATISTIC.
+	const handleTotalImportStatistic = () => {
+		AxiosInstance.get("api/web/stats/total_import/")
+			.then((response) => setTotalImportData(response.data))
+			.catch((_) => setAlert(DATA_NOTICE));
+	};
+
+	// CALL API TOTAL EXPORT STATISTIC.
+	const handleTotalExportStatistic = () => {
+		AxiosInstance.get("api/web/stats/total_export/")
+			.then((response) => setTotalExportData(response.data))
+			.catch((_) => setAlert(DATA_NOTICE));
+	};
+
+	// CALL API IMPORT & EXPORT STATISTIC.
+	const handleImportExportStatistic = (e) => {
+		const TODAY = new Date();
+		AxiosInstance.post("api/web/stats/import_export/", {
+			year: e?._d.getFullYear() || TODAY.getFullYear(),
+		})
+			.then((response) => setBarChartData(response.data))
+			.catch((_) => setAlert(DATA_NOTICE));
+	};
+
+	// CALL API FAVOURITE PRODUCT STATISTIC.
 	const handleFavourteProductStatistic = (e) => {
-		console.log(e._d.getMonth());
-		console.log(e._d.getFullYear());
+		const TODAY = new Date();
+		AxiosInstance.post("api/web/stats/top5_export/", {
+			month: e?._d.getMonth() + 1 || TODAY.getMonth() + 1,
+			year: e?._d.getFullYear() || TODAY.getFullYear(),
+		})
+			.then((response) => setPieChartData(response.data))
+			.catch((_) => setAlert(DATA_NOTICE));
 	};
 
 	return (
@@ -130,53 +185,60 @@ export default function Dashboard() {
 			>
 				{/* ROW 1 */}
 				<StatisticBox
-					title={0}
-					subtitle="NEW CUSTOMER"
-					progress={0}
-					increase={0}
+					subtitle="BUSINESS PARTNER"
+					data={{ current: totalCustomer }}
 					icon={
 						<PersonAddAlt1Icon
 							fontSize="large"
-							sx={{ color: colors.greenAccent[600] }}
+							sx={{
+								color: colors.greenAccent[600],
+								width: "36px",
+								height: "36px",
+							}}
 						/>
 					}
+					onlyTotal={true}
 				/>
 
 				<StatisticBox
-					title={0}
-					subtitle="NEW PRODUCT"
-					progress={0}
-					increase={0}
+					subtitle="PRODUCT"
+					data={{ current: totalProduct }}
 					icon={
 						<CategoryIcon
-							fontSize="large"
-							sx={{ color: colors.greenAccent[600] }}
+							sx={{
+								color: colors.greenAccent[600],
+								width: "36px",
+								height: "36px",
+							}}
 						/>
 					}
+					onlyTotal={true}
 				/>
 
 				<StatisticBox
-					title={0}
 					subtitle="IMPORT FEE"
-					progress={0}
-					increase={0}
+					data={totalImportData}
 					icon={
 						<BookmarkAddIcon
-							fontSize="large"
-							sx={{ color: colors.greenAccent[600] }}
+							sx={{
+								color: colors.greenAccent[600],
+								width: "36px",
+								height: "36px",
+							}}
 						/>
 					}
 				/>
 
 				<StatisticBox
-					title={0}
 					subtitle="EXPORT FEE"
-					progress={0}
-					increase={0}
+					data={totalExportData}
 					icon={
 						<BookmarkRemoveIcon
-							fontSize="large"
-							sx={{ color: colors.greenAccent[600] }}
+							sx={{
+								color: colors.greenAccent[600],
+								width: "36px",
+								height: "36px",
+							}}
 						/>
 					}
 				/>
@@ -185,7 +247,7 @@ export default function Dashboard() {
 					column="7"
 					row="2"
 					title="IMPORT & EXPORT"
-					chart={<BarChart />}
+					chart={<BarChart data={barChartData} />}
 					formats={{ format: "YYYY", views: ["year"] }}
 					handleChange={handleImportExportStatistic}
 				/>
@@ -194,7 +256,7 @@ export default function Dashboard() {
 					column="5"
 					row="2"
 					title="FAVOURITE PRODUCTS"
-					chart={<PieChart />}
+					chart={<PieChart data={pieChartData} />}
 					formats={{ format: "MM/YYYY", views: ["month", "year"] }}
 					handleChange={handleFavourteProductStatistic}
 				/>

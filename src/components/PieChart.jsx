@@ -2,7 +2,6 @@ import { useTheme } from "@emotion/react";
 import { ResponsivePie } from "@nivo/pie";
 import { tokens } from "../theme";
 import { Box, Typography } from "@mui/material";
-import { pieChartData } from "../data/mockChartData";
 
 const CustomTooltip = ({ datum }) => {
 	const theme = useTheme();
@@ -28,10 +27,9 @@ const CustomTooltip = ({ datum }) => {
 	);
 };
 
-export default function MyResponsivePie() {
+export default function MyResponsivePie({ data }) {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
-	const data = pieChartData;
 
 	return (
 		<ResponsivePie

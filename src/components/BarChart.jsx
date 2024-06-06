@@ -1,7 +1,6 @@
 import { useTheme } from "@emotion/react";
 import { ResponsiveBar } from "@nivo/bar";
 import { tokens } from "../theme";
-import { barChartData } from "../data/mockChartData";
 import { Box, Typography } from "@mui/material";
 import { NUM_TO_MON } from "../scenes/constants";
 
@@ -26,10 +25,9 @@ const CustomTooltip = ({ id, value, color, indexValue }) => {
 	);
 };
 
-export default function BarChart() {
+export default function BarChart({ data }) {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
-	const data = barChartData;
 
 	return (
 		<ResponsiveBar
@@ -64,7 +62,7 @@ export default function BarChart() {
 				},
 			}}
 			tooltip={CustomTooltip}
-			keys={["import", "export"]}
+			keys={["total_import", "total_export"]}
 			indexBy="month"
 			margin={{ top: 20, right: 0, bottom: 40, left: 0 }}
 			padding={0.3}
