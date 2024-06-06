@@ -14,6 +14,10 @@ import Button from "../../components/customs/Button";
 import TextField from "../../components/customs/TextField";
 import Dialog from "../../components/customs/Dialog";
 import AutoCompleteField from "../../components/customs/AutoCompleteField";
+import { useContext, useEffect, useState } from "react";
+import AxiosInstance from "../../api/api";
+import { DATA_NOTICE } from "../../notice";
+import { ColorModeContext } from "../../theme";
 
 const initialValues = {
 	name: "",
@@ -44,13 +48,21 @@ export default function DataDialog({
 	isOpened,
 	handleClose,
 	handleFormSubmit,
-	data: { categories, units, selectedRow },
+	data: { units, selectedRow },
 }) {
 	// CONTROL INITIAL VALUES.
 	let convertedValues = { ...initialValues };
 	if (Boolean(selectedRow.id)) {
 		convertedValues = { ...convertedValues, ...selectedRow };
 	}
+	// API.
+	const [categories, setCategories] = useState([]);
+	const { setAlert } = useContext(ColorModeContext);
+	useEffect(() => {
+		AxiosInstance.get("api/web/category/")
+			.then((response) => setCategories(response.data))
+			.catch((_) => setAlert(DATA_NOTICE));
+	}, []);
 
 	return (
 		<Dialog

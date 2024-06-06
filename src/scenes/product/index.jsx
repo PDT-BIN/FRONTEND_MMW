@@ -283,12 +283,6 @@ export default function Product() {
 				handleClose={closeModifyDialog}
 				handleFormSubmit={handleModifySubmit}
 				data={{
-					categories: FilterUtil.distinct(
-						rows
-							.map((e) => e.category)
-							.filter((e) => e !== null)
-							.sort((a, b) => a.name.localeCompare(b.name))
-					),
 					units: FilterUtil.distinct(rows.map((e) => e.unit).sort()),
 					selectedRow: selectedRow.current,
 				}}
