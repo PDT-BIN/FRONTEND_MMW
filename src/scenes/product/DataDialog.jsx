@@ -54,13 +54,18 @@ export default function DataDialog({
 	let convertedValues = { ...initialValues };
 	if (Boolean(selectedRow.id)) {
 		convertedValues = { ...convertedValues, ...selectedRow };
+		convertedValues["price"] = convertedValues["price"] || "";
 	}
 	// API.
 	const [categories, setCategories] = useState([]);
 	const { setAlert } = useContext(ColorModeContext);
 	useEffect(() => {
 		AxiosInstance.get("api/web/category/")
-			.then((response) => setCategories(response.data))
+			.then((response) =>
+				setCategories(
+					response.data.sort((a, b) => a.name.localeCompare(b.name))
+				)
+			)
 			.catch((_) => setAlert(DATA_NOTICE));
 	}, [isOpened]);
 
