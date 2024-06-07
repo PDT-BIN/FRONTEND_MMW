@@ -212,6 +212,7 @@ const Import = () => {
 
 			<Box
 				mb="20px"
+				maxHeight="342px"
 				flex="1"
 				display="flex"
 				justifyContent="space-between"

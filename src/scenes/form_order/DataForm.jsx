@@ -12,7 +12,6 @@ import AutoCompleteField from "../../components/customs/AutoCompleteField";
 import AxiosInstance from "../../api/api";
 import { ColorModeContext } from "../../theme";
 import { DATA_NOTICE } from "../../notice";
-import { USER_ID } from "../../api/constants";
 
 const initialValues = {
 	created_date: DateTimeUtil.format(Date.now()),

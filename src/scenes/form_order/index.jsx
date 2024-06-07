@@ -168,7 +168,7 @@ const Order = () => {
 		>
 			<Box
 				width="100%"
-				height="262px"
+				minHeight="262px"
 				sx={{
 					"& .MuiDataGrid-root": {
 						border: "none !important",
@@ -221,6 +221,7 @@ const Order = () => {
 
 			<Box
 				mb="20px"
+				maxHeight="342px"
 				flex="1"
 				display="flex"
 				justifyContent="space-between"
