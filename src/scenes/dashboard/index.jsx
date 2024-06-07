@@ -35,7 +35,9 @@ const StatisticBox = ({ subtitle, data, icon, onlyTotal = false }) => {
 				title={Math.ceil(data.current || 0)}
 				subtitle={subtitle}
 				progress={data.percentage || 0}
-				increase={`+${Math.ceil(data.increase || 0)}`}
+				increase={`${(data.increase || 0) > 0 ? "+" : ""}${Math.ceil(
+					data.increase || 0
+				)}`}
 				icon={icon}
 				onlyTotal={onlyTotal}
 			/>
